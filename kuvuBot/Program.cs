@@ -10,6 +10,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using kuvuBot.Commands;
+using kuvuBot.Commands.Moderation;
 using kuvuBot.Data;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
@@ -20,7 +21,7 @@ namespace kuvuBot
     {
         static DiscordClient Client { get; set; }
         public static Config Config { get; set; }
-        static CommandsNextExtension Commands { get; set; }
+        public static CommandsNextExtension Commands { get; set; }
 
         public static async Task Main(string[] args)
         {
@@ -41,8 +42,11 @@ namespace kuvuBot
 
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefixes = new List<string>() { Config.DefualtPrefix },
                 EnableDefaultHelp = true,
+                PrefixResolver = async (msg) => {
+                    var kuvuGuild = await msg.Channel.Guild.GetKuvuGuild();
+                    return CommandsNextUtilities.GetStringPrefixLength(msg, kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
+                },
             });
 
             Commands.RegisterCommands(Assembly.GetExecutingAssembly());

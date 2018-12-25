@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kuvuBot.Commands
+namespace kuvuBot.Commands.Fun
 {
     public class DiceCommand : BaseCommandModule
     {
