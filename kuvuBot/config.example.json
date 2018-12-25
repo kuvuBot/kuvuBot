@@ -1,3 +1,11 @@
 {
-  "token": "DISCORD TOKEN"
+  "token": "DISCORD TOKEN",
+  "defualtPrefix": "DEFUALT COMMAND PREFIX",
+  "mySql": {
+    "ip": "MYSQL SERVER IP",
+    "port": "MYSQL SERVER PORT",
+    "user": "MYSQL USER",
+    "password": "MYSQL USER PASSWORD",
+    "database": "MYSQL DATABASE"
+  }
 }

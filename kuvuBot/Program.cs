@@ -19,16 +19,17 @@ namespace kuvuBot
     class Program
     {
         static DiscordClient Client { get; set; }
+        public static Config Config { get; set; }
         static CommandsNextExtension Commands { get; set; }
 
         public static async Task Main(string[] args)
         {
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
 
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
             var conf = new DiscordConfiguration
             {
-                Token = config.Token,
+                Token = Config.Token,
                 TokenType = TokenType.Bot,
 
                 AutoReconnect = true,
@@ -40,7 +41,7 @@ namespace kuvuBot
 
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefixes = new List<string>() { "kf!" },
+                StringPrefixes = new List<string>() { Config.DefualtPrefix },
                 EnableDefaultHelp = true,
             });
 
@@ -51,6 +52,22 @@ namespace kuvuBot
             Client.GuildDeleted += Client_GuildEvents;
             Client.GuildDownloadCompleted += Client_GuildEvents;
 
+            Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Checking database connection...", DateTime.Now);
+            try
+            {
+                var botContext = new BotContext();
+                if (botContext.Database.CanConnect())
+                {
+                    Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Database connection is OK", DateTime.Now);
+                }else
+                {
+                    Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error", DateTime.Now);
+                }
+            }
+            catch (Exception e)
+            {
+                Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error\n {e.ToString()}", DateTime.Now);
+            }
             await Client.ConnectAsync();
 
             // prevent app from quit
@@ -59,8 +76,7 @@ namespace kuvuBot
 
         private static void UpdateStatus()
         {
-            Client.UpdateStatusAsync(new DiscordActivity($"kb!help | {Client.Guilds.Count} guilds", DSharpPlus.Entities.ActivityType.ListeningTo),
-                DSharpPlus.Entities.UserStatus.Online);
+            Client.UpdateStatusAsync(new DiscordActivity($"{Config.DefualtPrefix}help | {Client.Guilds.Count} guilds", ActivityType.ListeningTo), UserStatus.Online);
         }
 
         private static Task Client_GuildEvents(EventArgs e)
