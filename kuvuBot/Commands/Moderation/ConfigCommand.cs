@@ -22,7 +22,8 @@ namespace kuvuBot.Commands.Moderation
                 await ctx.RespondAsync("You do not have sufficient permissions to execute this command!");
                 return;
             }
-            await ctx.RespondAsync("Usage /config prefix <prefix>");
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild();
+            await ctx.RespondAsync($"Usage {kuvuGuild.Prefix}config prefix <prefix>");
         }
 
         [Command("prefix"), Description("Change bot prefix")]

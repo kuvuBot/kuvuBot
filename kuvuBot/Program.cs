@@ -12,6 +12,7 @@ using DSharpPlus.EventArgs;
 using kuvuBot.Commands;
 using kuvuBot.Commands.Moderation;
 using kuvuBot.Data;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
 
@@ -63,7 +64,18 @@ namespace kuvuBot
                 if (botContext.Database.CanConnect())
                 {
                     Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Database connection is OK", DateTime.Now);
-                }else
+                    Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Migrating database...", DateTime.Now);
+                    try
+                    {
+                        botContext.Database.Migrate();
+                        Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Database migration SUCCESS", DateTime.Now);
+                    }
+                    catch (Exception e)
+                    {
+                        Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database migration error\n {e.ToString()}", DateTime.Now);
+                    }
+                }
+                else
                 {
                     Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error", DateTime.Now);
                 }
