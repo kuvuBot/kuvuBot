@@ -36,7 +36,7 @@ namespace kuvuBot
 
                 AutoReconnect = true,
                 LogLevel = LogLevel.Debug,
-                UseInternalLogHandler = true
+                UseInternalLogHandler = true,   
             };
 
             Client = new DiscordClient(conf);
@@ -56,6 +56,7 @@ namespace kuvuBot
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
             Client.GuildDownloadCompleted += Client_GuildEvents;
+            StatisticManager.Initialize(Client);
 
             Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Checking database connection...", DateTime.Now);
             try

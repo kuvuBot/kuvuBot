@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20181225175327_AddStatistics.cs" />
+    <Compile Remove="Migrations\20181225175327_AddStatistics.Designer.cs" />
+    <Compile Remove="Migrations\20181225175933_AddStatisticsv2.cs" />
+    <Compile Remove="Migrations\20181225175933_AddStatisticsv2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
     <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00560" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00560" />
@@ -31,6 +38,12 @@
   <ItemGroup>
     <Compile Update="Migrations\20181225140800_AddGuilds.Designer.cs">
       <DependentUpon>20181225140800_AddGuilds.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20181225182923_AddStatistics.Designer.cs">
+      <DependentUpon>20181225182923_AddStatistics.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20181225190029_AddUsersToStatistics.Designer.cs">
+      <DependentUpon>20181225190029_AddUsersToStatistics.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

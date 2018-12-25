@@ -43,9 +43,23 @@ namespace kuvuBot.Data
         public ulong? AutoRole { get; set; }
         public ulong? Greeting { get; set; }
     }
+
+    public class KuvuStat
+    {
+        public int Id { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public int Guilds { get; set; }
+        public int Channels { get; set; }
+        public int Users { get; set; }
+    }
+
     public class BotContext : DbContext
     {
         public DbSet<KuvuGuild> Guilds { get; set; }
+        public DbSet<KuvuStat> Statistics { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var mysqlconfig = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")).MySQL;
