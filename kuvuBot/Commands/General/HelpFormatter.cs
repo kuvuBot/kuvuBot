@@ -10,6 +10,7 @@ using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Data;
+using kuvuBot.Lang;
 using MoreLinq;
 
 namespace kuvuBot.Commands.General
@@ -17,11 +18,13 @@ namespace kuvuBot.Commands.General
     public class HelpFormatter : BaseHelpFormatter
     {
         public ModernEmbedBuilder EmbedBuilder { get; }
+        private CommandContext Ctx { get; set; }
         private Command Command { get; set; }
         private KuvuGuild kuvuGuild { get; set; }
 
         public HelpFormatter(CommandContext ctx) : base(ctx)
         {
+            Ctx = ctx;
             var kuvuGuildTask = ctx.Guild.GetKuvuGuild(); kuvuGuildTask.Wait();
             kuvuGuild = kuvuGuildTask.Result;
             EmbedBuilder = new ModernEmbedBuilder()
@@ -70,13 +73,13 @@ namespace kuvuBot.Commands.General
 
             return this;
         }
-
         public override BaseHelpFormatter WithSubcommands(IEnumerable<Command> subcommands)
         {
             if (Command == null)
             {
                 EmbedBuilder.AddField("Prefix", kuvuGuild.Prefix, true);
-                EmbedBuilder.AddField("Language", kuvuGuild.Lang, true);
+                EmbedBuilder.AddField("Language", $"{kuvuGuild.Lang.ToUpper()} {DiscordEmoji.FromUnicode(Ctx.Client, Ctx.Lang("lang.flag").Result)}", true);
+                EmbedBuilder.AddField("kuvuBot", $"{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}", true);
             }
             var categories = subcommands.Where(x=>x.Name != "help").Select(c => c.Category()).DistinctBy(x=>x);
             foreach(var category in categories)
