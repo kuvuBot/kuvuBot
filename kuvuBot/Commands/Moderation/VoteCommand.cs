@@ -16,6 +16,11 @@ namespace kuvuBot.Commands.Moderation
         [Command("vote"), Description("Makes voting")]
         public async Task Vote(CommandContext ctx, [RemainingText,Description("Question")] string question = null)
         {
+            if (question == null)
+            {
+                await ctx.RespondAsync(await ctx.Lang("global.badArguments"));
+                return;
+            }
             var message = await new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("vote.voting"),
