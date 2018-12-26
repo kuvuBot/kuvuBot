@@ -10,7 +10,7 @@ namespace kuvuBot.Commands.Fun
     public class DiceCommand : BaseCommandModule
     {
         [Aliases("kostka")]
-        [Command("dice"), Description("Dice roll")]
+        [Command("dice"), Description("Roll dice")]
         public async Task Dice(CommandContext ctx, int? walls = null)
         {
             walls = walls ?? 4;

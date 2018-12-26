@@ -14,16 +14,15 @@ namespace kuvuBot.Commands.Moderation
     [Description("Configuration commands.")] // give it a description for help purposes
     public class ConfigCommand : BaseCommandModule
     {
-        [GroupCommand]
-        public async Task ExecuteGroupAsync(CommandContext ctx)
-        {
-            if(!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild();
-            await ctx.RespondAsync($"Usage {kuvuGuild.Prefix}config prefix <prefix>");
-        }
+        //[GroupCommand]
+        //public async Task ExecuteGroupAsync(CommandContext ctx)
+        //{
+        //    if(!await ctx.HasPermission(Permissions.ManageGuild))
+        //    {
+        //        return;
+        //    }
+        //    ctx.CommandsNext.
+        //}
 
         [Command("prefix"), Description("Change bot prefix")]
         public async Task Prefix(CommandContext ctx, string prefix = null)

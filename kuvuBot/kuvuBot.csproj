@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <StartupObject>kuvuBot.Program</StartupObject>
     <LangVersion>latest</LangVersion>
+    <Authors>kuvuś, js6pak</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,6 +42,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="morelinq" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
     <!--<PackageReference Include="HSNXT.DSharpPlus.ModernEmbedBuilder" Version="3.0.176" />

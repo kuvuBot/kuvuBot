@@ -10,6 +10,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using kuvuBot.Commands;
+using kuvuBot.Commands.General;
 using kuvuBot.Commands.Moderation;
 using kuvuBot.Data;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace kuvuBot
 
                 AutoReconnect = true,
                 LogLevel = LogLevel.Debug,
-                UseInternalLogHandler = true,   
+                UseInternalLogHandler = true,
             };
 
             Client = new DiscordClient(conf);
@@ -50,6 +51,7 @@ namespace kuvuBot
                 },
             });
 
+            Commands.SetHelpFormatter<HelpFormatter>();
             Commands.RegisterCommands(Assembly.GetExecutingAssembly());
 
             Client.Ready += Client_Ready;

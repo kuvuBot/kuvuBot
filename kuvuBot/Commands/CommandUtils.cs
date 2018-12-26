@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using kuvuBot.Lang;
+using System.Linq;
 
 namespace kuvuBot.Commands
 {
@@ -20,6 +21,11 @@ namespace kuvuBot.Commands
             if (respond)
                 await ctx.RespondAsync(await ctx.Lang("global.nopermission"));
             return false;
+        }
+
+        public static string Category(this Command command)
+        {
+            return command.Module.ModuleType.Namespace.Split('.').Last();
         }
     }
 }
