@@ -1,5 +1,8 @@
 {
     "vote": {
         "voting": "Voting"
+    },
+    "global": {
+        "nopermission": "You do not have sufficient permissions to execute this command!"
     }
 }

@@ -17,9 +17,8 @@ namespace kuvuBot.Commands.Moderation
         [GroupCommand]
         public async Task ExecuteGroupAsync(CommandContext ctx)
         {
-            if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild))
+            if(!await ctx.HasPermission(Permissions.ManageGuild))
             {
-                await ctx.RespondAsync("You do not have sufficient permissions to execute this command!");
                 return;
             }
             var kuvuGuild = await ctx.Guild.GetKuvuGuild();
@@ -29,9 +28,8 @@ namespace kuvuBot.Commands.Moderation
         [Command("prefix"), Description("Change bot prefix")]
         public async Task Prefix(CommandContext ctx, string prefix = null)
         {
-            if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild))
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
             {
-                await ctx.RespondAsync("You do not have sufficient permissions to execute this command!");
                 return;
             }
             var botContext = new BotContext();
@@ -52,9 +50,8 @@ namespace kuvuBot.Commands.Moderation
         [Command("lang"), Description("Change bot language"), Aliases("language", "język", "jezyk")]
         public async Task Lang(CommandContext ctx, string lang = null)
         {
-            if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild))
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
             {
-                await ctx.RespondAsync("You do not have sufficient permissions to execute this command!");
                 return;
             }
             var botContext = new BotContext();

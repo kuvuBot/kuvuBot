@@ -21,16 +21,20 @@ namespace kuvuBot.Lang
     }
     public class LangController
     {
+        // Arghh its shitty
         public static string Get(string term, string lang)
         {
+            // Split term to content.term
             var path = term.Split('.');
 
+            // Get lang file from assembly
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = $"kuvuBot.Lang.{lang}.json";
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             using (StreamReader sr = new StreamReader(stream))
             {
+                //     convert object                           context            term   translated      stream     context   term
                 return JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(sr.ReadToEnd())[path[0]][path[1]];
             }
         }
