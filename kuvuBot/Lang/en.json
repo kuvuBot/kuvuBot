@@ -1,11 +1,17 @@
 {
     "vote": {
-        "voting": "Voting"
+      "voting": "Voting"
     },
     "global": {
-        "nopermission": "You do not have sufficient permissions to execute this command!"
+      "nopermission": "You do not have sufficient permissions to execute this command!"
     },
     "lang": {
-        "flag": "🇬🇧"
+      "flag": "🇬🇧"
+    },
+    "broadcast": {
+      "broadcast": "Broadcast"
+    },
+    "global": {
+      "badArguments": "Incorrect argument."
     }
 }
