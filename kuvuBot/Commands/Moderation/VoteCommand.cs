@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -17,7 +18,7 @@ namespace kuvuBot.Commands.Moderation
         {
             var message = await new ModernEmbedBuilder
             {
-                Title = "Voting",
+                Title = await ctx.Lang("vote.voting"),
                 Description = question,
                 Color = new DuckColor(33, 150, 243),
                 Timestamp = DuckTimestamp.Now,

@@ -48,5 +48,28 @@ namespace kuvuBot.Commands.Moderation
                 await botContext.SaveChangesAsync();
             }
         }
+
+        [Command("lang"), Description("Change bot language"), Aliases("language", "język", "jezyk")]
+        public async Task Lang(CommandContext ctx, string lang = null)
+        {
+            if (!ctx.Member.PermissionsIn(ctx.Channel).HasPermission(Permissions.ManageGuild))
+            {
+                await ctx.RespondAsync("You do not have sufficient permissions to execute this command!");
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (lang == null)
+            {
+                await ctx.RespondAsync($"Current language is `{kuvuGuild.Lang}`");
+            }
+            else
+            {
+                kuvuGuild.Lang = lang;
+                await ctx.RespondAsync($"👌, changed language to `{kuvuGuild.Lang}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
     }
 }
