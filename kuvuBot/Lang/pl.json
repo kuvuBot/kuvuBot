@@ -2,7 +2,10 @@
     "vote": {
         "voting": "Głosowanie"
     },
-  "global": {
-    "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!"
-  }
+    "global": {
+        "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!"
+    },
+    "lang": {
+        "flag": "🇵🇱"
+    }
 }

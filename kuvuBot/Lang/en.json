@@ -4,5 +4,8 @@
     },
     "global": {
         "nopermission": "You do not have sufficient permissions to execute this command!"
+    },
+    "lang": {
+        "flag": "🇬🇧"
     }
 }
