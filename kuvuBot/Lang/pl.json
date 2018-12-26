@@ -3,15 +3,10 @@
         "voting": "Głosowanie"
     },
     "global": {
-        "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!"
+        "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
+        "badArguments": "Nieprawidłowy argument."
     },
     "lang": {
         "flag": "🇵🇱"
-    },
-    "broadcast": {
-      "broadcast": "Ogłoszenie"
-    },
-    "global": {
-      "badArguments": "Nieprawidłowy argument." 
-    } 
+    }
 }
