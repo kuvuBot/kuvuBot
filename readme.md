@@ -6,7 +6,7 @@
 [![Discord Bots](https://discordbots.org/api/widget/status/205965341241638912.svg)](https://discordbots.org/bot/205965341241638912)
 
 ## Links
-**Website:** https://bot.kuvus.pl<br>
+**Website:** https://kuvuBot.xyz<br>
 **Discord server:** https://discord.gg/WhCjqqj<br>
 **Bot invite:** http://bit.ly/kuvuBotAdd
 
