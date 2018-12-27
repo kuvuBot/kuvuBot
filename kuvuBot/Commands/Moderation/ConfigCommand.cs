@@ -105,8 +105,8 @@ namespace kuvuBot.Commands.Moderation
             }
             else
             {
-                kuvuGuild.LogChannel = channel.Id;
-                await ctx.RespondAsync($"👌, changed greeting to `{kuvuGuild.LogChannel.ToString()}`");
+                kuvuGuild.GreetingChannel = channel.Id;
+                await ctx.RespondAsync($"👌, changed greeting to `{kuvuGuild.GreetingChannel.ToString()}`");
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }
@@ -126,8 +126,73 @@ namespace kuvuBot.Commands.Moderation
             }
             else
             {
-                kuvuGuild.LogChannel = channel.Id;
-                await ctx.RespondAsync($"👌, changed goodbye to `{kuvuGuild.LogChannel.ToString()}`");
+                kuvuGuild.GoodbyeChannel = channel.Id;
+                await ctx.RespondAsync($"👌, changed goodbye to `{kuvuGuild.GoodbyeChannel.ToString()}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+
+        [Command("greeting"), Description("Change greeting message")]
+        public async Task Greeting(CommandContext ctx, [RemainingText] string message = null)
+        {
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
+            {
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (message == null)
+            {
+                await ctx.RespondAsync($"Current greeting message is `{(kuvuGuild.GreetingMessage.ToString() ?? "none")}`");
+            }
+            else
+            {
+                kuvuGuild.GreetingMessage = message;
+                await ctx.RespondAsync($"👌, changed greeting message to `{kuvuGuild.GreetingMessage.ToString()}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+        [Command("goodbye"), Description("Change goodbye message")]
+        public async Task Goodbye(CommandContext ctx, [RemainingText] string message = null)
+        {
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
+            {
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (message == null)
+            {
+                await ctx.RespondAsync($"Current goodbye message is `{(kuvuGuild.GoodbyeMessage.ToString() ?? "none")}`");
+            }
+            else
+            {
+                kuvuGuild.GoodbyeMessage = message;
+                await ctx.RespondAsync($"👌, changed goodbye message to `{kuvuGuild.GoodbyeMessage.ToString()}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+
+        [Command("autorole"), Description("Change autorole")]
+        public async Task Autorole(CommandContext ctx, DiscordRole role = null)
+        {
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
+            {
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (role == null)
+            {
+                await ctx.RespondAsync($"Current autorole is `{(kuvuGuild.AutoRole.ToString() ?? "none")}`");
+            }
+            else
+            {
+                kuvuGuild.AutoRole = role.Id;
+                await ctx.RespondAsync($"👌, changed autorole to `{kuvuGuild.AutoRole.ToString()}`");
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }
