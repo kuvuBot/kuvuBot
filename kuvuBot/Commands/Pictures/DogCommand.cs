@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace kuvuBot.Commands.Fun
+namespace kuvuBot.Commands.Pictures
 {
     public class DogCommand : BaseCommandModule
     {

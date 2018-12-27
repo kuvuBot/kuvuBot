@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 
-namespace kuvuBot.Commands.General
+namespace kuvuBot.Commands.Information
 {
     public class GuildCommand : BaseCommandModule
     {

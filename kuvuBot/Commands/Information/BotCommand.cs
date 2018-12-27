@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 
-namespace kuvuBot.Commands.General
+namespace kuvuBot.Commands.Information
 {
     public class BotCommand : BaseCommandModule
     {
@@ -23,7 +23,7 @@ namespace kuvuBot.Commands.General
                 Fields =
                 {
                     ("Name", ctx.Client.CurrentUser.Mention, inline: true),
-                    ("Number of servers", guilds.ToString(), inline: true),
+                    ("Number of guilds", guilds.ToString(), inline: true),
                     ("Number of channels", channels.ToString(), inline: true),
                     ("Github", "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),
                     ("Website", "[Check out](https://kuvuBot.xyz)", inline: true),

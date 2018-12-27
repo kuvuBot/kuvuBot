@@ -41,7 +41,11 @@ namespace kuvuBot.Data
         public string Prefix { get; set; }
         public ulong? LogChannel { get; set; }
         public ulong? AutoRole { get; set; }
-        public ulong? Greeting { get; set; }
+
+        public ulong? GreetingChannel { get; set; }
+        public string GreetingMessage { get; set; }
+        public ulong? GoodbyeChannel { get; set; }
+        public string GoodbyeMessage { get; set; }
     }
 
     public class KuvuStat

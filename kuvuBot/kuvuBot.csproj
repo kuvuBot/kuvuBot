@@ -59,6 +59,9 @@
     <Compile Update="Migrations\20181225190029_AddUsersToStatistics.Designer.cs">
       <DependentUpon>20181225190029_AddUsersToStatistics.cs</DependentUpon>
     </Compile>
+    <Compile Update="Migrations\20181227195632_GreetingGoodbye.Designer.cs">
+      <DependentUpon>20181227195632_GreetingGoodbye.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

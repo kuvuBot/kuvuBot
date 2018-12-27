@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using DSharpPlus.Entities;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -63,6 +64,70 @@ namespace kuvuBot.Commands.Moderation
             {
                 kuvuGuild.Lang = lang;
                 await ctx.RespondAsync($"👌, changed language to `{kuvuGuild.Lang}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+
+        [Command("logchannel"), Description("Change log channel")]
+        public async Task LogChannel(CommandContext ctx, DiscordChannel channel = null)
+        {
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
+            {
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (channel == null)
+            {
+                await ctx.RespondAsync($"Current log channel is `{(kuvuGuild.LogChannel.ToString() ?? "none")}`");
+            }
+            else
+            {
+                kuvuGuild.LogChannel = channel.Id;
+                await ctx.RespondAsync($"👌, changed log to `{kuvuGuild.LogChannel.ToString()}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+        [Command("greetingchannel"), Description("Change greeting channel")]
+        public async Task GreetingChannel(CommandContext ctx, DiscordChannel channel = null)
+        {
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
+            {
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (channel == null)
+            {
+                await ctx.RespondAsync($"Current greeting channel is `{(kuvuGuild.LogChannel.ToString() ?? "none")}`");
+            }
+            else
+            {
+                kuvuGuild.LogChannel = channel.Id;
+                await ctx.RespondAsync($"👌, changed greeting to `{kuvuGuild.LogChannel.ToString()}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+        [Command("goodbyechannel"), Description("Change goodbye channel")]
+        public async Task GoodbyeChannel(CommandContext ctx, DiscordChannel channel = null)
+        {
+            if (!await ctx.HasPermission(Permissions.ManageGuild))
+            {
+                return;
+            }
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (channel == null)
+            {
+                await ctx.RespondAsync($"Current goodbye channel is `{(kuvuGuild.LogChannel.ToString() ?? "none")}`");
+            }
+            else
+            {
+                kuvuGuild.LogChannel = channel.Id;
+                await ctx.RespondAsync($"👌, changed goodbye to `{kuvuGuild.LogChannel.ToString()}`");
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }

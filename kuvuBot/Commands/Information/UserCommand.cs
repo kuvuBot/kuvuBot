@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Globalization;
 
-namespace kuvuBot.Commands.General
+namespace kuvuBot.Commands.Information
 {
     public class UserCommand : BaseCommandModule
     {

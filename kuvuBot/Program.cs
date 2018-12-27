@@ -60,6 +60,7 @@ namespace kuvuBot
             Client.GuildDeleted += Client_GuildEvents;
             Client.GuildDownloadCompleted += Client_GuildEvents;
             StatisticManager.Initialize(Client);
+            LogController.Initialize(Client);
 
             Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Checking database connection...", DateTime.Now);
             try
