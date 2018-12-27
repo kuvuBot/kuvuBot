@@ -14,9 +14,15 @@ namespace kuvuBot.Data
         [JsonProperty("database")] public string Database { get; set; }
 
     }
+    public partial class Apis
+    {
+        [JsonProperty("cat")] public string Cat { get; set; }
+    }
+
     class Config
     {
         [JsonProperty("token")] public string Token { get; set; }
+        [JsonProperty("apis")] public Apis Apis { get; set; }
         [JsonProperty("defualtPrefix")] public string DefualtPrefix { get; set; }
         [JsonProperty("mySql")] public MySQLConfig MySQL { get; set; }
     }

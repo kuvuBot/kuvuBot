@@ -1,5 +1,8 @@
 {
   "token": "DISCORD TOKEN",
+  "apis": {
+    "cat": "TheCatApi.com KEY (https://thecatapi.com/signup)"
+  },
   "defualtPrefix": "DEFUALT COMMAND PREFIX",
   "mySql": {
     "ip": "MYSQL SERVER IP",
