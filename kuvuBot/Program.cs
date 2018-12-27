@@ -27,6 +27,7 @@ namespace kuvuBot
 
         public static async Task Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
 
             Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
@@ -87,10 +88,19 @@ namespace kuvuBot
             {
                 Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error\n {e.ToString()}", DateTime.Now);
             }
+
+            
             await Client.ConnectAsync();
+
 
             // prevent app from quit
             await Task.Delay(-1);
+        }
+
+        private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            Console.WriteLine("Closing kuvuBot...", Color.Black);
+            Client.UpdateStatusAsync(new DiscordActivity("Restarting bot...", ActivityType.Watching), UserStatus.Idle);
         }
 
         private static void UpdateStatus()
