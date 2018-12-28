@@ -17,6 +17,7 @@ namespace kuvuBot.Data
     public partial class Apis
     {
         [JsonProperty("cat")] public string Cat { get; set; }
+        [JsonProperty("openweatherapi")] public string OpenWeatherApi { get; set; }
     }
 
     class Config

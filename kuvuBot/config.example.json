@@ -1,7 +1,8 @@
 {
   "token": "DISCORD TOKEN",
   "apis": {
-    "cat": "TheCatApi.com KEY (https://thecatapi.com/signup)"
+    "cat": "TheCatApi.com KEY (https://thecatapi.com/signup)",
+    "openweatherapi": "openweathermap KEY (https://openweathermap.org/api)"
   },
   "defualtPrefix": "DEFUALT COMMAND PREFIX",
   "mySql": {
