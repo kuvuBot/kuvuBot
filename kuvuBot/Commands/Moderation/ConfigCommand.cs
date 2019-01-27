@@ -11,20 +11,10 @@ using DSharpPlus.Entities;
 
 namespace kuvuBot.Commands.Moderation
 {
-    [Group("config")] // let's mark this class as a command group
-    [Description("Configuration commands.")] // give it a description for help purposes
+    [Group("config")]
+    [Description("Configuration commands.")]
     public class ConfigCommand : BaseCommandModule
     {
-        //[GroupCommand]
-        //public async Task ExecuteGroupAsync(CommandContext ctx)
-        //{
-        //    if(!await ctx.HasPermission(Permissions.ManageGuild))
-        //    {
-        //        return;
-        //    }
-        //    ctx.CommandsNext.
-        //}
-
         [Command("prefix"), Description("Change bot prefix")]
         public async Task Prefix(CommandContext ctx, string prefix = null)
         {
@@ -80,7 +70,7 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (channel == null)
             {
-                await ctx.RespondAsync($"Current log channel is `{(kuvuGuild.LogChannel.ToString() ?? "none")}`");
+                await ctx.RespondAsync($"Current log channel is `{(kuvuGuild.LogChannel.HasValue ? kuvuGuild.LogChannel.ToString() : "none")}`");
             }
             else
             {
@@ -101,7 +91,7 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (channel == null)
             {
-                await ctx.RespondAsync($"Current greeting channel is `{(kuvuGuild.LogChannel.ToString() ?? "none")}`");
+                await ctx.RespondAsync($"Current greeting channel is `{(kuvuGuild.GreetingChannel.HasValue ? kuvuGuild.GreetingChannel.ToString() : "none")}`");
             }
             else
             {
@@ -122,7 +112,7 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (channel == null)
             {
-                await ctx.RespondAsync($"Current goodbye channel is `{(kuvuGuild.LogChannel.ToString() ?? "none")}`");
+                await ctx.RespondAsync($"Current goodbye channel is `{(kuvuGuild.GoodbyeChannel.HasValue ? kuvuGuild.GoodbyeChannel.ToString() : "none")}`");
             }
             else
             {
@@ -144,12 +134,12 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (message == null)
             {
-                await ctx.RespondAsync($"Current greeting message is `{(kuvuGuild.GreetingMessage.ToString() ?? "none")}`");
+                await ctx.RespondAsync($"Current greeting message is `{(kuvuGuild.GreetingMessage ?? "none")}`");
             }
             else
             {
                 kuvuGuild.GreetingMessage = message;
-                await ctx.RespondAsync($"👌, changed greeting message to `{kuvuGuild.GreetingMessage.ToString()}`");
+                await ctx.RespondAsync($"👌, changed greeting message to `{kuvuGuild.GreetingMessage}`");
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }
@@ -165,12 +155,12 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (message == null)
             {
-                await ctx.RespondAsync($"Current goodbye message is `{(kuvuGuild.GoodbyeMessage.ToString() ?? "none")}`");
+                await ctx.RespondAsync($"Current goodbye message is `{(kuvuGuild.GoodbyeMessage ?? "none")}`");
             }
             else
             {
                 kuvuGuild.GoodbyeMessage = message;
-                await ctx.RespondAsync($"👌, changed goodbye message to `{kuvuGuild.GoodbyeMessage.ToString()}`");
+                await ctx.RespondAsync($"👌, changed goodbye message to `{kuvuGuild.GoodbyeMessage}`");
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }
@@ -187,7 +177,7 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (role == null)
             {
-                await ctx.RespondAsync($"Current autorole is `{(kuvuGuild.AutoRole.ToString() ?? "none")}`");
+                await ctx.RespondAsync($"Current autorole is `{(kuvuGuild.AutoRole.HasValue ? kuvuGuild.AutoRole.ToString() : "none")}`");
             }
             else
             {
