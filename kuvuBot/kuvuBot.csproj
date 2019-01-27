@@ -67,6 +67,9 @@
     <Compile Update="Migrations\20181227195632_GreetingGoodbye.Designer.cs">
       <DependentUpon>20181227195632_GreetingGoodbye.cs</DependentUpon>
     </Compile>
+    <Compile Update="Migrations\20190127115621_Add-MuteRole.Designer.cs">
+      <DependentUpon>20190127115621_Add-MuteRole.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

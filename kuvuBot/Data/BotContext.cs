@@ -46,6 +46,8 @@ namespace kuvuBot.Data
         public string GreetingMessage { get; set; }
         public ulong? GoodbyeChannel { get; set; }
         public string GoodbyeMessage { get; set; }
+
+        public ulong? MuteRole { get; set; }
     }
 
     public class KuvuStat
@@ -67,7 +69,7 @@ namespace kuvuBot.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var mysqlconfig = Program.LoadConfig().MySQL;
-            string connectionString = $"SERVER={mysqlconfig.Ip};DATABASE={mysqlconfig.Database};UID={mysqlconfig.User};PASSWORD={mysqlconfig.Password};persistsecurityinfo=True;port={mysqlconfig.Port};SslMode=none";
+            string connectionString = $"SERVER={mysqlconfig.Ip};DATABASE={mysqlconfig.Database};UID={mysqlconfig.User};PASSWORD={mysqlconfig.Password};PORT={mysqlconfig.Port}";
 
             optionsBuilder.UseMySql(connectionString, mysqlOptions =>
             {
