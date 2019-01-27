@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kuvuBot.Data;
 
 namespace kuvuBot.Migrations
 {
     [DbContext(typeof(BotContext))]
-    partial class BotContextModelSnapshot : ModelSnapshot
+    [Migration("20190127132152_AddKuvuWarnAndKuvuUser")]
+    partial class AddKuvuWarnAndKuvuUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,11 +92,7 @@ namespace kuvuBot.Migrations
 
                     b.Property<int?>("GuildId");
 
-                    b.Property<string>("Reason");
-
                     b.Property<int?>("UserId");
-
-                    b.Property<ulong>("Warning");
 
                     b.Property<int>("Weight");
 
@@ -114,7 +112,7 @@ namespace kuvuBot.Migrations
                         .HasForeignKey("GuildId");
 
                     b.HasOne("kuvuBot.Data.KuvuUser", "User")
-                        .WithMany("Warns")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

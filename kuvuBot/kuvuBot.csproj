@@ -33,13 +33,16 @@
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00560" />
     <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00560" />
     <PackageReference Include="GraphQL.Client" Version="1.0.3" />
-    <PackageReference Include="HSNXT.DSharpPlus.CNextNotifier" Version="3.0.176" />
-    <PackageReference Include="HSNXT.DSharpPlus.CommandsNext.Extended" Version="3.0.175" />
-    <PackageReference Include="HSNXT.DSharpPlus.Extended" Version="3.0.176" />
-    <PackageReference Include="HSNXT.DSharpPlus.Extended.Emoji" Version="3.0.176" />
-    <PackageReference Include="HSNXT.DSharpPlus.ModernEmbedBuilder" Version="3.0.175" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+    <PackageReference Include="HSNXT.DSharpPlus.CNextNotifier" Version="3.0.184" />
+    <PackageReference Include="HSNXT.DSharpPlus.CommandsNext.Extended" Version="3.0.184" />
+    <PackageReference Include="HSNXT.DSharpPlus.Extended" Version="3.0.184" />
+    <PackageReference Include="HSNXT.DSharpPlus.Extended.Emoji" Version="3.0.184" />
+    <PackageReference Include="HSNXT.DSharpPlus.ModernEmbedBuilder" Version="3.0.184" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -69,6 +72,15 @@
     </Compile>
     <Compile Update="Migrations\20190127115621_Add-MuteRole.Designer.cs">
       <DependentUpon>20190127115621_Add-MuteRole.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20190127132152_AddKuvuWarnAndKuvuUser.Designer.cs">
+      <DependentUpon>20190127132152_AddKuvuWarnAndKuvuUser.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20190127132946_AddWarnReason.Designer.cs">
+      <DependentUpon>20190127132946_AddWarnReason.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20190127143851_AddWarning.Designer.cs">
+      <DependentUpon>20190127143851_AddWarning.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 
