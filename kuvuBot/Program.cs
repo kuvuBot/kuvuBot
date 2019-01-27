@@ -25,12 +25,19 @@ namespace kuvuBot
         public static Config Config { get; set; }
         public static CommandsNextExtension Commands { get; set; }
 
+        public static Config LoadConfig()
+        {
+            if (Config == null)
+                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+            return Config;
+        }
+
         public static async Task Main(string[] args)
         {
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
+            LoadConfig();
 
-            Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
             var conf = new DiscordConfiguration
             {
                 Token = Config.Token,
@@ -46,7 +53,8 @@ namespace kuvuBot
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 EnableDefaultHelp = true,
-                PrefixResolver = async (msg) => {
+                PrefixResolver = async (msg) =>
+                {
                     var kuvuGuild = await msg.Channel.Guild.GetKuvuGuild();
                     return CommandsNextUtilities.GetStringPrefixLength(msg, kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
                 },
@@ -90,7 +98,7 @@ namespace kuvuBot
                 Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error\n {e.ToString()}", DateTime.Now);
             }
 
-            
+
             await Client.ConnectAsync();
 
 

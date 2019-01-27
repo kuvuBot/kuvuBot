@@ -66,7 +66,7 @@ namespace kuvuBot.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var mysqlconfig = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")).MySQL;
+            var mysqlconfig = Program.LoadConfig().MySQL;
             string connectionString = $"SERVER={mysqlconfig.Ip};DATABASE={mysqlconfig.Database};UID={mysqlconfig.User};PASSWORD={mysqlconfig.Password};persistsecurityinfo=True;port={mysqlconfig.Port};SslMode=none";
 
             optionsBuilder.UseMySql(connectionString, mysqlOptions =>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace kuvuBot
 {
-    public class StatisticManager
+    public static class StatisticManager
     {
         private static DiscordClient Client;
         public static void Initialize(DiscordClient client)
@@ -24,7 +24,7 @@ namespace kuvuBot
             Client = client;
         }
 
-        async static Task Update(bool refreshGuilds = false, bool refreshChannels = false, bool refreshUsers = false)
+        static async Task Update(bool refreshGuilds = false, bool refreshChannels = false, bool refreshUsers = false)
         {
             int guilds = Client.Guilds.Count;
             int channels = Client.Guilds.Values.SelectMany(g => g.Channels).Count();
