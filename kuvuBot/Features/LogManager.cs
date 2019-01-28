@@ -8,21 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands;
 
-namespace kuvuBot.Commands
+namespace kuvuBot.Features
 {
-    public class LogController
+    public class LogManager : IFeatureManager
     {
-        private static DiscordClient Client;
-        public static void Initialize(DiscordClient client)
+        public void Initialize(DiscordClient client)
         {
             client.GuildMemberAdded += Client_GuildMemberAdded;
             client.GuildMemberRemoved += Client_GuildMemberRemoved;
 
             client.MessageUpdated += Client_MessageUpdated;
             client.MessageDeleted += Client_MessageDeleted;
-
-            Client = client;
         }
 
         private async static Task Client_MessageDeleted(MessageDeleteEventArgs e)

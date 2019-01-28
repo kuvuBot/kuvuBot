@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -9,10 +8,9 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using kuvuBot.Commands;
 using kuvuBot.Commands.General;
-using kuvuBot.Commands.Moderation;
 using kuvuBot.Data;
+using kuvuBot.Features;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
@@ -27,15 +25,14 @@ namespace kuvuBot
 
         public static Config LoadConfig()
         {
-            if (Config == null)
-                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
-            return Config;
+            return Config ?? (Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")));
         }
 
         public static async Task Main(string[] args)
         {
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
+
             LoadConfig();
 
             var conf = new DiscordConfiguration
@@ -56,7 +53,7 @@ namespace kuvuBot
                 PrefixResolver = async (msg) =>
                 {
                     var kuvuGuild = await msg.Channel.Guild.GetKuvuGuild();
-                    return CommandsNextUtilities.GetStringPrefixLength(msg, kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
+                    return msg.GetStringPrefixLength(kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
                 },
             });
 
@@ -67,8 +64,12 @@ namespace kuvuBot
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
             Client.GuildDownloadCompleted += Client_GuildEvents;
-            StatisticManager.Initialize(Client);
-            LogController.Initialize(Client);
+
+            IFeatureManager[] managers = {new StatisticManager(), new LogManager(), new LevelManager() };
+            foreach (var manager in managers)
+            {
+                manager.Initialize(Client);
+            }
 
             Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Checking database connection...", DateTime.Now);
             try
