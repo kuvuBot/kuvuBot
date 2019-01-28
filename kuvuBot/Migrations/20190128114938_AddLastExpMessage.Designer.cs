@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kuvuBot.Data;
 
 namespace kuvuBot.Migrations
 {
     [DbContext(typeof(BotContext))]
-    partial class BotContextModelSnapshot : ModelSnapshot
+    [Migration("20190128114938_AddLastExpMessage")]
+    partial class AddLastExpMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,7 +78,7 @@ namespace kuvuBot.Migrations
 
                     b.Property<int?>("GuildId");
 
-                    b.Property<DateTime?>("LastExpMessage");
+                    b.Property<DateTime>("LastExpMessage");
 
                     b.HasKey("Id");
 

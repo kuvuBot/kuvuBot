@@ -30,13 +30,12 @@ namespace kuvuBot.Commands.Moderation
 
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            var kuvuUser = await target.GetKuvuUser(botContext);
+            var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
 
 
             var warn = new KuvuWarn
             {
                 Date = DateTime.Now,
-                Guild = kuvuGuild,
                 User = kuvuUser,
                 Warning = ctx.User.Id,
                 Weight = weight,
@@ -45,7 +44,7 @@ namespace kuvuBot.Commands.Moderation
             botContext.Warns.Add(warn);
 
             await botContext.SaveChangesAsync();
-            await ctx.RespondAsync($"Warned {target.Mention}, with reason `{warn.Reason}` (`{warn.Weight}`)");
+            await ctx.RespondAsync($"Warned {target.Mention} for `{warn.Reason}` (`{warn.Weight}`)");
         }
 
         [Command("history"), Description("List user's warns"), Aliases("list")]
@@ -59,7 +58,8 @@ namespace kuvuBot.Commands.Moderation
             await ctx.Channel.TriggerTypingAsync();
             using (var botContext = new BotContext())
             {
-                var kuvuUser = await target.GetKuvuUser(botContext);
+                var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+                var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
 
                 if (kuvuUser.Warns.Count > 0)
                 {
@@ -70,7 +70,7 @@ namespace kuvuBot.Commands.Moderation
                         Fields = new List<DuckField>
                         {
                             ($"{kuvuUser.Warns.Count} warns, {kuvuUser.Warns.Select(w => w.Weight).Sum()} total weight",
-                                kuvuUser.Warns.Where(w => w.Guild.GuildId == ctx.Guild.Id).Select(w => $"[{w.Date.ToString(CultureInfo.CurrentCulture)}] Warning `{ctx.Client.GetUserAsync(w.Warning).Result.Name()}` Weight: `{w.Weight}` Reason: `{w.Reason}`").Join("\n"))
+                                kuvuUser.Warns.Select(w => $"[{w.Date.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL"))}] Warning `{ctx.Client.GetUserAsync(w.Warning).Result.Name()}` Weight: `{w.Weight}` Reason: `{w.Reason}`").Join("\n"))
                         },
                         Color = new DuckColor(33, 150, 243),
                         Timestamp = DuckTimestamp.Now,
@@ -96,7 +96,7 @@ namespace kuvuBot.Commands.Moderation
 
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            var kuvuUser = await target.GetKuvuUser(botContext);
+            var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
 
             botContext.RemoveRange(kuvuUser.Warns);
             await botContext.SaveChangesAsync();

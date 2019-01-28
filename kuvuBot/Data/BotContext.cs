@@ -32,18 +32,18 @@ namespace kuvuBot.Data
             }
             return kuvuGuild;
         }
-        public static async Task<KuvuUser> GetKuvuUser(this DiscordUser user, BotContext botContext = null)
+        public static async Task<KuvuUser> GetKuvuUser(this DiscordUser user, KuvuGuild guild, BotContext botContext = null)
         {
             botContext = botContext ?? new BotContext();
 
-            var kuvuUser = await botContext.Users.FirstOrDefaultAsync(g => g.DiscordUser == user.Id);
+            var kuvuUser = await botContext.Users.FirstOrDefaultAsync(g => g.DiscordUser == user.Id && g.Guild == guild);
             if (kuvuUser == null)
             {
                 kuvuUser = new KuvuUser
                 {
                     DiscordUser = user.Id,
                     Exp = 0,
-                    Level = 1
+                    Guild = guild
                 };
                 botContext.Users.Add(kuvuUser);
                 await botContext.SaveChangesAsync();
@@ -86,10 +86,41 @@ namespace kuvuBot.Data
         public int Id { get; set; }
 
         public ulong DiscordUser { get; set; }
-        public uint Level { get; set; }
-        public uint Exp { get; set; }
+        public int Exp { get; set; }
+        public DateTime? LastExpMessage { get; set; }
+
+        // GameDevAlgorithms.com 
+        public const float LevelModifier = 0.5f;
+        public int ConvertExpToLevel(int exp)
+        {
+            return (int)(LevelModifier * MathF.Sqrt(exp));
+        }
+
+        public int ConvertLevelToExp(int level)
+        {
+            // XP = (Level / 0.05) ^ 2
+            return (int)Math.Pow(level / LevelModifier, 2);
+        }
+
+        public int GetLevel()
+        {
+            return ConvertExpToLevel(Exp);
+        }
+
+        public async Task AddExp(int exp, DiscordChannel channel = null, string mention = null)
+        {
+            var currentLevel = GetLevel();
+            Exp += exp;
+            var nextLevel = GetLevel();
+            if (nextLevel > currentLevel)
+            {
+                if (channel != null && mention != null)
+                    await channel.SendMessageAsync($"🆙 | {mention} now has level {nextLevel.ToString()} 🎉");
+            }
+        }
 
         public virtual List<KuvuWarn> Warns { get; set; }
+        public virtual KuvuGuild Guild { get; set; }
     }
 
 
@@ -100,7 +131,6 @@ namespace kuvuBot.Data
         public DateTime Date { get; set; }
         public ulong Warning { get; set; }
         public virtual KuvuUser User { get; set; }
-        public virtual KuvuGuild Guild { get; set; }
         public int Weight { get; set; }
         public string Reason { get; set; }
     }

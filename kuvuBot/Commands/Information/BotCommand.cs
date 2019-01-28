@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
@@ -23,6 +24,7 @@ namespace kuvuBot.Commands.Information
                 Fields =
                 {
                     ("Name", ctx.Client.CurrentUser.Mention, inline: true),
+                    ("Version", Assembly.GetExecutingAssembly().GetName().Version.ToString(3), inline: true),
                     ("Number of guilds", guilds.ToString(), inline: true),
                     ("Number of channels", channels.ToString(), inline: true),
                     ("Github", "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),

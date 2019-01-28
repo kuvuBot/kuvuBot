@@ -5,6 +5,11 @@
     <StartupObject>kuvuBot.Program</StartupObject>
     <LangVersion>latest</LangVersion>
     <Authors>kuvuś, js6pak</Authors>
+    <Company>kuvuBot</Company>
+    <Version>0.0.3</Version>
+    <Description>Simple discord bot written in c#</Description>
+    <PackageProjectUrl>https://kuvubot.xyz/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kuvuBot/kuvuBot</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20181225175327_AddStatistics.cs" />
@@ -74,6 +79,15 @@
     </Compile>
     <Compile Update="Migrations\20190127143851_AddWarning.Designer.cs">
       <DependentUpon>20190127143851_AddWarning.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20190128110038_MakeKuvuUserPerGuild.Designer.cs">
+      <DependentUpon>20190128110038_MakeKuvuUserPerGuild.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20190128113255_RemoveLevel.Designer.cs">
+      <DependentUpon>20190128113255_RemoveLevel.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Migrations\20190128114938_AddLastExpMessage.Designer.cs">
+      <DependentUpon>20190128114938_AddLastExpMessage.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
