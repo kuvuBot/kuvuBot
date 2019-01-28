@@ -18,6 +18,7 @@ namespace kuvuBot.Features
 
         private static async Task Client_MessageCreated(MessageCreateEventArgs e)
         {
+            if(e.Author.IsBot) return;
             using (var botContext = new BotContext())
             {
                 var kuvuGuild = await e.Guild.GetKuvuGuild(botContext);

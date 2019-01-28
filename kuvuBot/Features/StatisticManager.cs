@@ -27,7 +27,7 @@ namespace kuvuBot.Features
             var stat = botContext.Statistics.FirstOrDefault(s => s.Date.Equals(DateTime.Now));
             if (stat == null)
             {
-                stat = new KuvuStat()
+                stat = new KuvuStat
                 {
                     Date = DateTime.Now,
                     Guilds = guilds,

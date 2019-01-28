@@ -34,6 +34,7 @@ namespace kuvuBot.Data
         }
         public static async Task<KuvuUser> GetKuvuUser(this DiscordUser user, KuvuGuild guild, BotContext botContext = null)
         {
+            if (user.IsBot) throw new Exception("Can't get bot kuvuUser");
             botContext = botContext ?? new BotContext();
 
             var kuvuUser = await botContext.Users.FirstOrDefaultAsync(g => g.DiscordUser == user.Id && g.Guild == guild);

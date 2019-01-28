@@ -13,34 +13,36 @@ namespace kuvuBot.Commands.Information
 {
     public class UserCommand : BaseCommandModule
     {
-        [Command("user"), Description("User informations")]
+        [Command("user"), Description("User information")]
         public async Task User(CommandContext ctx, DiscordUser target = null)
         {
             target = target ?? ctx.User;
-            using (var botContext = new BotContext())
+            var embed = new ModernEmbedBuilder
             {
-                var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-                var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
-
-                await new ModernEmbedBuilder
-                {
-                    Title = "User informations",
-                    Fields =
+                Title = "User information",
+                Fields =
                     {
                         ("Discord tag", target.Name(true), inline: true),
                         ("Id", target.Id.ToString(), inline: true),
                         ("Registration date",
                             target.CreationTimestamp.DateTime.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL")),
                             inline: false),
-                        ("Level", kuvuUser.GetLevel().ToString(), inline: true),
-                        ("EXP", $"{kuvuUser.Exp}/{kuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true),
                     },
-                    Color = new DuckColor(33, 150, 243),
-                    Timestamp = DuckTimestamp.Now,
-                    Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
-                    ThumbnailUrl = target.AvatarUrl ?? target.DefaultAvatarUrl,
-                }.Send(ctx.Message.Channel);
-            }
+                Color = new DuckColor(33, 150, 243),
+                Timestamp = DuckTimestamp.Now,
+                Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
+                ThumbnailUrl = target.AvatarUrl ?? target.DefaultAvatarUrl,
+            };
+            using (var botContext = new BotContext())
+                if (!target.IsBot)
+                {
+                    var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+                    var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
+
+                    embed.AddField("Level", kuvuUser.GetLevel().ToString(), inline: true);
+                    embed.AddField("EXP", $"{kuvuUser.Exp}/{kuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true);
+                }
+            await embed.Send(ctx.Message.Channel);
         }
     }
 }
