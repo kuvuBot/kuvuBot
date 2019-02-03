@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Text;
@@ -7,8 +8,10 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Steam.Models;
 
 namespace kuvuBot.Data
 {
@@ -136,12 +139,23 @@ namespace kuvuBot.Data
         public string Reason { get; set; }
     }
 
+    public enum CacheType { Steam }
+    public class CacheInfo
+    {
+        [Key]
+        public CacheType Type { get; set; }
+
+        public DateTime RefreshedTime { get; set; }
+    }
+
     public class BotContext : DbContext
     {
         public DbSet<KuvuGuild> Guilds { get; set; }
         public DbSet<KuvuStat> Statistics { get; set; }
         public DbSet<KuvuUser> Users { get; set; }
         public DbSet<KuvuWarn> Warns { get; set; }
+        public DbSet<SteamAppModel> SteamAppsCache { get; set; }
+        public DbSet<CacheInfo> CacheInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -149,10 +163,16 @@ namespace kuvuBot.Data
             var mysqlconfig = Program.LoadConfig().MySQL;
             string connectionString = $"SERVER={mysqlconfig.Ip};DATABASE={mysqlconfig.Database};UID={mysqlconfig.User};PASSWORD={mysqlconfig.Password};PORT={mysqlconfig.Port}";
 
-            optionsBuilder.UseMySql(connectionString, mysqlOptions =>
-            {
+            optionsBuilder.UseMySql(connectionString);
+        }
 
-            });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SteamAppModel>()
+                .HasKey(a => a.AppId);
+            modelBuilder.Entity<CacheInfo>()
+                .Property(e => e.Type)
+                .HasConversion(new EnumToStringConverter<CacheType>());
         }
     }
 }

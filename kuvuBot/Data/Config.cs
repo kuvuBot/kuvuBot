@@ -19,6 +19,7 @@ namespace kuvuBot.Data
         [JsonProperty("cat")] public string Cat { get; set; }
         [JsonProperty("openweather")] public string OpenWeatherApi { get; set; }
         [JsonProperty("scoutsdk")] public string ScoutSdk { get; set; }
+        [JsonProperty("steamwebapi")] public string SteamWebApi { get; set; }
     }
     
     public class Config

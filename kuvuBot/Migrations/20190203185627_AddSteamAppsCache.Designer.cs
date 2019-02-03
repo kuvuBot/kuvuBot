@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kuvuBot.Data;
 
 namespace kuvuBot.Migrations
 {
     [DbContext(typeof(BotContext))]
-    partial class BotContextModelSnapshot : ModelSnapshot
+    [Migration("20190203185627_AddSteamAppsCache")]
+    partial class AddSteamAppsCache
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,17 +29,6 @@ namespace kuvuBot.Migrations
                     b.HasKey("AppId");
 
                     b.ToTable("SteamAppsCache");
-                });
-
-            modelBuilder.Entity("kuvuBot.Data.CacheInfo", b =>
-                {
-                    b.Property<string>("Type");
-
-                    b.Property<DateTime>("RefreshedTime");
-
-                    b.HasKey("Type");
-
-                    b.ToTable("CacheInfos");
                 });
 
             modelBuilder.Entity("kuvuBot.Data.KuvuGuild", b =>
