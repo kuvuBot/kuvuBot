@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28407.52
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kuvuBot", "kuvuBot\kuvuBot.csproj", "{AF1E2DC7-A38D-4F83-8C96-918B2CE30579}"
 EndProject
@@ -9,10 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		C:\Users\Kuba\AppData\Roaming\NuGet\NuGet.Config = C:\Users\Kuba\AppData\Roaming\NuGet\NuGet.Config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeatherAPI", "OpenWeatherAPI\OpenWeatherAPI.csproj", "{A91DFDD0-89CE-4A32-AB24-CFB38942F401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenWeatherAPI", "OpenWeatherAPI\OpenWeatherAPI.csproj", "{A91DFDD0-89CE-4A32-AB24-CFB38942F401}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kuvuBot.Panel", "kuvuBot.Panel\kuvuBot.Panel.csproj", "{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +29,10 @@ Global
 		{A91DFDD0-89CE-4A32-AB24-CFB38942F401}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A91DFDD0-89CE-4A32-AB24-CFB38942F401}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A91DFDD0-89CE-4A32-AB24-CFB38942F401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

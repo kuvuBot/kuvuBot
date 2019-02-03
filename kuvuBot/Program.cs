@@ -8,6 +8,7 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using kuvuBot.Commands.Fun;
 using kuvuBot.Commands.General;
 using kuvuBot.Data;
 using kuvuBot.Features;
@@ -17,9 +18,9 @@ using Console = Colorful.Console;
 
 namespace kuvuBot
 {
-    class Program
+    public class Program
     {
-        static DiscordClient Client { get; set; }
+        public static DiscordClient Client { get; set; }
         public static Config Config { get; set; }
         public static CommandsNextExtension Commands { get; set; }
 
@@ -64,6 +65,7 @@ namespace kuvuBot
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
             Client.GuildDownloadCompleted += Client_GuildEvents;
+            Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
 
             IFeatureManager[] managers = {new StatisticManager(), new LogManager(), new LevelManager() };
             foreach (var manager in managers)

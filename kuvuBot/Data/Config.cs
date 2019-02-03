@@ -5,7 +5,7 @@ using System.Text;
 
 namespace kuvuBot.Data
 {
-    class MySQLConfig
+    public class MySQLConfig
     {
         [JsonProperty("ip")] public string Ip { get; set; }
         [JsonProperty("port")] public string Port { get; set; }
@@ -21,8 +21,10 @@ namespace kuvuBot.Data
         [JsonProperty("scoutsdk")] public string ScoutSdk { get; set; }
     }
     
-    class Config
+    public class Config
     {
+        [JsonProperty("clientSecret")] public string ClientSecret { get; set; }
+        [JsonProperty("clientId")] public string ClientId { get; set; }
         [JsonProperty("token")] public string Token { get; set; }
         [JsonProperty("apis")] public Apis Apis { get; set; }
         [JsonProperty("defualtPrefix")] public string DefualtPrefix { get; set; }

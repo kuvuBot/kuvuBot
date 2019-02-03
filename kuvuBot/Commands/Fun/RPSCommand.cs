@@ -26,7 +26,7 @@ namespace kuvuBot.Commands.Fun
             {
                 { "win", "🎉 You won!" },
                 { "lost", "🥊 You lost!" },
-                { "remis", "🏳 Remis!" },
+                { "draw", "🏳 Draw!" },
             };
 
             thing = thing.Replace("rock", things["rock"], StringComparison.CurrentCultureIgnoreCase);
@@ -40,7 +40,7 @@ namespace kuvuBot.Commands.Fun
                 
                 if(thing == botthing)
                 {
-                    result = results["remis"];
+                    result = results["draw"];
                 }else
                 // user beat bot
                 if ((thing == things["rock"] && botthing == things["scissors"]) 

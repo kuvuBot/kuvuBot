@@ -15,7 +15,7 @@ namespace kuvuBot.Commands.Fun
 {
     public class EmojiTextCommand : BaseCommandModule
     {
-        string[] nums = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+        public static string[] nums = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
         [Command("emojitext"), Description("Generates a emoji text"), Aliases("emtext")]
         public async Task EmojiText(CommandContext ctx, [RemainingText] string message)

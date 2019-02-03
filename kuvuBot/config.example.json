@@ -1,4 +1,6 @@
 {
+  "clientSecret": "DISCORD CLIENT SECRET",
+  "clientId": "DISCORD CLIENT ID",
   "token": "DISCORD TOKEN",
   "apis": {
     "cat": "TheCatApi.com KEY (https://thecatapi.com/signup)",

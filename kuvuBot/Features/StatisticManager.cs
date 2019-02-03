@@ -17,11 +17,11 @@ namespace kuvuBot.Features
             client.GuildDeleted += Client_GuildDeleted;
         }
 
-        static async Task Update(DiscordClient client)
+        public static int Guilds => Program.Client.Guilds.Count;
+        public static int Channels => Program.Client.Guilds.Values.SelectMany(g => g.Channels).Count();
+        public static int Users => Program.Client.Guilds.Values.SelectMany(g => g.Members).Count();
+        static async Task Update()
         {
-            int guilds = client.Guilds.Count;
-            int channels = client.Guilds.Values.SelectMany(g => g.Channels).Count();
-            int users = client.Guilds.Values.SelectMany(g => g.Members).Count();
 
             var botContext = new BotContext();
             var stat = botContext.Statistics.FirstOrDefault(s => s.Date.Equals(DateTime.Now));
@@ -30,9 +30,9 @@ namespace kuvuBot.Features
                 stat = new KuvuStat
                 {
                     Date = DateTime.Now,
-                    Guilds = guilds,
-                    Channels = channels,
-                    Users = users
+                    Guilds = Guilds,
+                    Channels = Channels,
+                    Users = Users
                 };
                 botContext.Statistics.Add(stat);
             }
@@ -42,17 +42,17 @@ namespace kuvuBot.Features
 
         private static async Task Client_GuildDownloadCompleted(GuildDownloadCompletedEventArgs e)
         {
-            await Update(e.Client);
+            await Update();
         }
 
         private static async Task Client_GuildDeleted(GuildDeleteEventArgs e)
         {
-            await Update(e.Client);
+            await Update();
         }
 
         private static async Task Client_GuildCreated(GuildCreateEventArgs e)
         {
-            await Update(e.Client);
+            await Update();
         }
     }
 }
