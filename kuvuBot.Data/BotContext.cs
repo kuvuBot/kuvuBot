@@ -66,8 +66,6 @@ namespace kuvuBot.Data
         public ulong? LogChannel { get; set; }
         public ulong? AutoRole { get; set; }
 
-        public bool ShowLevelUp { get; set; } = true;
-
         public ulong? GreetingChannel { get; set; }
         public string GreetingMessage { get; set; }
         public ulong? GoodbyeChannel { get; set; }
@@ -97,12 +95,12 @@ namespace kuvuBot.Data
 
         // GameDevAlgorithms.com 
         public const float LevelModifier = 0.5f;
-        public static int ConvertExpToLevel(int exp)
+        public int ConvertExpToLevel(int exp)
         {
             return (int)(LevelModifier * MathF.Sqrt(exp));
         }
 
-        public static int ConvertLevelToExp(int level)
+        public int ConvertLevelToExp(int level)
         {
             // XP = (Level / 0.05) ^ 2
             return (int)Math.Pow(level / LevelModifier, 2);

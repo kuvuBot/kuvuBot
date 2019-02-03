@@ -262,5 +262,6 @@ __pycache__/
 
 # Local config
 kuvuBot/config.json
+kuvuBot/config.migrate.json
 kuvuBot.Panel/config.json
 /kuvuBot.Panel

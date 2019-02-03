@@ -40,7 +40,7 @@ namespace kuvuBot.Commands.Information
                     var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
 
                     embed.AddField("Level", kuvuUser.GetLevel().ToString(), inline: true);
-                    embed.AddField("EXP", $"{kuvuUser.Exp}/{kuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true);
+                    embed.AddField("EXP", $"{kuvuUser.Exp}/{KuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true);
                 }
             await embed.Send(ctx.Message.Channel);
         }

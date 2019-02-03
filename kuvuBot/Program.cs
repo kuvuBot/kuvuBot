@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -29,8 +30,85 @@ namespace kuvuBot
             return Config ?? (Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")));
         }
 
+        public static void UpdateDatabase()
+        {
+            Console.WriteLine("Checking database connection...");
+            try
+            {
+                var botContext = new BotContext();
+                if (botContext.Database.CanConnect())
+                {
+                    Console.WriteLine("Database connection is OK");
+                    Console.WriteLine("Migrating database...");
+                    try
+                    {
+                        botContext.Database.Migrate();
+                        Console.WriteLine("Database migration SUCCESS");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Database migration error\n {e.ToString()}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Database error");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Database error\n {e.ToString()}");
+            }
+        }
+
         public static async Task Main(string[] args)
         {
+            if (args.Contains("--migrate"))
+            {
+                Console.WriteLine(new Figlet().ToAscii("Migration tool mode"), Color.Red);
+
+                if (File.Exists("config.migrate.json"))
+                    Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.migrate.json"));
+
+                UpdateDatabase();
+                var legacyDb = LegacyGuild.FromJson(File.ReadAllText(args[1]));
+                var botContext = new BotContext();
+
+                foreach (var legacyGuild in legacyDb)
+                {
+                    if (ulong.TryParse(legacyGuild.Id, out ulong id) == false)
+                        continue;
+
+                    var kuvuGuild = new KuvuGuild()
+                    {
+                        GuildId = id,
+                        Lang = legacyGuild.Lang ?? "en",
+                        Prefix = legacyGuild.Prefix ?? "kb!",
+                        ShowLevelUp = legacyGuild.Showlvl ?? true,
+                    };
+                    botContext.Guilds.Add(kuvuGuild);
+                    if (legacyGuild.Users.HasValue && legacyGuild.Users.Value.UserMap != null)
+                        foreach (var legacyUser in legacyGuild.Users.Value.UserMap)
+                        {
+                            if (ulong.TryParse(legacyUser.Key, out ulong userId) == false)
+                                continue;
+                            var kuvuUser = new KuvuUser()
+                            {
+                                DiscordUser = userId,
+                                Exp = KuvuUser.ConvertLevelToExp((int)legacyUser.Value.Lvl),
+                                Guild = kuvuGuild
+                            };
+                            botContext.Users.Add(kuvuUser);
+                        }
+                }
+
+                Console.WriteLine("Updating database...");
+                await botContext.SaveChangesAsync();
+                Console.WriteLine("Done! :3");
+                Console.ReadKey();
+                return;
+            }
+
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
 
@@ -67,39 +145,13 @@ namespace kuvuBot
             Client.GuildDownloadCompleted += Client_GuildEvents;
             Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
 
-            IFeatureManager[] managers = {new StatisticManager(), new LogManager(), new LevelManager() };
+            IFeatureManager[] managers = { new StatisticManager(), new LogManager(), new LevelManager() };
             foreach (var manager in managers)
             {
                 manager.Initialize(Client);
             }
 
-            Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Checking database connection...", DateTime.Now);
-            try
-            {
-                var botContext = new BotContext();
-                if (botContext.Database.CanConnect())
-                {
-                    Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Database connection is OK", DateTime.Now);
-                    Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Migrating database...", DateTime.Now);
-                    try
-                    {
-                        botContext.Database.Migrate();
-                        Client.DebugLogger.LogMessage(LogLevel.Info, "MySQL", "Database migration SUCCESS", DateTime.Now);
-                    }
-                    catch (Exception e)
-                    {
-                        Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database migration error\n {e.ToString()}", DateTime.Now);
-                    }
-                }
-                else
-                {
-                    Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error", DateTime.Now);
-                }
-            }
-            catch (Exception e)
-            {
-                Client.DebugLogger.LogMessage(LogLevel.Critical, "MySQL", $"Database error\n {e.ToString()}", DateTime.Now);
-            }
+            UpdateDatabase();
 
 
             await Client.ConnectAsync();

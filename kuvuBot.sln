@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenWeatherAPI", "OpenWeath
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kuvuBot.Panel", "kuvuBot.Panel\kuvuBot.Panel.csproj", "{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuvuBot.Migration", "kuvuBot.Migration\kuvuBot.Migration.csproj", "{2360CA55-FB37-41F3-89D4-08CFAEC66582}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "kuvuBot.Migration.JS", "kuvuBot.Migration\kuvuBot.Migration.JS\kuvuBot.Migration.JS.njsproj", "{C115690E-CF27-40AE-9D44-48856E37C508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2360CA55-FB37-41F3-89D4-08CFAEC66582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2360CA55-FB37-41F3-89D4-08CFAEC66582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2360CA55-FB37-41F3-89D4-08CFAEC66582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2360CA55-FB37-41F3-89D4-08CFAEC66582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C115690E-CF27-40AE-9D44-48856E37C508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C115690E-CF27-40AE-9D44-48856E37C508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C115690E-CF27-40AE-9D44-48856E37C508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C115690E-CF27-40AE-9D44-48856E37C508}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
