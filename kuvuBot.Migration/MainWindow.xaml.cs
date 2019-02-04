@@ -78,7 +78,7 @@ namespace kuvuBot.Migration
                 {
                     FileName = exePath,
                     WorkingDirectory = ".",
-                    Arguments = $"app.js {host[0]} {host[1]} {User.Text} {Password.Password} {Database.Text}",
+                    Arguments = $"app.js {host[0]} {(host.Length > 1 ? host[1] : "28015")} {User.Text} {Password.Password} {Database.Text}",
                     CreateNoWindow = false,
                     UseShellExecute = true,
                 }
