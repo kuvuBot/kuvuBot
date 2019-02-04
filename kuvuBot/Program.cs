@@ -21,13 +21,24 @@ namespace kuvuBot
 {
     public class Program
     {
+        const string ConfigFilename = "config.json";
+
         public static DiscordClient Client { get; set; }
         public static Config Config { get; set; }
         public static CommandsNextExtension Commands { get; set; }
 
         public static Config LoadConfig()
         {
-            return Config ?? (Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")));
+            if(!File.Exists(ConfigFilename))
+            {
+                Console.WriteLine($"{ConfigFilename} not found. Generating one for you, fill it");
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("config.example.json"))
+                {
+                    stream.CopyTo(File.Create(ConfigFilename));
+                    System.Environment.Exit(1);
+                }
+            }
+            return Config ?? (Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(ConfigFilename)));
         }
 
         public static void UpdateDatabase()
@@ -63,7 +74,7 @@ namespace kuvuBot
 
         public static async Task Main(string[] args)
         {
-            if (args.Contains("--migrate"))
+            if (args != null && args.Length >= 2 && args[0] == "--migrate")
             {
                 Console.WriteLine(new Figlet().ToAscii("Migration tool mode"), Color.Red);
 

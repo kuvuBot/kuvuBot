@@ -1,0 +1,75 @@
+﻿@page "{guildId:long?}"
+@using DSharpPlus
+@using kuvuBot.Data
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Http
+
+
+@model LeaderboardModel
+@{
+    ViewData["Title"] = "Leaderboard";
+    var botContext = new BotContext();
+}
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.GuildId.HasValue && kuvuBot.Program.Client.Guilds.ContainsKey(Model.GuildId.Value))
+{
+    <section id="leaderboard">
+        <div class="container">
+            <table class="table mx-auto">
+                <thead>
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Nickname</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">EXP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int rank = 1; }
+                    @foreach (var player in botContext.Users.Where(x => x.Guild.GuildId == Model.GuildId.Value).OrderByDescending(x => x.Exp).Take(10))
+                    {
+                        var duser = await kuvuBot.Program.Client.GetUserAsync(player.DiscordUser);
+                        <tr>
+                            <th scope="row">@rank</th>
+                            <th><img src="@(duser.AvatarUrl)" class="rounded-circle" height="40" width="40" /> @duser.Username#@duser.Discriminator</th>
+                            <td>@player.GetLevel()</td>
+                            <td>@player.Exp/@KuvuUser.ConvertLevelToExp(player.GetLevel() + 1)</td>
+                        </tr>
+                        rank++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+}
+else
+{
+
+    <p>Search guild by id:</p>
+    <div class="input-group mb-3">
+        <input id="guildIdInput" type="text" class="form-control" placeholder="Discord guild id" aria-label="Discord guild id" aria-describedby="button-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="window.location.assign('Leaderboard?guildId=' + $('#guildIdInput').val())">Go</button>
+        </div>
+    </div>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p>or, login with discord to see guilds are you in.</p>
+    }
+    else
+    {
+        <div class="r">
+            @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => botContext.Guilds.Any(k => k.GuildId == x.Id)))
+            {
+                <div class="card" style="width: 8rem;">
+                    <img src="@(guild.IconUrl)" class="card-img-top" alt="Guild icon">
+                    <div class="card-body">
+                        <h5 class="card-title">@guild.Name</h5>
+                        <a href="~/Leaderboard?guildId=@guild.Id" class="btn btn-primary">Go</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

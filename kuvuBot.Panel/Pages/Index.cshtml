@@ -1,0 +1,39 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<section id="stats">
+    <div class="container section-content">
+        <h1>Bot stats</h1>
+        <div class="container content info-content">
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <div class="card text-white bg-success mb-3 text-center">
+                        <div class="card-header">Guilds</div>
+                        <div class="card-body">
+                            <h3 class="card-title">@Features.StatisticManager.Guilds</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="card text-white bg-warning mb-3 text-center">
+                        <div class="card-header">Channels</div>
+                        <div class="card-body">
+                            <h3 class="card-title">@Features.StatisticManager.Channels</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="card text-white bg-primary mb-3 text-center">
+                        <div class="card-header">Users</div>
+                        <div class="card-body">
+                            <h3 class="card-title odometer">@Features.StatisticManager.Users</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

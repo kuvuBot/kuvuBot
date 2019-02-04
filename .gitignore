@@ -264,4 +264,4 @@ __pycache__/
 kuvuBot/config.json
 kuvuBot/config.migrate.json
 kuvuBot.Panel/config.json
-/kuvuBot.Panel
+kuvuBot.Migration/kuvuBot.Migration.JS/**/*.js*
