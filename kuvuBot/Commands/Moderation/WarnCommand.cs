@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace kuvuBot.Commands.Moderation
 {
-    [Group("warn"), Description("Warn commands")]
+    [Group("warn"), Description("Warn commands"), RequireUserPermissions(Permissions.ManageMessages)]
     public class WarnCommand : BaseCommandModule
     {
         [GroupCommand, Description("Warns user")]

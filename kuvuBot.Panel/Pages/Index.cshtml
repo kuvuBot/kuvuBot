@@ -1,12 +1,55 @@
 ﻿@page
+@using kuvuBot.Commands;
+@using MoreLinq;
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    var commands = kuvuBot.Program.Commands.RegisteredCommands.Values.DistinctBy(x => x.Name);
+    var categories = commands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x);
 }
 
-<section id="stats">
-    <div class="container section-content">
-        <h1>Bot stats</h1>
+<div class="container section-content">
+    <section id="commands">
+        <h1>Commands</h1>
+        <div data-aos="fade-left" class="container content">
+            <nav>
+                <div class="nav nav-tabs cmds-tabs" id="nav-tab" role="tablist">
+                    @foreach (var category in categories)
+                    {
+                        <a class="nav-item nav-link cmds-tabs not @(category == categories.ToList()[0] ? "active" : "")" id="cmd-@category-tab" data-toggle="tab" href="#cmd-@category" role="tab" aria-controls="cmd-@category" aria-selected="true">@category</a>
+                    }
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                @foreach (var category in categories)
+                {
+                    <div class="tab-pane fade @(category == categories.ToList()[0] ? "show active" : "")" id="cmd-@category" role="tabpanel" aria-labelledby="cmd-@category-tab">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var command in commands.Where(c => c.Category() == category))
+                                {
+                                    <tr>
+                                        <td>kb!@command.Name</td>
+                                        <td>@command.Description</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section id="stats">
+        <h1>Stats</h1>
         <div class="container content info-content">
             <div class="row">
                 <div class="col-md-4 col-12">
@@ -35,5 +78,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>

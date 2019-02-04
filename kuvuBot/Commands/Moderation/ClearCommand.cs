@@ -13,7 +13,7 @@ namespace kuvuBot.Commands.Moderation
 {
     public class ClearCommand : BaseCommandModule
     {
-        [Command("clear"), Description("Makes broadcast")]
+        [Command("clear"), Description("Removes specified amount of messages")]
         public async Task Clear(CommandContext ctx, [Description("Messages count")] int messagecount)
         {
             if (!await ctx.HasPermission(Permissions.ManageMessages))

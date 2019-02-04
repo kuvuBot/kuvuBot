@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - kuvuBot.Panel</title>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     </environment>
@@ -23,7 +24,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">kuvuBot.Panel</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">kuvuBot</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,16 +32,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Leaderboard">Leaderboard</a>
+                            <a class="nav-link text-dark" href="/Leaderboard">Leaderboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Panel">Panel</a>
+                            <a class="nav-link text-dark" href="/Panel">Panel</a>
                         </li>
                         <li class="nav-item ml-auto">
                             @if (User?.Identity?.IsAuthenticated ?? false)
                             {
                                 <a class="nav-link text-blurpe float-left" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                                <img src="@("https://cdn.discordapp.com/avatars/" + User.FindFirstValue(ClaimTypes.NameIdentifier) + "/" + User.FindFirstValue("avatar"))" width="40" height="40"/>
+                                <img src="@("https://cdn.discordapp.com/avatars/" + User.FindFirstValue(ClaimTypes.NameIdentifier) + "/" + User.FindFirstValue("avatar") + "?size=40")" class="rounded-circle" width="40" height="40" />
                             }
                             else
                             {
@@ -61,7 +62,20 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - kuvuBot.Panel - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                &copy; 2019 - kuvuBot Team
+                <section id="links" class="ml-auto">
+                    <a class="link-icon" href="https://github.com/kuvuBot/kuvuBot">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a class="link-icon" href="https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                    <a class="link-icon" href="https://discord.gg/KbUdeKe">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                </section>
+            </div>
         </div>
     </footer>
 

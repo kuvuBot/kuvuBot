@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using kuvuBot.Panel.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
@@ -56,8 +55,8 @@ namespace kuvuBot.Panel
                 })
                .AddDiscord(x =>
                 {
-                    x.ClientId = kuvuBot.Program.Config.ClientId;
-                    x.ClientSecret = kuvuBot.Program.Config.ClientSecret;
+                    x.ClientId = kuvuBot.Program.LoadConfig().ClientId;
+                    x.ClientSecret = kuvuBot.Program.LoadConfig().ClientSecret;
                     x.Scope.Add("guilds");
                     x.SaveTokens = true;
                     x.SignInScheme = "Cookies";

@@ -20,12 +20,8 @@
     <ProjectReference Include="..\kuvuBot\kuvuBot.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\kuvuBot\config.json" DestinationFolder="$(OutputPath)" ContinueOnError="true" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\kuvuBot\config.json" DestinationFolder="$(MSBuildProjectDirectory)" ContinueOnError="true" />
   </Target>
 </Project>
