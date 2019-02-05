@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Statistics";
     var botContext = new BotContext();
-    var stats = botContext.Statistics.DistinctBy(x => x.Date.Date);
+    var stats = botContext.Statistics.DistinctBy(x => x.Date.Date).OrderBy(x=>x.Date);
     var statsStrings = stats.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
 }
 

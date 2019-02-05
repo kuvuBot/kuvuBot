@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "kuvuBot": {
+      "commandName": "Project"
+    },
+    "migrate": {
+      "commandName": "Project",
+      "commandLineArgs": "--migrate"
+    }
+  }
+}
