@@ -86,8 +86,9 @@ namespace kuvuBot.Commands.General
             {
                 EmbedBuilder.AddField(Command != null ? "Subcommands" : category, string.Join(", ", subcommands.Where(c=>c.Category() == category).Select(x => $"`{x.Name}`")));
             }
-            //EmbedBuilder.AddField(Command != null ? "Subcommands" : "Commands", string.Join(", ", subcommands.Select(x => Formatter.InlineCode(x.Name))), false);
+            
             EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help <command>");
+            EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)");
 
             return this;
         }
