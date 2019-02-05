@@ -71,3 +71,8 @@ body {
     .link-icon > i {
         font-size: 30px;
     }
+
+.guild-icon {
+    min-width: 126px;
+    min-height: 126px;
+}

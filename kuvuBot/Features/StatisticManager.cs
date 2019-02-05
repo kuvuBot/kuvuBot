@@ -17,7 +17,7 @@ namespace kuvuBot.Features
             client.GuildCreated += Client_GuildCreated;
             client.GuildDeleted += Client_GuildDeleted;
 
-            var aTimer = new Timer(TimeSpan.FromMinutes(1).TotalMilliseconds); // elapse every 1 sec
+            var aTimer = new Timer(TimeSpan.FromMinutes(1).TotalMilliseconds); // elapse every 1 min
             int lastHour = DateTime.Now.Hour;
             aTimer.Elapsed += async (source, e) =>
             {

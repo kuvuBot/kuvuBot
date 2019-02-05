@@ -60,11 +60,11 @@ else
     }
     else
     {
-        <div class="r">
+        <div class="row mx-auto">
             @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => Model._BotContext.Guilds.Any(k => k.GuildId == x.Id)))
             {
-                <div class="card" style="width: 8rem;">
-                    <img src="@(guild.IconUrl)" class="card-img-top" alt="Guild icon">
+                <div class="card m-2 mx-auto" style="width: 8rem;">
+                    <img src="@(guild.IconUrl ?? "https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon">
                     <div class="card-body">
                         <h5 class="card-title">@guild.Name</h5>
 
