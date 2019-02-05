@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuvuBot.Migration", "kuvuBo
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "kuvuBot.Migration.JS", "kuvuBot.Migration\kuvuBot.Migration.JS\kuvuBot.Migration.JS.njsproj", "{C115690E-CF27-40AE-9D44-48856E37C508}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadoszApiModule", "BadoszApiModule\BadoszApiModule.csproj", "{B7B20EB2-797E-4F7F-A762-2F779DE7F81A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C115690E-CF27-40AE-9D44-48856E37C508}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C115690E-CF27-40AE-9D44-48856E37C508}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C115690E-CF27-40AE-9D44-48856E37C508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7B20EB2-797E-4F7F-A762-2F779DE7F81A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B20EB2-797E-4F7F-A762-2F779DE7F81A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B20EB2-797E-4F7F-A762-2F779DE7F81A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B20EB2-797E-4F7F-A762-2F779DE7F81A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
