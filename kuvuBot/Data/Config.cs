@@ -14,12 +14,12 @@ namespace kuvuBot.Data
         [JsonProperty("database")] public string Database { get; set; }
 
     }
-    public partial class Apis
+    public partial class Apis : Dictionary<string, string>
     {
-        [JsonProperty("cat")] public string Cat { get; set; }
-        [JsonProperty("openweather")] public string OpenWeatherApi { get; set; }
-        [JsonProperty("scoutsdk")] public string ScoutSdk { get; set; }
-        [JsonProperty("steamwebapi")] public string SteamWebApi { get; set; }
+        public string Cat => this["cat"];
+        public string OpenWeatherApi => this["openweather"];
+        public string ScoutSdk => this["scoutsdk"];
+        public string SteamWebApi => this["steamwebapi"];
     }
     
     public class Config

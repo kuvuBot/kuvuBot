@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using Console = Colorful.Console;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using kuvuBot.Features.Modular;
 
 namespace kuvuBot
 {
@@ -191,7 +192,7 @@ namespace kuvuBot
             Client.GuildDownloadCompleted += Client_GuildEvents;
             Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
 
-            IFeatureManager[] managers = { new StatisticManager(), new LogManager(), new LevelManager() };
+            IFeatureManager[] managers = { new StatisticManager(), new LogManager(), new LevelManager(), new ModuleManager() };
             foreach (var manager in managers)
             {
                 manager.Initialize(Client);
