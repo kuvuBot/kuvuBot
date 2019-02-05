@@ -4,6 +4,7 @@ using kuvuBot.Data;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace kuvuBot.Features
 {
@@ -15,6 +16,18 @@ namespace kuvuBot.Features
 
             client.GuildCreated += Client_GuildCreated;
             client.GuildDeleted += Client_GuildDeleted;
+
+            var aTimer = new Timer(TimeSpan.FromMinutes(1).TotalMilliseconds); // elapse every 1 sec
+            int lastHour = DateTime.Now.Hour;
+            aTimer.Elapsed += async (source, e) =>
+            {
+                if (lastHour < DateTime.Now.Hour || (lastHour == 23 && DateTime.Now.Hour == 0))
+                {
+                    lastHour = DateTime.Now.Hour;
+                    // every hour
+                    await Update();
+                }
+            };
         }
 
         public static int Guilds => Program.Client.Guilds.Count;
@@ -24,6 +37,11 @@ namespace kuvuBot.Features
         {
 
             var botContext = new BotContext();
+
+            var last = botContext.Statistics.Last();
+            if (last.Date.Date == DateTime.Now.Date && last.Guilds == Guilds && last.Channels == Channels && last.Users == Users)
+                return;
+
             var stat = botContext.Statistics.FirstOrDefault(s => s.Date.Equals(DateTime.Now));
             if (stat == null)
             {
