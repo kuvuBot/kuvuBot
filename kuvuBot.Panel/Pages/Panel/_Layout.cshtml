@@ -8,6 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
@@ -43,7 +45,7 @@
             </nav>
         </header>
         <div class="row">
-            <div class="col-md">
+            <div class="col-md-3">
                 <aside class="sidebar-main">
                     <section class="sidebar">
                         <ul class="nav flex-column lighten-4">
@@ -67,7 +69,9 @@
                 </aside>
             </div>
             <div class="col-md">
-                @RenderBody()
+                <div class="content">
+                    @RenderBody()
+                </div>
             </div>
         </div>
     </div>
