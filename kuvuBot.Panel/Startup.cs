@@ -82,6 +82,8 @@ namespace kuvuBot.Panel
                 app.UseHsts();
             }
 
+            app.UseStatusCodePages();
+
             app.UseStaticFiles();
 
             app.UseAuthentication();
