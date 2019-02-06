@@ -1,0 +1,73 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var discord = await HttpContextAccessor.HttpContext.GetRestClient();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.1/css/mdb.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/panel.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark darkblue-color">
+                <a class="navbar-brand" href="/">kuvuBot</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-top" aria-controls="navbar-top" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-top">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Manage</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@discord.CurrentUser.GetAvatarUrl(DSharpPlus.ImageFormat.WebP)" class="rounded-circle" width="25" height="25"> @discord.CurrentUser.Username</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-dropdown">
+                                <a class="dropdown-item text-danger" href="/logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="sidebar-main">
+            <section class="sidebar">
+                <ul class="nav flex-column lighten-4">
+                    <li class="nav-item nav-title">
+                        <span class="nav-link disabled text-uppercase">Guild management</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#!">Active</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#!">Disabled</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        @RenderBody()
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="js/site.js"></script>
+</body>
+</html>

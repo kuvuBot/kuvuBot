@@ -10,17 +10,27 @@ namespace kuvuBot.Panel
 {
     public static class DiscordExtensions
     {
+        static readonly Dictionary<string, DiscordRestClient> Clients = new Dictionary<string, DiscordRestClient>();
         public static async Task<DiscordRestClient> GetRestClient(this HttpContext httpContext)
         {
             var token = await httpContext.GetTokenAsync("access_token");
 
-            var client = new DiscordRestClient(new DiscordConfiguration
+            if (Clients.ContainsKey(token))
             {
-                TokenType = TokenType.Bearer,
-                Token = token,
-            });
-            await client.InitializeCacheAsync();
-            return client;
+                return Clients[token];
+            }
+            else
+            {
+                var client = new DiscordRestClient(new DiscordConfiguration
+                {
+                    TokenType = TokenType.Bearer,
+                    Token = token,
+                });
+                await client.InitializeCacheAsync();
+
+                Clients[token] = client;
+                return Clients[token];
+            }
         }
     }
 }

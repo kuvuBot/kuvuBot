@@ -6,8 +6,6 @@
     var globalUser = await Model.Client.CurrentUser.GetGlobalUser(Model._BotContext);
 }
 
-<h1>Choose guild to manage</h1>
-
 <div class="row mx-auto">
     @if (globalUser.GlobalRank.HasValue && globalUser.GlobalRank.Value >= KuvuGlobalRank.Admin)
     {
