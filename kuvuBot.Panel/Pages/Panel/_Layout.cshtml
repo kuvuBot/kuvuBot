@@ -42,28 +42,34 @@
                 </div>
             </nav>
         </header>
-        <aside class="sidebar-main">
-            <section class="sidebar">
-                <ul class="nav flex-column lighten-4">
-                    <li class="nav-item nav-title">
-                        <span class="nav-link disabled text-uppercase">Guild management</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#!">Active</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#!">Disabled</a>
-                    </li>
-                </ul>
-            </section>
-        </aside>
-        @RenderBody()
+        <div class="row">
+            <div class="col-md">
+                <aside class="sidebar-main">
+                    <section class="sidebar">
+                        <ul class="nav flex-column lighten-4">
+                            <li class="nav-item nav-title">
+                                <span class="nav-link disabled text-uppercase">Guild management</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#!">Active</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#!">Link</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#!">Link</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="#!">Disabled</a>
+                            </li>
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+            <div class="col-md">
+                @RenderBody()
+            </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
