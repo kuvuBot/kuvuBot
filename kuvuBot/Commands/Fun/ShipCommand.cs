@@ -13,7 +13,7 @@ namespace kuvuBot.Commands.Fun
     {
         [Aliases("paruj")]
         [Command("ship"), Description("Ships users")]
-        public async Task Vote(CommandContext ctx, [Description("User to ship")] DiscordUser target)
+        public async Task Ship(CommandContext ctx, [Description("User to ship")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();
             

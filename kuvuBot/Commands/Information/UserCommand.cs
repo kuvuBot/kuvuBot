@@ -38,9 +38,11 @@ namespace kuvuBot.Commands.Information
                 {
                     var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
                     var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
+                    var globalUser = await target.GetGlobalUser(botContext);
 
                     embed.AddField("Level", kuvuUser.GetLevel().ToString(), inline: true);
                     embed.AddField("EXP", $"{kuvuUser.Exp}/{KuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true);
+                    embed.AddField("Reputation", globalUser.Reputation.ToString(), inline: true);
                 }
             await embed.Send(ctx.Message.Channel);
         }

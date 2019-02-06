@@ -117,6 +117,7 @@ namespace kuvuBot.Data
         public ulong DiscordUser { get; set; }
         public KuvuGlobalRank? GlobalRank { get; set; }
         public int Reputation { get; set; } = 0;
+        public DateTime? LastGivedRep { get; set; }
         public int Money { get; set; } = 0;
 
         public virtual List<KuvuUser> KuvuUsers { get; set; }

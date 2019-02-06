@@ -38,8 +38,8 @@ namespace kuvuBot.Features
 
             var botContext = new BotContext();
 
-            var last = botContext.Statistics.Last();
-            if (last.Date.Date == DateTime.Now.Date && last.Guilds == Guilds && last.Channels == Channels && last.Users == Users)
+            var last = botContext.Statistics.LastOrDefault();
+            if (last != null && last.Date.Date == DateTime.Now.Date && last.Guilds == Guilds && last.Channels == Channels && last.Users == Users)
                 return;
 
             var stat = botContext.Statistics.FirstOrDefault(s => s.Date.Equals(DateTime.Now));
