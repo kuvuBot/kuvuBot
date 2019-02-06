@@ -1,13 +1,15 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     var discord = await HttpContextAccessor.HttpContext.GetRestClient();
+
+    var navitems = (Dictionary<string, string>) ViewData["navitems"];
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>@ViewData["Title"]</title>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
@@ -50,18 +52,12 @@
                             <li class="nav-item nav-title">
                                 <span class="nav-link disabled text-uppercase">Guild management</span>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#!">Active</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#!">Link</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#!">Link</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#!">Disabled</a>
-                            </li>
+                            @foreach (var navitem in navitems)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(navitem.Key == navitems.Keys.First() ? "active" : "")" href="@navitem.Value">@navitem.Key</a>
+                                </li>
+                            }
                         </ul>
                     </section>
                 </aside>

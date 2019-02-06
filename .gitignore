@@ -265,3 +265,4 @@ kuvuBot/config.json
 kuvuBot/config.migrate.json
 kuvuBot.Panel/config.json
 kuvuBot.Migration/kuvuBot.Migration.JS/**/*.js*
+/kuvuBot.Panel/modules
