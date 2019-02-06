@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kuvuBot.Data;
 
 namespace kuvuBot.Migrations
 {
     [DbContext(typeof(BotContext))]
-    partial class BotContextModelSnapshot : ModelSnapshot
+    [Migration("20190206131447_AddGlobalRank")]
+    partial class AddGlobalRank
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,24 +40,6 @@ namespace kuvuBot.Migrations
                     b.HasKey("Type");
 
                     b.ToTable("CacheInfos");
-                });
-
-            modelBuilder.Entity("kuvuBot.Data.GlobalUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<ulong>("DiscordUser");
-
-                    b.Property<string>("GlobalRank");
-
-                    b.Property<int>("Money");
-
-                    b.Property<int>("Reputation");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GlobalUsers");
                 });
 
             modelBuilder.Entity("kuvuBot.Data.KuvuGuild", b =>
@@ -135,15 +119,13 @@ namespace kuvuBot.Migrations
 
                     b.Property<int>("Exp");
 
-                    b.Property<int?>("GlobalUserId");
+                    b.Property<string>("GlobalRank");
 
                     b.Property<int?>("GuildId");
 
                     b.Property<DateTime?>("LastExpMessage");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GlobalUserId");
 
                     b.HasIndex("GuildId");
 
@@ -174,10 +156,6 @@ namespace kuvuBot.Migrations
 
             modelBuilder.Entity("kuvuBot.Data.KuvuUser", b =>
                 {
-                    b.HasOne("kuvuBot.Data.GlobalUser", "GlobalUser")
-                        .WithMany("KuvuUsers")
-                        .HasForeignKey("GlobalUserId");
-
                     b.HasOne("kuvuBot.Data.KuvuGuild", "Guild")
                         .WithMany()
                         .HasForeignKey("GuildId");

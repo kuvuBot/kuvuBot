@@ -19,6 +19,8 @@ using Console = Colorful.Console;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using kuvuBot.Features.Modular;
+using kuvuBot.Commands;
+using DSharpPlus.CommandsNext.Exceptions;
 
 namespace kuvuBot
 {
@@ -182,8 +184,11 @@ namespace kuvuBot
                     return msg.GetStringPrefixLength(kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
                 },
             });
-
             Commands.SetHelpFormatter<HelpFormatter>();
+
+            Commands.CommandExecuted += Commands_CommandExecuted;
+            Commands.CommandErrored += Commands_CommandErrored;
+
             Commands.RegisterCommands(Assembly.GetExecutingAssembly());
 
             Client.Ready += Client_Ready;
@@ -206,6 +211,27 @@ namespace kuvuBot
 
             // prevent app from quit
             await Task.Delay(-1);
+        }
+
+        private static async Task Commands_CommandErrored(CommandErrorEventArgs e)
+        {
+            if (e.Exception is CommandNotFoundException)
+                return;
+            if (e.Exception is ArgumentException)
+            {
+                var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
+                var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
+                await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
+                return;
+            }
+
+            Client.DebugLogger.LogMessage(LogLevel.Error, "DSP Test", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
+        }
+
+        private static Task Commands_CommandExecuted(CommandExecutionEventArgs e)
+        {
+            Client.DebugLogger.LogMessage(LogLevel.Info, "DSP Test", $"{e.Context.User.Username} executed '{e.Command.QualifiedName}' in {e.Context.Channel.Name}.", DateTime.Now);
+            return Task.CompletedTask;
         }
 
         private static void CurrentDomain_ProcessExit(object sender, EventArgs e)

@@ -44,14 +44,7 @@ namespace kuvuBot.Panel.Pages
             }
             else if (User.Identity.IsAuthenticated)
             {
-                var token = await HttpContext.GetTokenAsync("access_token");
-
-                Client = new DiscordRestClient(new DiscordConfiguration
-                {
-                    TokenType = TokenType.Bearer,
-                    Token = token,
-                });
-                await Client.InitializeCacheAsync();
+                Client = await HttpContext.GetRestClient();
             }
             return Page();
         }

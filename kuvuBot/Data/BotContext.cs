@@ -35,6 +35,28 @@ namespace kuvuBot.Data
             }
             return kuvuGuild;
         }
+
+        public static async Task<GlobalUser> GetGlobalUser(this DiscordUser user,BotContext botContext = null)
+        {
+            if (user.IsBot) throw new Exception("Can't get bot GlobalUser");
+            botContext = botContext ?? new BotContext();
+
+            var globalUser = await botContext.GlobalUsers.FirstOrDefaultAsync(g => g.DiscordUser == user.Id);
+            if (globalUser == null)
+            {
+                globalUser = new GlobalUser
+                {
+                    DiscordUser = user.Id,
+                    Money = 0,
+                    Reputation = 0,
+                    GlobalRank = null
+                };
+                botContext.GlobalUsers.Add(globalUser);
+                await botContext.SaveChangesAsync();
+            }
+            return globalUser;
+        }
+
         public static async Task<KuvuUser> GetKuvuUser(this DiscordUser user, KuvuGuild guild, BotContext botContext = null)
         {
             if (user.IsBot) throw new Exception("Can't get bot kuvuUser");
@@ -87,6 +109,19 @@ namespace kuvuBot.Data
         public int Users { get; set; }
     }
 
+    public enum KuvuGlobalRank { Helper, Moderator, Admin, Root }
+    public class GlobalUser
+    {
+        public int Id { get; set; }
+
+        public ulong DiscordUser { get; set; }
+        public KuvuGlobalRank? GlobalRank { get; set; }
+        public int Reputation { get; set; } = 0;
+        public int Money { get; set; } = 0;
+
+        public virtual List<KuvuUser> KuvuUsers { get; set; }
+    }
+
     public class KuvuUser
     {
         public int Id { get; set; }
@@ -127,6 +162,7 @@ namespace kuvuBot.Data
 
         public virtual List<KuvuWarn> Warns { get; set; }
         public virtual KuvuGuild Guild { get; set; }
+        public virtual GlobalUser GlobalUser { get; set; }
     }
 
 
@@ -139,6 +175,16 @@ namespace kuvuBot.Data
         public virtual KuvuUser User { get; set; }
         public int Weight { get; set; }
         public string Reason { get; set; }
+    }
+
+    public class KuvuLog
+    {
+        public int Id { get; set; }
+
+        public DateTime Date { get; set; }
+        public LogLevel LogLevel { get; set; }
+        public string Application { get; set; }
+        public string Message { get; set; }
     }
 
     public enum CacheType { Steam }
@@ -156,6 +202,10 @@ namespace kuvuBot.Data
         public DbSet<KuvuStat> Statistics { get; set; }
         public DbSet<KuvuUser> Users { get; set; }
         public DbSet<KuvuWarn> Warns { get; set; }
+        public DbSet<KuvuLog> Logs { get; set; }
+
+        public DbSet<GlobalUser> GlobalUsers { get; set; }
+
         public DbSet<SteamAppModel> SteamAppsCache { get; set; }
         public DbSet<CacheInfo> CacheInfos { get; set; }
 
@@ -175,6 +225,9 @@ namespace kuvuBot.Data
             modelBuilder.Entity<CacheInfo>()
                 .Property(e => e.Type)
                 .HasConversion(new EnumToStringConverter<CacheType>());
+            modelBuilder.Entity<GlobalUser>()
+                .Property(e => e.GlobalRank)
+                .HasConversion(new EnumToStringConverter<KuvuGlobalRank>());
         }
     }
 }
