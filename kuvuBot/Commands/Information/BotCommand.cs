@@ -33,7 +33,7 @@ namespace kuvuBot.Commands.Information
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-                ThumbnailUrl = ctx.Guild.IconUrl,
+                ThumbnailUrl = ctx.Client.CurrentUser.GetAvatarUrl(DSharpPlus.ImageFormat.Gif, 2048),
             }.Send(ctx.Message.Channel);
         }
     }
