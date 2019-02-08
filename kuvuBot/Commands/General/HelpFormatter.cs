@@ -93,10 +93,15 @@ namespace kuvuBot.Commands.General
             {
                 EmbedBuilder.AddField(Command != null ? "Subcommands" : category, string.Join(", ", subcommands.Where(c => c.Category() == category).Select(x => $"`{x.Name}`")));
             }
-
-            EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help <command>");
-            if (!Program.Config.CustomBot)
-                EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)");
+            if (Command == null)
+            {
+                EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help <command>");
+                if (!Program.Config.CustomBot)
+                    EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)");
+            }else
+            {
+                EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help {Command.Name} <subcommand>");
+            }
 
             return this;
         }

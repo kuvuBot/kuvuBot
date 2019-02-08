@@ -221,7 +221,7 @@ namespace kuvuBot
         {
             if (e.Exception is CommandNotFoundException)
                 return;
-            if (e.Exception is ArgumentException)
+            if (e.Exception is ArgumentException || (e.Exception is InvalidOperationException && e.Exception.Message == "No matching subcommands were found, and this group is not executable."))
             {
                 var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
                 var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
@@ -229,12 +229,12 @@ namespace kuvuBot
                 return;
             }
 
-            Client.DebugLogger.LogMessage(LogLevel.Error, "DSP Test", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
+            Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
         }
 
         private static Task Commands_CommandExecuted(CommandExecutionEventArgs e)
         {
-            Client.DebugLogger.LogMessage(LogLevel.Info, "DSP Test", $"{e.Context.User.Username} executed '{e.Command.QualifiedName}' in {e.Context.Channel.Name}.", DateTime.Now);
+            Client.DebugLogger.LogMessage(LogLevel.Debug, "kuvuLogging", $"{e.Context.User.Username} executed '{e.Command.QualifiedName}' in {e.Context.Channel.Name}.", DateTime.Now);
             return Task.CompletedTask;
         }
 
