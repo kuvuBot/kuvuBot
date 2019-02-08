@@ -30,7 +30,7 @@ namespace kuvuBot.Commands.General
             EmbedBuilder = new ModernEmbedBuilder()
             {
                 Title = "Command list",
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 //Footer = $"kuvuBot - {Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}",
@@ -79,16 +79,24 @@ namespace kuvuBot.Commands.General
             {
                 EmbedBuilder.AddField("Prefix", kuvuGuild.Prefix, true);
                 EmbedBuilder.AddField("Language", $"{kuvuGuild.Lang.ToUpper()} {DiscordEmoji.FromUnicode(Ctx.Client, Ctx.Lang("lang.flag").Result)}", true);
-                EmbedBuilder.AddField("kuvuBot", $"{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}", true);
+                if (Program.Config.CustomBot)
+                {
+                    EmbedBuilder.AddField("powered by", $"kuvuBot ({Assembly.GetExecutingAssembly().GetName().Version.ToString(3)})", true);
+                }
+                else
+                {
+                    EmbedBuilder.AddField("kuvuBot", $"{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}", true);
+                }
             }
-            var categories = subcommands.Where(x=>x.Name != "help").Select(c => c.Category()).DistinctBy(x=>x);
-            foreach(var category in categories)
+            var categories = subcommands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x);
+            foreach (var category in categories)
             {
-                EmbedBuilder.AddField(Command != null ? "Subcommands" : category, string.Join(", ", subcommands.Where(c=>c.Category() == category).Select(x => $"`{x.Name}`")));
+                EmbedBuilder.AddField(Command != null ? "Subcommands" : category, string.Join(", ", subcommands.Where(c => c.Category() == category).Select(x => $"`{x.Name}`")));
             }
-            
+
             EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help <command>");
-            EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)");
+            if (!Program.Config.CustomBot)
+                EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)");
 
             return this;
         }

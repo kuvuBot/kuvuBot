@@ -30,7 +30,7 @@ namespace kuvuBot.Commands.Information
                     ("Github", "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),
                     ("Website", "[Check out](https://kuvuBot.xyz)", inline: true),
                 },
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Guild.IconUrl,

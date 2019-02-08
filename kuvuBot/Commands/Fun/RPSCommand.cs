@@ -60,7 +60,7 @@ namespace kuvuBot.Commands.Fun
                 var message = await new ModernEmbedBuilder
                 {
                     Title = "Rock, paper and scissors",
-                    Color = new DuckColor(33, 150, 243),
+                    Color = Program.Config.EmbedColor,
                     Timestamp = DuckTimestamp.Now,
                     Fields =
                     {

@@ -53,7 +53,7 @@ namespace kuvuBot.Features
             {
                 Url = url,
                 Title = $"{emoji} | {message}",
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Fields = fields
             };

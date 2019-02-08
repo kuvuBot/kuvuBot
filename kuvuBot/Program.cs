@@ -242,7 +242,9 @@ namespace kuvuBot
 
         private static void UpdateStatus()
         {
-            Client.UpdateStatusAsync(new DiscordActivity($"{Config.DefualtPrefix}help | {Client.Guilds.Count} guilds", ActivityType.ListeningTo), UserStatus.Online);
+            Client.UpdateStatusAsync(new DiscordActivity(Config.Status.Activity
+                .Replace("%defualtprefix%", Config.DefualtPrefix)
+                .Replace("%guilds%", Client.Guilds.Count.ToString()), Config.Status.ActivityType), Config.Status.UserStatus);
         }
 
         private static Task Client_GuildEvents(EventArgs e)

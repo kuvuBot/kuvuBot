@@ -76,7 +76,7 @@ namespace kuvuBot.Commands.Information
                         (game.Developers.Length > 1 ? "Programiści" : "Programista", string.Join(", ", game.Developers), inline: true),
                         (game.Publishers.Length > 1 ? "Wydawcy" : "Wydawca", string.Join(", ", game.Publishers), inline: true),
                     },
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 ImageUrl = game.HeaderImage,

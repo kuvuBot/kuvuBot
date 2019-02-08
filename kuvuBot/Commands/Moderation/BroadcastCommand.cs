@@ -30,7 +30,7 @@ namespace kuvuBot.Commands.Moderation
             {
                 Title = await ctx.Lang("broadcast.broadcast"),
                 Description = content,
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
             }.Send(ctx.Message.Channel);

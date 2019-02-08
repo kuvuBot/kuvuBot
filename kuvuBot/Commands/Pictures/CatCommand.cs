@@ -127,7 +127,7 @@ namespace kuvuBot.Commands.Pictures
             var embed = new ModernEmbedBuilder
             {
                 Title = breed == "list" ? "Cat breed list" : breed == null ? "Random cat" : $"Random {breed.ToLower()} cat",
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
             };

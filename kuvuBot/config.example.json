@@ -15,5 +15,10 @@
     "user": "MYSQL USER",
     "password": "MYSQL USER PASSWORD",
     "database": "MYSQL DATABASE"
+  },
+  "status": {
+    "activityType": 2,
+    "userStatus": 1,
+    "activity": "%defualtprefix%help | %guilds% guilds"
   }
 }

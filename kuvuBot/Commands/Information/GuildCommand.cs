@@ -27,7 +27,7 @@ namespace kuvuBot.Commands.Information
                         ("Region", ctx.Guild.VoiceRegion.Name, inline: true),
                         ("Verification level", ctx.Guild.VerificationLevel.ToString(), inline: true),
                     },
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Guild.IconUrl,

@@ -28,7 +28,7 @@ namespace kuvuBot.Commands.Information
                             target.CreationTimestamp.DateTime.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL")),
                             inline: false),
                     },
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
                 ThumbnailUrl = target.AvatarUrl ?? target.DefaultAvatarUrl,

@@ -30,7 +30,7 @@ namespace kuvuBot.Commands.Pictures
             var embed = new ModernEmbedBuilder
             {
                 Title = breed == null ? "Random dog" : $"Random {breed} dog",
-                Color = new DuckColor(33, 150, 243),
+                Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
             };

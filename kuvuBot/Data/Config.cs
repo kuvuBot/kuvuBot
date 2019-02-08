@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using DSharpPlus.Entities;
+using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +23,19 @@ namespace kuvuBot.Data
         public string ScoutSdk => this["scoutsdk"];
         public string SteamWebApi => this["steamwebapi"];
     }
-    
+
+    public partial class Status
+    {
+        [JsonProperty("activityType")]
+        public ActivityType ActivityType { get; set; }
+
+        [JsonProperty("userStatus")]
+        public UserStatus UserStatus { get; set; }
+
+        [JsonProperty("activity")]
+        public string Activity { get; set; }
+    }
+
     public class Config
     {
         [JsonProperty("clientSecret")] public string ClientSecret { get; set; }
@@ -30,5 +44,9 @@ namespace kuvuBot.Data
         [JsonProperty("apis")] public Apis Apis { get; set; }
         [JsonProperty("defualtPrefix")] public string DefualtPrefix { get; set; }
         [JsonProperty("mySql")] public MySQLConfig MySQL { get; set; }
+        [JsonProperty("status")] public Status Status { get; set; }
+        [JsonProperty("customBot")] public bool CustomBot { get; set; }
+        [JsonProperty("embedColor")] internal string embedColor { get; set; }
+        [JsonIgnore] public DuckColor EmbedColor => new DuckColor(byte.Parse(embedColor.Split(',')[0]), byte.Parse(embedColor.Split(',')[1]), byte.Parse(embedColor.Split(',')[2]));
     }
 }
