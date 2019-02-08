@@ -50,6 +50,12 @@ namespace kuvuBot.Features.Modular
 
                     Program.Commands.RegisterCommands(moduleAssembly);
 
+                    foreach(var featureManagerType in moduleAssembly.GetTypes().Where(t=>t.GetInterfaces().Any(x => x == typeof(IFeatureManager))))
+                    {
+                        ((IFeatureManager)Activator.CreateInstance(featureManagerType)).Initialize(client);
+                    }
+
+
                     client.DebugLogger.LogMessage(LogLevel.Info, name, $"Loaded ({moduleAttribute.Version})", DateTime.Now);
                 }
                 catch (Exception e)
