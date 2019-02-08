@@ -71,7 +71,12 @@
     text-align: center;
     height: 100%;
     transition: 0.3s;
-    margin-right: 25px;
+    margin-right: 30px;
+}
+@media screen and (max-width: 980px) {
+    .navbar-brand {
+        margin-right: 0px;
+    }
 }
 
 .navbar-brand:hover {
