@@ -54,9 +54,6 @@
     <PackageReference Include="HSNXT.DSharpPlus.CommandsNext.Extended" Version="3.0.176" />-->
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenWeatherAPI\OpenWeatherAPI.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Migrations\20181225140800_AddGuilds.Designer.cs">
       <DependentUpon>20181225140800_AddGuilds.cs</DependentUpon>
     </Compile>
