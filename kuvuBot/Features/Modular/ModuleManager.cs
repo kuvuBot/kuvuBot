@@ -16,7 +16,7 @@ namespace kuvuBot.Features.Modular
             if (!Directory.Exists("modules"))
                 Directory.CreateDirectory("modules");
 
-            foreach (var modulePath in Directory.GetFiles("modules").Where(x=>x.EndsWith(".dll")))
+            foreach (var modulePath in Directory.GetFiles("modules").Where(x => x.EndsWith(".dll")))
             {
                 var moduleAssembly = Assembly.LoadFrom(modulePath);
                 var name = moduleAssembly.GetName().Name;
@@ -29,10 +29,24 @@ namespace kuvuBot.Features.Modular
                         return;
                     }
 
-                    var module = Activator.CreateInstance(moduleType, new object[] { Program.Config });
-                    var moduleAttribute = module.GetType().GetCustomAttribute<ModuleAttribute>();
+                    var constructor = moduleType.GetConstructors().FirstOrDefault();
+                    object[] parameters = new object[constructor.GetParameters().Length];
 
-                    
+                    foreach (var parameter in constructor.GetParameters())
+                    {
+                        if (parameter.ParameterType == typeof(Data.Config))
+                        {
+                            parameters[parameters.Length - 1] = Program.Config;
+                        }
+                        else
+                        {
+                            parameters[parameters.Length - 1] = null;
+                        }
+                    }
+
+
+                    var module = constructor.Invoke(parameters);
+                    var moduleAttribute = module.GetType().GetCustomAttribute<ModuleAttribute>();
 
                     Program.Commands.RegisterCommands(moduleAssembly);
 
