@@ -206,7 +206,7 @@ namespace kuvuBot
             UpdateDatabase();
 
 
-            await Client.ConnectAsync();
+            await Client.ConnectAsync(GetDiscordActivity(), Config.Status.UserStatus);
 
 
             // prevent app from quit
@@ -242,9 +242,14 @@ namespace kuvuBot
 
         private static void UpdateStatus()
         {
-            Client.UpdateStatusAsync(new DiscordActivity(Config.Status.Activity
+            Client.UpdateStatusAsync(GetDiscordActivity(), Config.Status.UserStatus);
+        }
+
+        public static DiscordActivity GetDiscordActivity()
+        {
+            return new DiscordActivity(Config.Status.Activity
                 .Replace("%defualtprefix%", Config.DefualtPrefix)
-                .Replace("%guilds%", Client.Guilds.Count.ToString()), Config.Status.ActivityType), Config.Status.UserStatus);
+                .Replace("%guilds%", Client.Guilds.Count.ToString()), Config.Status.ActivityType);
         }
 
         private static Task Client_GuildEvents(EventArgs e)
@@ -256,7 +261,6 @@ namespace kuvuBot
         private static Task Client_Ready(ReadyEventArgs e)
         {
             Client.DebugLogger.LogMessage(LogLevel.Info, "KuvuBot", "Discord client ready!", DateTime.Now);
-            UpdateStatus();
             return Task.CompletedTask;
         }
     }

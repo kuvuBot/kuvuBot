@@ -20,5 +20,7 @@
     "activityType": 2,
     "userStatus": 1,
     "activity": "%defualtprefix%help | %guilds% guilds"
-  }
+  },
+  "customBot": false,
+  "embedColor": "33,150,243"
 }
