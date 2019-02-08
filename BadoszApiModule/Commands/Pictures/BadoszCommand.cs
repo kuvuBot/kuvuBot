@@ -25,13 +25,14 @@ namespace BadoszApiModule.Commands.Pictures
     public class BlurpleCommand : BaseCommandModule
     {
         [Command("blurple"), Description("Blurple marked user")]
-        public async Task Blurple(CommandContext ctx, DiscordMember target)
+        public async Task Blurple(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             var avatar = target.GetAvatarUrl(DSharpPlus.ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.blurple, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.blurple, $"Blurpled {target.DisplayName}", query);
         }
     }
 
@@ -43,17 +44,27 @@ namespace BadoszApiModule.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.changemymind, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.changemymind, "Change my mind", query);
         }
     }
 
     public class CuddleCommand : BaseCommandModule
     {
-        [Command("cuddle"), Description("Send a cuddle gif")]
-        public async Task Cuddle(CommandContext ctx)
+        [Command("cuddle"), Description("Cuddles someone")]
+        public async Task Cuddle(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.cuddle);
+            target = target ?? ctx.Member;
+            string title;
+            if(ctx.Member == target)
+            {
+                title = $"Take a cuddle, {ctx.Member.DisplayName}!";
+            }else
+            {
+                title = $"{ctx.Member.DisplayName} cuddled {target.DisplayName}";
+            }
+
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.cuddle, title);
         }
     }
 
@@ -65,7 +76,7 @@ namespace BadoszApiModule.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.excuseme, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.excuseme, "-_-", query);
         }
     }
 
@@ -82,22 +93,24 @@ namespace BadoszApiModule.Commands.Pictures
     public class InvertCommand : BaseCommandModule
     {
         [Command("invert"), Description("Inverts user avatar colors")]
-        public async Task Invert(CommandContext ctx, DiscordMember target)
+        public async Task Invert(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             var avatar = target.GetAvatarUrl(DSharpPlus.ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.invert, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.invert, $"Inverted {target.DisplayName}", query);
         }
     }
 
     public class KissCommand : BaseCommandModule
     {
-        [Command("kiss"), Description("Send kiss gif")]
-        public async Task Kiss(CommandContext ctx)
+        [Command("kiss"), Description("Kiss someone")]
+        public async Task Kiss(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.kiss);
         }
     }
@@ -110,33 +123,35 @@ namespace BadoszApiModule.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.note, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.note, parameters: query);
         }
     }
 
     public class OranglyCommand : BaseCommandModule
     {
-        [Command("orangly"), Description("*Gives a note*")]
-        public async Task Orangly(CommandContext ctx, DiscordMember target)
+        [Command("orangly"), Description("Orangly someone")]
+        public async Task Orangly(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             var avatar = target.GetAvatarUrl(DSharpPlus.ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.orangly, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.orangly, $"Orangled {target.DisplayName}", query);
         }
     }
 
     public class TriggeredCommand : BaseCommandModule
     {
         [Command("triggered"), Description("Triggers specified user")]
-        public async Task Triggered(CommandContext ctx, DiscordMember target)
+        public async Task Triggered(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             var avatar = target.GetAvatarUrl(DSharpPlus.ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.triggered, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.triggered, $"Triggered {target.DisplayName}", query);
         }
     }
 
@@ -148,7 +163,7 @@ namespace BadoszApiModule.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.trump, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.trump, parameters: query);
         }
     }
 
@@ -163,33 +178,35 @@ namespace BadoszApiModule.Commands.Pictures
             query["text"] = text;
             query["url"] = avatar;
             query["username"] = target.DisplayName;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.tweet, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.tweet, parameters: query);
         }
     }
 
     public class WantedCommand : BaseCommandModule
     {
         [Command("wanted"), Description("Wants someone")]
-        public async Task Wanted(CommandContext ctx, DiscordMember target)
+        public async Task Wanted(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             var avatar = target.GetAvatarUrl(DSharpPlus.ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.wanted, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.wanted, $"{target.DisplayName} is wanted!", query);
         }
     }
 
     public class WastedCommand : BaseCommandModule
     {
         [Command("wasted"), Description("Kills somebody *in gta of course*")]
-        public async Task Orangly(CommandContext ctx, DiscordMember target)
+        public async Task Wasted(CommandContext ctx, DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
+            target = target ?? ctx.Member;
             var avatar = target.GetAvatarUrl(DSharpPlus.ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.wasted, query);
+            await BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.wasted, $"{target.DisplayName} died", query);
         }
     }
 }

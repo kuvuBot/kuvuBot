@@ -48,14 +48,14 @@ namespace BadoszApiModule
         }
 
         //HttpUtility.ParseQueryString(string.Empty)
-        public static async Task<DiscordMessage> SendEmbedImage(CommandContext ctx, BadoszEndpoint endpoint, NameValueCollection parameters = null)
+        public static async Task<DiscordMessage> SendEmbedImage(CommandContext ctx, BadoszEndpoint endpoint, string title = null, NameValueCollection parameters = null)
         {
             using (var stream = await GetStream(endpoint, parameters))
             {
                 string str = Enum.GetName(typeof(BadoszEndpoint), endpoint);
                 var embed = new ModernEmbedBuilder
                 {
-                    Title = char.ToUpper(str[0]) + str.Substring(1),
+                    Title = title ?? char.ToUpper(str[0]) + str.Substring(1),
                     Color = new DuckColor(33, 150, 243),
                     Timestamp = DuckTimestamp.Now,
                     Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
