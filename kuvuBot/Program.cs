@@ -238,10 +238,11 @@ namespace kuvuBot
             return Task.CompletedTask;
         }
 
-        private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        private static async void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             Console.WriteLine("Closing kuvuBot...", Color.Black);
-            Client.UpdateStatusAsync(new DiscordActivity("Restarting bot...", ActivityType.Watching), UserStatus.Idle);
+            await Client.UpdateStatusAsync(new DiscordActivity("Restarting bot...", ActivityType.Watching), UserStatus.Idle);
+            Environment.Exit(-1);
         }
 
         private static void UpdateStatus()
