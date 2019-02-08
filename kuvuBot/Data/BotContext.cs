@@ -88,7 +88,7 @@ namespace kuvuBot.Data
         public ulong? LogChannel { get; set; }
         public ulong? AutoRole { get; set; }
 
-        public bool ShowLevelUp { get; set; } = true;
+        public bool ShowLevelUp { get; set; } = false;
 
         public ulong? GreetingChannel { get; set; }
         public string GreetingMessage { get; set; }
