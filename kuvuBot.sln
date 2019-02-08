@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kuvuBot.Panel", "kuvuBot.Panel\kuvuBot.Panel.csproj", "{2D0FA3EA-211E-4E1C-B906-2E9B555D1A94}"
@@ -18,12 +19,6 @@ EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "kuvuBot.Migration.JS", "kuvuBot.Migration\kuvuBot.Migration.JS\kuvuBot.Migration.JS.njsproj", "{C115690E-CF27-40AE-9D44-48856E37C508}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BadoszApiModule", "BadoszApiModule\BadoszApiModule.csproj", "{B7B20EB2-797E-4F7F-A762-2F779DE7F81A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nugets", "nugets", "{C4F0EDF8-A638-4B7F-BDA0-B5B355FDFA4E}"
-	ProjectSection(SolutionItems) = preProject
-		nugets\DSharpPlus.4.0.0-nightly-00566.nupkg = nugets\DSharpPlus.4.0.0-nightly-00566.nupkg
-		nugets\DSharpPlus.4.0.0-nightly-00566.symbols.nupkg = nugets\DSharpPlus.4.0.0-nightly-00566.symbols.nupkg
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,9 +49,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C4F0EDF8-A638-4B7F-BDA0-B5B355FDFA4E} = {C09894E3-B0F3-41BB-BABD-5A6D86385E06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2335000-E3F3-4A37-B23E-90A385493260}
