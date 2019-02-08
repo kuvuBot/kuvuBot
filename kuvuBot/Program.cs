@@ -82,6 +82,7 @@ namespace kuvuBot
             if (args != null && args.Length >= 1 && args[0] == "--migrate")
             {
                 Console.WriteLine(new Figlet().ToAscii("Migration tool mode"), Color.Red);
+                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.migrate.json"));
 
                 var botContext = new BotContext();
                 UpdateDatabase();
@@ -111,11 +112,10 @@ namespace kuvuBot
                     Console.WriteLine("config.migrate.json not found - skipping");
                 }
 
-                if (File.Exists("config.migrate.json") && args.Length >= 2)
+                if (File.Exists("config.migrate.json") && File.Exists("out.json"))
                 {
-                    Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.migrate.json"));
 
-                    var legacyDb = LegacyGuild.FromJson(File.ReadAllText(args[1]));
+                    var legacyDb = LegacyGuild.FromJson(File.ReadAllText("out.json"));
 
                     foreach (var legacyGuild in legacyDb)
                     {

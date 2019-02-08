@@ -28,6 +28,7 @@ namespace kuvuBot.Features
                     await Update();
                 }
             };
+            aTimer.Start();
         }
 
         public static int Guilds => Program.Client.Guilds.Count;
