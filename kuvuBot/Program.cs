@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using kuvuBot.Features.Modular;
 using kuvuBot.Commands;
 using DSharpPlus.CommandsNext.Exceptions;
+using kuvuBot.Commands.Converters;
 
 namespace kuvuBot
 {
@@ -185,6 +186,9 @@ namespace kuvuBot
                 },
             });
             Commands.SetHelpFormatter<HelpFormatter>();
+            Commands.RegisterConverter(new FriendlyDiscordUserConverter());
+            Commands.RegisterConverter(new FriendlyDiscordMemberConverter());
+            Commands.RegisterConverter(new FriendlyDiscordChannelConverter());
 
             Commands.CommandExecuted += Commands_CommandExecuted;
             Commands.CommandErrored += Commands_CommandErrored;
