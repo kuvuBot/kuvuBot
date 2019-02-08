@@ -35,11 +35,20 @@ namespace kuvuBot.Panel.Pages
                     Guild = _BotContext.Guilds.OrderBy(x => Commands.CommandUtils.LevenshteinDistance(kuvuBot.Program.Client.GetGuildAsync(x.GuildId).Result.Name, search)).FirstOrDefault();
                 }
                 if (Guild != null)
-                    DGuild = await kuvuBot.Program.Client.GetGuildAsync(Guild.GuildId);
+                    try
+                    {
+                        DGuild = await kuvuBot.Program.Client.GetGuildAsync(Guild.GuildId);
+                    }
+                    catch (Exception)
+                    {
+                        TempData["message"] = $"Error: {search} cannot be retrieved, ensure bot is still there";
+                        return Redirect("~/Leaderboard");
+                        throw;
+                    }
                 if (Guild == null || DGuild == null)
                 {
                     TempData["message"] = $"Error: {search} was not found";
-                    return RedirectToPage("Leaderboard", new { });
+                    return Redirect("~/Leaderboard");
                 }
             }
             else if (User.Identity.IsAuthenticated)
