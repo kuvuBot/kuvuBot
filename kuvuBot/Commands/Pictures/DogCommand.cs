@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -24,6 +25,7 @@ namespace kuvuBot.Commands.Pictures
 
         [Aliases("pies")]
         [Command("dog"), Description("Display random dog image")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Dog(CommandContext ctx, [Description("Dog breed, if null random")] string breed = null)
         {
             await ctx.Channel.TriggerTypingAsync();

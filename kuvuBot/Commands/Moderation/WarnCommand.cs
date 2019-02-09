@@ -19,13 +19,9 @@ namespace kuvuBot.Commands.Moderation
     public class WarnCommand : BaseCommandModule
     {
         [GroupCommand, Description("Warns user")]
+        [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Warn(CommandContext ctx, [Description("User to warn")] DiscordUser target, [Description("Weight of warn")] int weight, [Description("Reason")] [RemainingText] string reason)
         {
-            if (!await ctx.HasPermission(Permissions.ManageMessages))
-            {
-                return;
-            }
-
             await ctx.Channel.TriggerTypingAsync();
 
             var botContext = new BotContext();
@@ -48,13 +44,9 @@ namespace kuvuBot.Commands.Moderation
         }
 
         [Command("history"), Description("List user's warns"), Aliases("list")]
+        [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task WarnHistory(CommandContext ctx, [Description("User to list his warns")] DiscordUser target)
         {
-            if (!await ctx.HasPermission(Permissions.ManageMessages))
-            {
-                return;
-            }
-
             await ctx.Channel.TriggerTypingAsync();
             using (var botContext = new BotContext())
             {
@@ -85,13 +77,9 @@ namespace kuvuBot.Commands.Moderation
         }
 
         [Command("clear"), Description("Clears user's warns")]
+        [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Clear(CommandContext ctx, [Description("User to clear his warns")] DiscordUser target)
         {
-            if (!await ctx.HasPermission(Permissions.ManageMessages))
-            {
-                return;
-            }
-
             await ctx.Channel.TriggerTypingAsync();
 
             var botContext = new BotContext();

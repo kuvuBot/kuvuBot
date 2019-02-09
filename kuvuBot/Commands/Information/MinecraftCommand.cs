@@ -7,6 +7,7 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Globalization;
 using Newtonsoft.Json;
 using System.Net;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Information
 {
@@ -124,6 +125,7 @@ namespace kuvuBot.Commands.Information
         }
 
         [Command("minecraft"), Description("Minecraft server status")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Minecraft(CommandContext ctx, string ip, ulong? port = null)
         {
             using (var wc = new WebClient())

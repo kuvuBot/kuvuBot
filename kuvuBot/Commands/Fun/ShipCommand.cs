@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using SkiaSharp;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -13,6 +14,7 @@ namespace kuvuBot.Commands.Fun
     {
         [Aliases("paruj")]
         [Command("ship"), Description("Ships users")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Ship(CommandContext ctx, [Description("User to ship")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();

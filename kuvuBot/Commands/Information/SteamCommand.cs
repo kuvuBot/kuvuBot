@@ -10,6 +10,7 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using SteamWebAPI2.Interfaces;
 using System.Text.RegularExpressions;
 using kuvuBot.Data;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Information
 {
@@ -22,6 +23,7 @@ namespace kuvuBot.Commands.Information
         }
 
         [Command("steam"), Description("Informations about steam game")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Steam(CommandContext ctx, [RemainingText] string gameName)
         {
             await ctx.Channel.TriggerTypingAsync();

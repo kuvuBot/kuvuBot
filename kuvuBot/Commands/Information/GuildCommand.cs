@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Information
 {
@@ -13,6 +14,7 @@ namespace kuvuBot.Commands.Information
     {
         [Aliases("serwer", "server", "gildia")]
         [Command("guild"), Description("Guild informations")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Guild(CommandContext ctx)
         {
             await new ModernEmbedBuilder

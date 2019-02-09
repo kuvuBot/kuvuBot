@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
@@ -14,6 +15,7 @@ namespace kuvuBot.Commands.Information
     public class LeaderboardCommand : BaseCommandModule
     {
         [Command("leaderboard"), Description("Shows level leaderboard"), Aliases("ranking", "toplvl", "toplevel")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Leaderboard(CommandContext ctx)
         {
             var botContext = new BotContext();

@@ -1,4 +1,5 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using Newtonsoft.Json;
@@ -121,6 +122,7 @@ namespace kuvuBot.Commands.Pictures
 
         [Aliases("kot")]
         [Command("cat"), Description("Display random cat image")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Cat(CommandContext ctx, [Description("Cat breed, if null random,\"list\" for breed list"), RemainingText] string breed = null)
         {
             await ctx.Channel.TriggerTypingAsync();

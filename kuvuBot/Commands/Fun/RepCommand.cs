@@ -7,12 +7,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using SkiaSharp;
 using kuvuBot.Data;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
     public class RepCommand : BaseCommandModule
     {
         [Command("rep"), Description("Gives user reputation point")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Rep(CommandContext ctx, DiscordUser target)
         {            
             await ctx.Channel.TriggerTypingAsync();

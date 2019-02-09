@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -14,14 +15,9 @@ namespace kuvuBot.Commands.Moderation
     {
         [Aliases("g³osuj", "glosuj")]
         [Command("vote"), Description("Makes voting")]
-        public async Task Vote(CommandContext ctx, [RemainingText,Description("Question")] string question = null)
-        {
-            
-            if (question == null)
-            {
-                await ctx.RespondAsync(await ctx.Lang("global.badArguments"));
-                return;
-            }
+        [ RequireBotPermissions(Permissions.SendMessages)]
+        public async Task Vote(CommandContext ctx, [RemainingText,Description("Question")] string question)
+        {            
             var message = await new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("vote.voting"),

@@ -11,6 +11,7 @@ using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Reflection;
 using kuvuBot.Features.Modular;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -20,12 +21,9 @@ namespace kuvuBot.Commands.Moderation
     public class GlobalCommandGroup : BaseCommandModule
     {
         [Command("modules"), Description("Print active modules")]
+        [RequireGlobalRank(KuvuGlobalRank.Root)]
         public async Task Modules(CommandContext ctx)
         {
-            if (!await ctx.HasGlobalPermission(KuvuGlobalRank.Root))
-            {
-                return;
-            }
             var embed = new ModernEmbedBuilder
             {
                 Title = "Modules",

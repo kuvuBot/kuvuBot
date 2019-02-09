@@ -8,12 +8,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Information
 {
     public class BotCommand : BaseCommandModule
     {
         [Command("bot"), Description("Bot informations")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Bot(CommandContext ctx)
         {
             int guilds = ctx.Client.Guilds.Count;

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -13,6 +14,7 @@ namespace kuvuBot.Commands.Fun
     {
         [Aliases("kostka")]
         [Command("dice"), Description("Roll dice")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Dice(CommandContext ctx, int? walls = null)
         {
             walls = walls ?? 4;

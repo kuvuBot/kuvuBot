@@ -11,12 +11,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Pictures
 {
     public class HugCommand : BaseCommandModule
     {
         [Command("hug"), Description("Hugs the marked user")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Hug(CommandContext ctx, [Description("User to hug")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -13,6 +14,7 @@ namespace kuvuBot.Commands.Fun
     {
         [Aliases("kpn")]
         [Command("rps"), Description("Play rock, paper and scissors with bot")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task RPS(CommandContext ctx, string thing)
         {
             var things = new Dictionary<string, string>()

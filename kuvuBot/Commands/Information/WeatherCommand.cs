@@ -10,12 +10,14 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using OpenWeatherAPI;
 using System.Text.RegularExpressions;
 using System.Net;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Information
 {
     public class WeatherCommand : BaseCommandModule
     {
         [Command("weather"), Description("Weather informations")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Weather(CommandContext ctx, [RemainingText] string city)
         {
             try

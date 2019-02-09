@@ -9,12 +9,14 @@ using Colorful;
 using DSharpPlus.Entities;
 using System.Reflection;
 using System.IO;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
     public class FigletCommand : BaseCommandModule
     {
         [Command("figlet"), Description("Generates a figlet")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Figlet(CommandContext ctx, [RemainingText] string message)
         {
             // load figlet font from assembly (.exe)

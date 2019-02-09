@@ -15,20 +15,12 @@ namespace kuvuBot.Commands.Moderation
     {
         [Aliases("ogłoszenie", "ogloszenie", "bc")]
         [Command("broadcast"), Description("Makes broadcast")]
-        public async Task Broadcast(CommandContext ctx, [RemainingText, Description("Broadcast")] string content = null)
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
+        public async Task Broadcast(CommandContext ctx, [RemainingText, Description("Broadcast")] string content)
         {
-            if (content == null)
-            {
-                await ctx.RespondAsync(await ctx.Lang("global.badArguments"));
-                return;
-            }
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var message = await new ModernEmbedBuilder
             {
-                Title = await ctx.Lang("broadcast.broadcast"),
+                Title = "Broadcast",
                 Description = content,
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,

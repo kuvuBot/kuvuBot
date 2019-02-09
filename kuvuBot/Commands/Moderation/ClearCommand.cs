@@ -14,12 +14,9 @@ namespace kuvuBot.Commands.Moderation
     public class ClearCommand : BaseCommandModule
     {
         [Command("clear"), Description("Removes specified amount of messages")]
+        [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Clear(CommandContext ctx, [Description("Messages count")] int messagecount)
         {
-            if (!await ctx.HasPermission(Permissions.ManageMessages))
-            {
-                return;
-            }
             await ctx.Channel.DeleteMessagesAsync(await ctx.Channel.GetMessagesAsync(messagecount + 1), $"cleared by {ctx.Message.Id}");
             await ctx.Channel.SendAutoRemoveMessageAsync(TimeSpan.FromSeconds(1.5), $"👌, deleted {messagecount} messages");
         }

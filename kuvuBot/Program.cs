@@ -22,6 +22,9 @@ using kuvuBot.Features.Modular;
 using kuvuBot.Commands;
 using DSharpPlus.CommandsNext.Exceptions;
 using kuvuBot.Commands.Converters;
+using DSharpPlus.CommandsNext.Attributes;
+using kuvuBot.Lang;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot
 {
@@ -227,6 +230,21 @@ namespace kuvuBot
                 var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
                 await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
                 return;
+            }
+            if (e.Exception is ChecksFailedException ex)
+            {
+                if ((ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute)))
+                {
+                    var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
+                    var dm = await e.Context.Member.CreateDmChannelAsync();
+                    await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
+                    return;
+                }
+                if ((ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute)))
+                {
+                    await e.Context.RespondAsync(await e.Context.Lang("global.nopermission"));
+                    return;
+                }
             }
 
             Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);

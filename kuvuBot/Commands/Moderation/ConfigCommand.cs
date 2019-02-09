@@ -16,12 +16,9 @@ namespace kuvuBot.Commands.Moderation
     public class ConfigCommandGroup : BaseCommandModule
     {
         [Command("prefix"), Description("Change bot prefix")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Prefix(CommandContext ctx, string prefix = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (prefix == null)
@@ -38,12 +35,9 @@ namespace kuvuBot.Commands.Moderation
         }
 
         [Command("lang"), Description("Change bot language"), Aliases("language", "język", "jezyk")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Lang(CommandContext ctx, string lang = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (lang == null)
@@ -60,12 +54,9 @@ namespace kuvuBot.Commands.Moderation
         }
 
         [Command("logchannel"), Description("Change log channel")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task LogChannel(CommandContext ctx, DiscordChannel channel = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (channel == null)
@@ -81,12 +72,9 @@ namespace kuvuBot.Commands.Moderation
             }
         }
         [Command("greetingchannel"), Description("Change greeting channel")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task GreetingChannel(CommandContext ctx, DiscordChannel channel = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (channel == null)
@@ -102,12 +90,9 @@ namespace kuvuBot.Commands.Moderation
             }
         }
         [Command("goodbyechannel"), Description("Change goodbye channel")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task GoodbyeChannel(CommandContext ctx, DiscordChannel channel = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (channel == null)
@@ -124,12 +109,9 @@ namespace kuvuBot.Commands.Moderation
         }
 
         [Command("greeting"), Description("Change greeting message")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Greeting(CommandContext ctx, [RemainingText] string message = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (message == null)
@@ -145,12 +127,9 @@ namespace kuvuBot.Commands.Moderation
             }
         }
         [Command("goodbye"), Description("Change goodbye message")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Goodbye(CommandContext ctx, [RemainingText] string message = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (message == null)
@@ -167,12 +146,9 @@ namespace kuvuBot.Commands.Moderation
         }
 
         [Command("autorole"), Description("Change autorole")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Autorole(CommandContext ctx, DiscordRole role = null)
         {
-            if (!await ctx.HasPermission(Permissions.ManageGuild))
-            {
-                return;
-            }
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             if (role == null)
@@ -193,13 +169,9 @@ namespace kuvuBot.Commands.Moderation
         public class MuteCommandGroup : BaseCommandModule
         {
             [Command("setup"), Description("Setup mute role")]
+            [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
             public async Task Setup(CommandContext ctx, DiscordRole role = null)
             {
-                if (!await ctx.HasPermission(Permissions.ManageGuild))
-                {
-                    return;
-                }
-
                 var botContext = new BotContext();
                 var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
                 if (role == null)
@@ -224,7 +196,7 @@ namespace kuvuBot.Commands.Moderation
                     }
 
                 }
-                if(role != null)
+                if (role != null)
                 {
                     kuvuGuild.MuteRole = role.Id;
                     await ctx.RespondAsync($"👌, changed mute role to `{kuvuGuild.MuteRole.ToString()}`");

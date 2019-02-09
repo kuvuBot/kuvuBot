@@ -9,6 +9,7 @@ using Colorful;
 using DSharpPlus.Entities;
 using System.Reflection;
 using System.IO;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -156,6 +157,7 @@ namespace kuvuBot.Commands.Fun
         static readonly DiscordEmoji RevealEmoji = DiscordEmoji.FromUnicode("💡");
 
         [Command("minesweeper"), Aliases("saper"), Description("Start a minesweeper game")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task MineSweeper(CommandContext ctx, string difficultyName = "normal")
         {
             var parsed = Enum.TryParse<Difficulty>(difficultyName, out var result);

@@ -10,6 +10,7 @@ using DSharpPlus.Entities;
 using System.Reflection;
 using System.IO;
 using System.Text.RegularExpressions;
+using DSharpPlus;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -17,6 +18,7 @@ namespace kuvuBot.Commands.Fun
     {
         public static string[] nums = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
+        [RequireBotPermissions(Permissions.SendMessages)]
         [Command("emojitext"), Description("Generates a emoji text"), Aliases("emtext")]
         public async Task EmojiText(CommandContext ctx, [RemainingText] string message)
         {

@@ -54,29 +54,6 @@ namespace kuvuBot.Commands
             return v1[target.Length];
         }
 
-        public async static Task<bool> HasPermission(this CommandContext ctx, Permissions permission, bool respond = true)
-        {
-            if (ctx.Member.PermissionsIn(ctx.Channel).HasPermission(permission))
-            {
-                return true;
-            }
-            if (respond)
-                await ctx.RespondAsync(await ctx.Lang("global.nopermission"));
-            return false;
-        }
-
-        public async static Task<bool> HasGlobalPermission(this CommandContext ctx, KuvuGlobalRank rank, bool respond = true)
-        {
-            var globalUser = await ctx.User.GetGlobalUser();
-            if (globalUser.GlobalRank.HasValue && globalUser.GlobalRank.Value >= rank)
-            {
-                return true;
-            }
-            if (respond)
-                await ctx.RespondAsync(await ctx.Lang("global.nopermission"));
-            return false;
-        }
-
         public static string Category(this Command command)
         {
             return command.Module.ModuleType.Namespace.Split('.').Last();
