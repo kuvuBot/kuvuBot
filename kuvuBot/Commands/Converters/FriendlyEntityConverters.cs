@@ -17,7 +17,7 @@ namespace kuvuBot.Commands.Converters
             {
                 return Task.FromResult<Optional<DiscordUser>>(ctx.User);
             }
-            return null;
+            return new DiscordUserConverter().ConvertAsync(value, ctx);
         }
     }
 
@@ -29,7 +29,7 @@ namespace kuvuBot.Commands.Converters
             {
                 return Task.FromResult<Optional<DiscordMember>>(ctx.Member);
             }
-            return null;
+            return new DiscordMemberConverter().ConvertAsync(value, ctx);
         }
     }
 
@@ -41,7 +41,7 @@ namespace kuvuBot.Commands.Converters
             {
                 return Task.FromResult<Optional<DiscordChannel>>(ctx.Channel);
             }
-            return null;
+            return new DiscordChannelConverter().ConvertAsync(value, ctx);
         }
     }
 }
