@@ -11,6 +11,7 @@ namespace kuvuBot.Features.Modular
 {
     public class ModuleManager : IFeatureManager
     {
+        public static List<ModuleAttribute> Modules = new List<ModuleAttribute>();
         public void Initialize(DiscordClient client)
         {
             if (!Directory.Exists("modules"))
@@ -57,6 +58,7 @@ namespace kuvuBot.Features.Modular
 
 
                     client.DebugLogger.LogMessage(LogLevel.Info, name, $"Loaded ({moduleAttribute.Version})", DateTime.Now);
+                    Modules.Add(moduleAttribute);
                 }
                 catch (Exception e)
                 {

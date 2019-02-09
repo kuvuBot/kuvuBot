@@ -88,7 +88,7 @@ namespace kuvuBot.Commands.General
                     EmbedBuilder.AddField("kuvuBot", $"{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}", true);
                 }
             }
-            var categories = subcommands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x);
+            var categories = subcommands.Where(x => x.Name != "help" && x.IsHidden == false).Select(c => c.Category()).DistinctBy(x => x);
             foreach (var category in categories)
             {
                 EmbedBuilder.AddField(Command != null ? "Subcommands" : category, string.Join(", ", subcommands.Where(c => c.Category() == category).Select(x => $"`{x.Name}`")));

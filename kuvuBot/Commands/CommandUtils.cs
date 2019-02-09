@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using kuvuBot.Lang;
 using System.Linq;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Data;
 
 namespace kuvuBot.Commands
 {
@@ -56,6 +57,18 @@ namespace kuvuBot.Commands
         public async static Task<bool> HasPermission(this CommandContext ctx, Permissions permission, bool respond = true)
         {
             if (ctx.Member.PermissionsIn(ctx.Channel).HasPermission(permission))
+            {
+                return true;
+            }
+            if (respond)
+                await ctx.RespondAsync(await ctx.Lang("global.nopermission"));
+            return false;
+        }
+
+        public async static Task<bool> HasGlobalPermission(this CommandContext ctx, KuvuGlobalRank rank, bool respond = true)
+        {
+            var globalUser = await ctx.User.GetGlobalUser();
+            if (globalUser.GlobalRank.HasValue && globalUser.GlobalRank.Value >= rank)
             {
                 return true;
             }
