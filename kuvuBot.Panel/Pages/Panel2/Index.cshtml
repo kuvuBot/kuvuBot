@@ -1,0 +1,32 @@
+﻿@page
+@model kuvuBot.Panel.Pages.Panel.IndexModel
+@using DSharpPlus;
+@{
+    ViewData["Title"] = "Guild list";
+    var globalUser = await Model.Client.CurrentUser.GetGlobalUser(Model._BotContext);
+
+    ViewData["navitems"] = new Dictionary<string, string>() { { "Guild list", "/Panel" } };
+}
+
+    @if (globalUser.GlobalRank.HasValue && globalUser.GlobalRank.Value >= KuvuGlobalRank.Admin)
+    {
+        <div class="card m-2 mx-auto" style="width: 8rem;">
+            <img src="https://cdn.discordapp.com/avatars/205965341241638912/3204e2fb0d34ff885d7ce2ed1c9982bc.png?size=2048" class="card-img-top guild-icon" alt="Guild icon">
+            <div class="card-body">
+                <h5 class="card-title">Waw! Hi global admin!</h5>
+                <a href="/Panel/Manage/global"class="btn btn-primary">Manage</a>
+            </div>
+        </div>
+    }
+    @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => x.Permissions.HasValue && x.Permissions.Value.HasPermission(Permissions.ManageGuild) && Model._BotContext.Guilds.Any(k => k.GuildId == x.Id)))
+    {
+        <div class="col-md-3">
+            <div class="card text-center">
+                <a href="/Panel/Manage/@guild.Id"><img src="@(guild.IconUrl ?? "https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon"></a>
+                <div class="card-body">
+                    <h5 class="card-title">@guild.Name</h5>
+                    <div class="card-text"><a href="/Panel/Manage/@guild.Id"class="btn btn-primary">Manage</a></div>
+                </div>
+            </div>
+        </div>     
+    }

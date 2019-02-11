@@ -1,0 +1,83 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var discord = await HttpContextAccessor.HttpContext.GetRestClient();
+
+    var navitems = (Dictionary<string, string>) ViewData["navitems"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.1/css/mdb.min.css">
+
+    <link rel="stylesheet" href="~/css/panel.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark darkblue-color">
+            <a class="navbar-brand" href="/">kuvuBot</a>
+
+            <button id="sidebar-toggle" class="navbar-toggler mr-auto" type="button" aria-expanded="false" aria-label="Toggle sidebar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-top" aria-controls="navbar-top" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar-top">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Manage</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@discord.CurrentUser.GetAvatarUrl(DSharpPlus.ImageFormat.WebP)" class="rounded-circle" width="25" height="25"> @discord.CurrentUser.Username</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-dropdown">
+                            <a class="dropdown-item text-danger" href="/logout">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="main container-fluid toggled">
+        <div class="row">
+            <div class="col-md-1">
+                <aside class="sidebar-main">
+                    <section class="sidebar">
+                        <ul class="nav flex-column lighten-4">
+                            <li class="nav-item nav-title">
+                                <span class="nav-link disabled text-uppercase">Guild management</span>
+                            </li>
+                            @foreach (var navitem in navitems)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(navitem.Key == navitems.Keys.First() ? "active" : "")" href="@navitem.Value">@navitem.Key</a>
+                                </li>
+                            }
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+            <div class="col-md-11">
+                <div class="content row">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>
