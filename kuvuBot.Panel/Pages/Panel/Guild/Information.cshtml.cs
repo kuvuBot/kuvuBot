@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,13 +6,14 @@ using DSharpPlus;
 using DSharpPlus.Entities;
 using kuvuBot.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace kuvuBot.Panel.Pages.Panel
+namespace kuvuBot.Panel.Pages.Panel.Guild
 {
     [Authorize]
-    public class ManageModel : PageModel
+    public class IndexModel : PageModel
     {
         public DiscordRestClient Client;
         public BotContext _BotContext;
@@ -25,6 +26,8 @@ namespace kuvuBot.Panel.Pages.Panel
 
         public async Task<ActionResult> OnGetAsync(string id)
         {
+            if(!Request.GetDisplayUrl().EndsWith("/"))
+                Response.Redirect(Request.GetEncodedUrl() + "/");
             _BotContext = new BotContext();
             Client = await HttpContext.GetRestClient();
 
@@ -44,7 +47,8 @@ namespace kuvuBot.Panel.Pages.Panel
                 if (globalUser.GlobalRank >= KuvuGlobalRank.Admin)
                 {
                     Global = true;
-                }else
+                }
+                else
                 {
                     return Unauthorized();
                 }
