@@ -2,7 +2,11 @@
 @model IndexModel
 @using DSharpPlus
 @{
-    ViewData["ActivePage"] = PanelNavigation.Dashboard;
+    ViewData["ActivePage"] = PanelNavigation.Guilds;
+    ViewData["Sidebar"] = new[]
+    {
+        new SidebarItem("My guilds", "fa fa-server", "/Panel", PanelNavigation.Guilds),
+    };
 }
 <!-- Main content -->
 <div class="content">
@@ -12,7 +16,7 @@
             {
                 <div class="col-md-3">
                     <div class="card text-center">
-                        <a href="/Panel/Manage/@guild.Id"><img src="@(guild.IconUrl ?? " https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon"></a>
+                        <a href="/Panel/Manage/@guild.Id"><img src="@(guild.IconUrl != null ? guild.IconUrl + "?size=512" : "https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon"></a>
                         <div class="card-body">
                             <h5 class="card-title">@guild.Name</h5>
                             <div class="card-text"><a href="/Panel/Guild/@guild.Id" class="btn btn-primary">Manage</a></div>

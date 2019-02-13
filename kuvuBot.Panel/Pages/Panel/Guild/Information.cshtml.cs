@@ -14,11 +14,14 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
 {
     public class IndexModel : BaseGuildModel
     {
-        public override Task<ActionResult> OnGetAsync(string id)
+        public override async Task<ActionResult> OnGetAsync(string id)
         {
             if (!Request.GetDisplayUrl().EndsWith("/"))
                 Response.Redirect(Request.GetEncodedUrl() + "/");
-            return base.OnGetAsync(id);
+
+            var result = await base.OnGetAsync(id);
+            ViewData["ActivePage"] = GuildManage;
+            return result;
         }
     }
 }

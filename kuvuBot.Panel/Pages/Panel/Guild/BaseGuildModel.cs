@@ -24,6 +24,8 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
         public KuvuGuild Guild;
         public DiscordGuild DGuild;
 
+        public NavigationItem GuildManage;
+
         public virtual async Task<ActionResult> OnGetAsync(string id)
         {
             _BotContext = new BotContext();
@@ -52,6 +54,13 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
                 }
             }
 
+            GuildManage = PanelNavigation.GuildManage(id, DGuild.Name);
+            ViewData["Sidebar"] = new[]
+            {
+                new SidebarItem("Information", "fas fa-info-circle", "./", GuildManage),
+                new SidebarItem("Members", "fas fa-users", page: PanelNavigation.Members(GuildManage)),
+                new SidebarItem("Configuration", "fas fa-cogs", page: PanelNavigation.Configuration(GuildManage)),
+            };
             return Page();
         }
     }

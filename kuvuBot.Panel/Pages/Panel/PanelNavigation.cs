@@ -23,30 +23,26 @@ namespace kuvuBot.Panel.Pages.Panel
     {
         public NavigationItem Parent { get; set; }
         public string Text { get; set; }
+        public string Href { get; set; }
 
-        public NavigationItem(string text, NavigationItem parent = null)
+        public NavigationItem(string text, NavigationItem parent = null, string href = null)
         {
             Text = text;
             Parent = parent;
+            Href = parent?.Href + href ?? text;
         }
     }
 
     public static class PanelNavigation
     {
         // Panel/
-        public static NavigationItem Dashboard => new NavigationItem("Dashboard");
+        public static NavigationItem Guilds => new NavigationItem("My guilds");
 
         // Panel/Guild/{id}/
-        public static NavigationItem GuildManage => new NavigationItem("Guild");
-        public static NavigationItem Members => new NavigationItem("Members");
-        public static NavigationItem Configuration => new NavigationItem("Configuration");
-        
-        public static SidebarItem[] GuildSidebar => new[]
-        {
-            new SidebarItem("Information", "fa fa-server", "./", GuildManage),
-            new SidebarItem("Members", "fas fa-users"),
-            new SidebarItem("Configuration", "fas fa-cogs"),
-        };
+        public static NavigationItem GuildManage(string id, string text) => new NavigationItem(text, href: $"/Panel/Guild/{id}/");
+        public static NavigationItem Members(NavigationItem guildManage) => new NavigationItem("Members", guildManage);
+        public static NavigationItem Configuration(NavigationItem guildManage) => new NavigationItem("Configuration", guildManage);
+       
 
         public static NavigationItem ActivePage(ViewContext viewContext)
         {
