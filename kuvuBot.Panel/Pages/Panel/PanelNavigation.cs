@@ -33,12 +33,17 @@ namespace kuvuBot.Panel.Pages.Panel
 
     public static class PanelNavigation
     {
+        // Panel/
         public static NavigationItem Dashboard => new NavigationItem("Dashboard");
-        public static NavigationItem GuildManage => new NavigationItem("Guild");
 
+        // Panel/Guild/{id}/
+        public static NavigationItem GuildManage => new NavigationItem("Guild");
+        public static NavigationItem Members => new NavigationItem("Members");
+        public static NavigationItem Configuration => new NavigationItem("Configuration");
+        
         public static SidebarItem[] GuildSidebar => new[]
         {
-            new SidebarItem("Information", "fa fa-server", "", GuildManage),
+            new SidebarItem("Information", "fa fa-server", "./", GuildManage),
             new SidebarItem("Members", "fas fa-users"),
             new SidebarItem("Configuration", "fas fa-cogs"),
         };
