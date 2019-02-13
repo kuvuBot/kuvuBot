@@ -4,6 +4,7 @@
 @{
     var discord = await HttpContext.GetRestClient();
     var botContext = new BotContext();
+    var globalUser = await discord.CurrentUser.GetGlobalUser(botContext);
     var connections = await discord.GetUsersConnectionsAsync();
 }
 
@@ -30,6 +31,15 @@
                         <p class="text-muted text-center">#@discord.CurrentUser.Discriminator</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Global rank</b> <a class="float-right">@(globalUser.GlobalRank.HasValue ? Enum.GetName(typeof(KuvuGlobalRank), globalUser.GlobalRank) : "User")</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Reputation</b> <a class="float-right">@globalUser.Reputation</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Money</b> <a class="float-right">@globalUser.Money$</a>
+                            </li>
                             <li class="list-group-item">
                                 <b>Guilds</b> <a class="float-right">@discord.Guilds.Count</a>
                             </li>
