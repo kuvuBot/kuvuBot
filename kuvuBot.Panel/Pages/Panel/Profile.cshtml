@@ -20,7 +20,13 @@
                             <img class="profile-user-img img-fluid img-circle" src="@discord.CurrentUser.AvatarUrl" alt="User profile picture">
                         </div>
 
-                        <h3 class="profile-username text-center">@discord.CurrentUser.Username</h3>
+                        <h3 class="profile-username text-center">
+                            @discord.CurrentUser.Username
+                            @if (discord.CurrentUser.PremiumType.HasValue && discord.CurrentUser.PremiumType.Value > 0)
+                            {
+                                <img src="/panel/img/nitro.svg" height="20" width="30"/>
+                            }
+                        </h3>
                         <p class="text-muted text-center">#@discord.CurrentUser.Discriminator</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
