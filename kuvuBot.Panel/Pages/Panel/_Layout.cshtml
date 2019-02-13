@@ -1,8 +1,22 @@
 ﻿@using kuvuBot.Commands
 @using System.Linq;
+@using kuvuBot.Panel.Pages.Panel;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     var discord = await HttpContextAccessor.HttpContext.GetRestClient();
+    if ((await discord.CurrentUser.GetGlobalUser()).GlobalRank >= KuvuGlobalRank.Admin)
+    {
+        ViewData.AddToSidebar(new[]
+        {
+            new SidebarHeader("Global Management"),
+            new SidebarItem("Manage kuvuBot", "fas fa-robot", "/Panel/Global"),
+        });
+    }
+    ViewData.AddToSidebar(new[]
+    {
+        new SidebarHeader("Management"),
+        new SidebarItem("My guilds", "fa fa-server", "/Panel", PanelNavigation.Guilds),
+    });
 }
 
 <!DOCTYPE html>
@@ -68,7 +82,7 @@
                         <img src="@(discord.CurrentUser.AvatarUrl ?? discord.CurrentUser.DefaultAvatarUrl)" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">@discord.CurrentUser.Name()</a>
+                        <a href="/Panel/Profile" class="d-block">@discord.CurrentUser.Name()</a>
                     </div>
                 </div>
 
@@ -77,16 +91,23 @@
                 {
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            @foreach (var sidebarItem in ViewData["Sidebar"] as SidebarItem[])
+                            @foreach (var sidebarItem in (List<SidebarItem>)ViewData["Sidebar"])
                             {
-                                <li class="nav-item">
-                                    <a href="@sidebarItem.Href" class="nav-link @PanelNavigation.PageNavClass(ViewContext, sidebarItem.Page.Text)">
-                                        <i class="nav-icon @sidebarItem.Icon"></i>
-                                        <p>
-                                            @sidebarItem.Text
-                                        </p>
-                                    </a>
-                                </li>
+                                if (sidebarItem is SidebarHeader)
+                                {
+                                    <li class="nav-header">@sidebarItem.Text</li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a href="@sidebarItem.Href" class="nav-link @PanelNavigation.PageNavClass(ViewContext, sidebarItem.Page.Text)">
+                                            <i class="nav-icon @sidebarItem.Icon"></i>
+                                            <p>
+                                                @sidebarItem.Text
+                                            </p>
+                                        </a>
+                                    </li>
+                                }
                             }
                         </ul>
                     </nav>
@@ -125,7 +146,7 @@
                                             <a href="@item.Href">@item.Text</a>
                                         }
                                         else
-                                        {                                            
+                                        {
                                             @item.Text
                                         }
                                     </li>

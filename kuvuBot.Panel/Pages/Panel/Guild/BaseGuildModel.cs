@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace kuvuBot.Panel.Pages.Panel.Guild
 {
@@ -55,12 +56,13 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
             }
 
             GuildManage = PanelNavigation.GuildManage(id, DGuild.Name);
-            ViewData["Sidebar"] = new[]
+            ViewData.AddToSidebar(new[]
             {
+                new SidebarHeader("Guild management"),
                 new SidebarItem("Information", "fas fa-info-circle", "./", GuildManage),
                 new SidebarItem("Members", "fas fa-users", page: PanelNavigation.Members(GuildManage)),
                 new SidebarItem("Configuration", "fas fa-cogs", page: PanelNavigation.Configuration(GuildManage)),
-            };
+            });
             return Page();
         }
     }

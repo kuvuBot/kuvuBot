@@ -1,8 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace kuvuBot.Panel.Pages.Panel
 {
+    public static class NavigationExtensions
+    {
+        public static void AddToSidebar(this ViewDataDictionary viewData, SidebarItem[] sidebarItems)
+        {
+            var sidebar = ((List<SidebarItem>)viewData["Sidebar"]) ?? new List<SidebarItem>();
+            sidebar.InsertRange(0, sidebarItems);
+            viewData["Sidebar"] = sidebar;
+        }
+    }
+
     public class SidebarItem
     {
         public string Text { get; set; }
@@ -16,6 +29,18 @@ namespace kuvuBot.Panel.Pages.Panel
             Icon = icon;
             Href = href ?? text;
             Page = page ?? new NavigationItem(Href);
+        }
+
+        protected SidebarItem()
+        {
+        }
+    }
+
+    public class SidebarHeader : SidebarItem
+    {
+        public SidebarHeader(string text)
+        {
+            Text = text;
         }
     }
 
