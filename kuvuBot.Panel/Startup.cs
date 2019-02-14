@@ -40,7 +40,7 @@ namespace kuvuBot.Panel
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            _ = kuvuBot.Program.Main(null);
+            kuvuBot.Program.Main(null).ConfigureAwait(false);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAuthentication(options =>

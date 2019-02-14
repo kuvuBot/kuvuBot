@@ -10,6 +10,7 @@ using DSharpPlus;
 using Newtonsoft.Json;
 using System.Net;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -27,7 +28,7 @@ namespace kuvuBot.Commands.Fun
             public Dictionary<string, double> Rates { get; set; }
         }
 
-        [Command("currency"), Description("Check currency rate relative to other")]
+        [Command("currency"), LocalizedDescription("currency.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Currency(CommandContext ctx, string baseCur, string targetCur, double amount = 1)
         {
@@ -36,7 +37,7 @@ namespace kuvuBot.Commands.Fun
                 try
                 {
                     var response = JsonConvert.DeserializeObject<ExchangeRateApiResponse>(wc.DownloadString($"https://api.exchangeratesapi.io/latest?base={baseCur.ToUpper()}"));
-                    if(response.Rates.ContainsKey(targetCur.ToUpper()) || targetCur.ToUpper() == "ALL")
+                    if(response.Rates.ContainsKey(targetCur.ToUpper()) || string.Equals(targetCur, "ALL", StringComparison.OrdinalIgnoreCase))
                     {
                         var embed = new ModernEmbedBuilder
                         {
@@ -46,15 +47,11 @@ namespace kuvuBot.Commands.Fun
                             Timestamp = DateTimeOffset.Parse(response.Date),
                             Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
                         };
-                        
-                        if(targetCur.ToUpper() == "ALL")
-                        {
-                            embed.AddField($"{amount} {response.Base}", string.Join("\n", response.Rates.Select(x=>$"**{x.Value}** {x.Key}")));
-                        }
-                        else
-                        {
-                            embed.AddField($"{amount} {response.Base}", $"**{response.Rates[targetCur.ToUpper()]}** {targetCur.ToUpper()}");
-                        }
+
+                        embed.AddField($"{amount} {response.Base}",
+                            string.Equals(targetCur, "ALL", StringComparison.OrdinalIgnoreCase)
+                                ? string.Join("\n", response.Rates.Select(x => $"**{x.Value}** {x.Key}"))
+                                : $"**{response.Rates[targetCur.ToUpper()]}** {targetCur.ToUpper()}");
 
                         await embed.Send(ctx.Message.Channel);
                     }else

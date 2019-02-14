@@ -1,7 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-.navbar-brand {
+﻿.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
@@ -75,4 +72,8 @@ body {
 .guild-icon {
     min-width: 126px;
     min-height: 126px;
+}
+
+.language-select {
+    max-width: 100px;
 }

@@ -11,7 +11,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js" integrity="sha256-MZo5XY1Ah7Z2Aui4/alkfeiq3CopMdV/bbkc/Sh41+s=" crossorigin="anonymous"></script>
     <script src="https://www.chartjs.org/samples/latest/utils.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-    
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
@@ -86,10 +85,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <environment include="Development">
-        <script src="~/css/site.css"></script>
+        <script src="~/js/site.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/css/site.min.css" asp-append-version="true"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
     @RenderSection("Scripts", required: false)
 </body>

@@ -1,15 +1,16 @@
 ﻿@page
 @using kuvuBot.Commands;
+@using kuvuBot.Commands.Attributes
 @using MoreLinq;
 
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    var commands = kuvuBot.Program.Commands.RegisteredCommands.Values.DistinctBy(x => x.Name);
-    var categories = commands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x);
+    var commands = kuvuBot.Program.Commands.RegisteredCommands.Values.Where(x=>!x.IsHidden).DistinctBy(x => x.Name).ToList();
+    var categories = commands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x).ToList();
 }
 
-<div class="container section-content">
+<div class="container">
     <section id="commands">
         <h1>Commands</h1>
         <div data-aos="fade-left" class="container content">
@@ -17,14 +18,18 @@
                 <div class="nav nav-tabs cmds-tabs" id="nav-tab" role="tablist">
                     @foreach (var category in categories)
                     {
-                        <a class="nav-item nav-link cmds-tabs not @(category == categories.ToList()[0] ? "active" : "")" id="cmd-@category-tab" data-toggle="tab" href="#cmd-@category" role="tab" aria-controls="cmd-@category" aria-selected="true">@category</a>
+                        <a class="nav-item nav-link cmds-tabs not @(category == categories[0] ? "active" : "")" id="cmd-@category-tab" data-toggle="tab" href="#cmd-@category" role="tab" aria-controls="cmd-@category" aria-selected="true">@category</a>
                     }
+                    <select class="custom-select ml-auto language-select">
+                        <option value="en" selected="@("en" == Model.Lang)">English</option>
+                        <option value="pl" selected="@("pl" == Model.Lang)">Polish</option>
+                    </select>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 @foreach (var category in categories)
                 {
-                    <div class="tab-pane fade @(category == categories.ToList()[0] ? "show active" : "")" id="cmd-@category" role="tabpanel" aria-labelledby="cmd-@category-tab">
+                    <div class="tab-pane fade @(category == categories[0] ? "show active" : "")" id="cmd-@category" role="tabpanel" aria-labelledby="cmd-@category-tab">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -37,7 +42,7 @@
                                 {
                                     <tr>
                                         <td>kb!@command.Name</td>
-                                        <td>@command.Description</td>
+                                        <td>@command.LocalizedDescription(Model.Lang ?? "en")</td>
                                     </tr>
                                 }
                             </tbody>

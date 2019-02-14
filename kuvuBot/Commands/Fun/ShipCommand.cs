@@ -7,13 +7,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using SkiaSharp;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
     public class ShipCommand : BaseCommandModule
     {
         [Aliases("paruj")]
-        [Command("ship"), Description("Ships users")]
+        [Command("ship"), LocalizedDescription("ship.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Ship(CommandContext ctx, [Description("User to ship")] DiscordUser target)
         {

@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
     public class BotCommand : BaseCommandModule
     {
-        [Command("bot"), Description("Bot informations")]
+        [Command("bot"), LocalizedDescription("bot.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Bot(CommandContext ctx)
         {

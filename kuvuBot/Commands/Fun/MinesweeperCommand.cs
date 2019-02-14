@@ -10,17 +10,18 @@ using DSharpPlus.Entities;
 using System.Reflection;
 using System.IO;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
-    public enum Difficulty { easy, normal, hard, insane }
-    class Pole
+    public enum Difficulty { Easy, Normal, Hard, Insane }
+    class Field
     {
         public int x;
         public int y;
         public bool isMine = false;
 
-        public Pole(int x, int y)
+        public Field(int x, int y)
         {
             this.x = x;
             this.y = y;
@@ -29,35 +30,35 @@ namespace kuvuBot.Commands.Fun
 
     class Gameboard
     {
-        public List<Pole> Poles;
-        public Difficulty difficulty;
+        public List<Field> Fields;
+        public Difficulty Difficulty;
 
-        public Pole GetPoleAt(int x, int y)
+        public Field GetPoleAt(int x, int y)
         {
-            return Poles.FirstOrDefault(p => p.x == x && p.y == y);
+            return Fields.FirstOrDefault(p => p.x == x && p.y == y);
         }
 
         public void Generate()
         {
-            Poles = new List<Pole>();
+            Fields = new List<Field>();
             int size = 0;
             int mines = 0;
 
-            switch (difficulty)
+            switch (Difficulty)
             {
-                case Difficulty.easy:
+                case Difficulty.Easy:
                     size = 5;
                     mines = new Random().Next(1,3);
                     break;
-                case Difficulty.normal:
+                case Difficulty.Normal:
                     size = 10;
                     mines = new Random().Next(8, 10);
                     break;
-                case Difficulty.hard:
+                case Difficulty.Hard:
                     size = 13;
                     mines = new Random().Next(11, 13);
                     break;
-                case Difficulty.insane:
+                case Difficulty.Insane:
                     size = 14;
                     mines = new Random().Next(20, 22);
                     break;
@@ -68,7 +69,7 @@ namespace kuvuBot.Commands.Fun
             {
                 for (int x = 1; x <= size; x++)
                 {
-                    Poles.Add(new Pole(x, y));
+                    Fields.Add(new Field(x, y));
                 }
             }
 
@@ -82,13 +83,13 @@ namespace kuvuBot.Commands.Fun
         {
             StringBuilder builder = new StringBuilder();
 
-            if(difficulty < Difficulty.hard)
+            if(Difficulty < Difficulty.Hard)
             {
-                builder.Append($"Bombs {Poles.Where(p=>p.isMine).Count()}, Poles {Poles.Count()}\n");
+                builder.Append($"Mines {Fields.Count(p => p.isMine)}, Fields {Fields.Count()}\n");
             }
 
             var lastY = 1;
-            foreach (Pole pole in Poles)
+            foreach (Field pole in Fields)
             {
                 if (lastY != pole.y)
                 {
@@ -131,7 +132,7 @@ namespace kuvuBot.Commands.Fun
 
         public Gameboard(Difficulty difficulty)
         {
-            this.difficulty = difficulty;
+            this.Difficulty = difficulty;
         }
     }
 
@@ -156,12 +157,12 @@ namespace kuvuBot.Commands.Fun
         static readonly DiscordEmoji ReGenerateEmoji = DiscordEmoji.FromUnicode("🔁");
         static readonly DiscordEmoji RevealEmoji = DiscordEmoji.FromUnicode("💡");
 
-        [Command("minesweeper"), Aliases("saper"), Description("Start a minesweeper game")]
+        [Command("minesweeper"), Aliases("saper"), LocalizedDescription("minesweeper.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task MineSweeper(CommandContext ctx, string difficultyName = "normal")
         {
             var parsed = Enum.TryParse<Difficulty>(difficultyName, out var result);
-            Difficulty difficulty = parsed ? result : Difficulty.normal;
+            Difficulty difficulty = parsed ? result : Difficulty.Normal;
             var board = new Gameboard(difficulty);
             board.Generate();
 

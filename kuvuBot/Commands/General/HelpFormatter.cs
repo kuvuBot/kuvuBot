@@ -9,6 +9,7 @@ using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands.Attributes;
 using kuvuBot.Data;
 using kuvuBot.Lang;
 using MoreLinq;
@@ -20,13 +21,12 @@ namespace kuvuBot.Commands.General
         public ModernEmbedBuilder EmbedBuilder { get; }
         private CommandContext Ctx { get; set; }
         private Command Command { get; set; }
-        private KuvuGuild kuvuGuild { get; set; }
+        private KuvuGuild KuvuGuild { get; set; }
 
         public HelpFormatter(CommandContext ctx) : base(ctx)
         {
             Ctx = ctx;
-            var kuvuGuildTask = ctx.Guild.GetKuvuGuild(); kuvuGuildTask.Wait();
-            kuvuGuild = kuvuGuildTask.Result;
+            KuvuGuild = ctx.Guild.GetKuvuGuild().GetAwaiter().GetResult();
             EmbedBuilder = new ModernEmbedBuilder()
             {
                 Title = "Command list",
@@ -41,7 +41,7 @@ namespace kuvuBot.Commands.General
         {
             Command = command;
 
-            EmbedBuilder.Description = $"{Formatter.InlineCode(command.Name)}: {command.Description ?? "No description provided."}";
+            EmbedBuilder.Description = $"{Formatter.InlineCode(command.Name)}: {command.LocalizedDescription(KuvuGuild).GetAwaiter().GetResult() ?? "No description provided."}";
 
             if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
                 EmbedBuilder.Description = $"{EmbedBuilder.Description}\n\nThis group can be executed as a standalone command.";
@@ -63,7 +63,7 @@ namespace kuvuBot.Commands.General
                     sb.Append("`\n");
 
                     foreach (var arg in ovl.Arguments)
-                        sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.Description ?? "No description provided.").Append('\n');
+                        sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.LocalizedDescription(KuvuGuild).GetAwaiter().GetResult() ?? "No description provided.").Append('\n');
 
                     sb.Append('\n');
                 }
@@ -77,8 +77,8 @@ namespace kuvuBot.Commands.General
         {
             if (Command == null)
             {
-                EmbedBuilder.AddField("Prefix", kuvuGuild.Prefix, true);
-                EmbedBuilder.AddField("Language", $"{kuvuGuild.Lang.ToUpper()} {DiscordEmoji.FromUnicode(Ctx.Client, Ctx.Lang("lang.flag").Result)}", true);
+                EmbedBuilder.AddField("Prefix", KuvuGuild.Prefix, true);
+                EmbedBuilder.AddField("Language", $"{KuvuGuild.Lang.ToUpper()} {DiscordEmoji.FromUnicode(Ctx.Client, Ctx.Lang("lang.flag").Result)}", true);
                 if (Program.Config.CustomBot)
                 {
                     EmbedBuilder.AddField("powered by", $"kuvuBot ({Assembly.GetExecutingAssembly().GetName().Version.ToString(3)})", true);
@@ -95,12 +95,12 @@ namespace kuvuBot.Commands.General
             }
             if (Command == null)
             {
-                EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help <command>");
+                EmbedBuilder.AddField("For more information type", $"{KuvuGuild.Prefix}help <command>");
                 if (!Program.Config.CustomBot)
                     EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)");
             }else
             {
-                EmbedBuilder.AddField("For more information type", $"{kuvuGuild.Prefix}help {Command.Name} <subcommand>");
+                EmbedBuilder.AddField("For more information type", $"{KuvuGuild.Prefix}help {Command.Name} <subcommand>");
             }
 
             return this;

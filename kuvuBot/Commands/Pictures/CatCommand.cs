@@ -12,6 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -121,7 +122,7 @@ namespace kuvuBot.Commands.Pictures
         }
 
         [Aliases("kot")]
-        [Command("cat"), Description("Display random cat image")]
+        [Command("cat"), LocalizedDescription("cat.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Cat(CommandContext ctx, [Description("Cat breed, if null random,\"list\" for breed list"), RemainingText] string breed = null)
         {

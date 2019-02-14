@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
     public class DiceCommand : BaseCommandModule
     {
         [Aliases("kostka")]
-        [Command("dice"), Description("Roll dice")]
+        [Command("dice"), LocalizedDescription("dice.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Dice(CommandContext ctx, int? walls = null)
         {

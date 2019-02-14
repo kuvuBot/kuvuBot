@@ -1,6 +1,7 @@
 {
     "vote": {
-        "voting": "Voting"
+        "voting": "Voting",
+        "description": "Makes voting"
     },
     "global": {
         "nopermission": "You do not have sufficient permissions to execute this command!",
@@ -8,5 +9,89 @@
     },
     "lang": {
         "flag": "🇬🇧"
+    },
+    "rps": {
+        "description": "Play rock, paper and scissors with bot"
+    },
+    "currency": {
+        "description": "Check currency rate relative to other"
+    },
+    "dice": {
+        "description": "Roll dice"
+    },
+    "emojitext": {
+        "description": "Generates a emoji text"
+    },
+    "figlet": {
+        "description": "Generates a figlet"
+    },
+    "minesweeper": {
+        "description": "Start a minesweeper game"
+    },
+    "rep": {
+        "description": "Gives user reputation point"
+    },
+    "ship": {
+        "description": "Ships two users"
+    },
+    "emojireaction": {
+        "description": "Generates a emoji text, and react it to desired message"
+    },
+    "bot": {
+        "description": "Bot informations"
+    },
+    "guild": {
+        "description": "Guild informations"
+    },
+    "invite": {
+        "description": "Send bot invite link"
+    },
+    "leaderboard": {
+        "description": "Shows level leaderboard"
+    },
+    "minecraft": {
+        "description": "Minecraft server status"
+    },
+    "ping": {
+        "description": "Shows bot ping"
+    },
+    "steam": {
+        "description": "Informations about steam game"
+    },
+    "user": {
+        "description": "User information"
+    },
+    "weather": {
+        "description": "Weather informations"
+    },
+    "broadcast": {
+        "description": "Makes broadcast"
+    },
+    "clear": {
+        "description": "Removes specified amount of messages"
+    },
+    "mute": {
+        "description": "Mutes user"
+    },
+    "warn": {
+        "group-description": "Warn commands",
+        "description": "Warns user",
+        "history": "List user's warns",
+        "clear": "Clears user's warns"
+    },
+    "cat": {
+        "description": "Display random cat image"
+    },
+    "dog": {
+        "description": "Display random dog image"
+    },
+    "hug": {
+        "description": "Hugs the marked user"
+    },
+    "pat": {
+        "description": "Pats the marked user"
+    },
+    "slap": {
+        "description": "Slaps the marked user"
     }
 }

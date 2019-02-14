@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
 
     public class InviteCommand : BaseCommandModule
     {
-        [Command("invite"), Description("Send bot invite link")]
+        [Command("invite"), LocalizedDescription("invite.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Invite(CommandContext ctx)
         {

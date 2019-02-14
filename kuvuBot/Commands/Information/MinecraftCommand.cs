@@ -8,6 +8,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using System.Net;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
@@ -124,7 +125,7 @@ namespace kuvuBot.Commands.Information
             public string Name { get; set; }
         }
 
-        [Command("minecraft"), Description("Minecraft server status")]
+        [Command("minecraft"), LocalizedDescription("minecraft.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Minecraft(CommandContext ctx, string ip, ulong? port = null)
         {

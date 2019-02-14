@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -24,7 +25,7 @@ namespace kuvuBot.Commands.Pictures
         }
 
         [Aliases("pies")]
-        [Command("dog"), Description("Display random dog image")]
+        [Command("dog"), LocalizedDescription("dog.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Dog(CommandContext ctx, [Description("Dog breed, if null random")] string breed = null)
         {

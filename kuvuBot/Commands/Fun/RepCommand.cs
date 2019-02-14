@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 using SkiaSharp;
 using kuvuBot.Data;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
     public class RepCommand : BaseCommandModule
     {
-        [Command("rep"), Description("Gives user reputation point")]
+        [Command("rep"), LocalizedDescription("rep.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Rep(CommandContext ctx, DiscordUser target)
         {            

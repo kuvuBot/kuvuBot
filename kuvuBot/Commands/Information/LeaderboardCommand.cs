@@ -7,6 +7,7 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands.Attributes;
 using kuvuBot.Data;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -14,7 +15,7 @@ namespace kuvuBot.Commands.Information
 {
     public class LeaderboardCommand : BaseCommandModule
     {
-        [Command("leaderboard"), Description("Shows level leaderboard"), Aliases("ranking", "toplvl", "toplevel")]
+        [Command("leaderboard"), LocalizedDescription("leaderboard.description"), Aliases("ranking", "toplvl", "toplevel")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Leaderboard(CommandContext ctx)
         {

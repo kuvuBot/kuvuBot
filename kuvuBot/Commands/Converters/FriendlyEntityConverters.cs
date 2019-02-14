@@ -44,4 +44,16 @@ namespace kuvuBot.Commands.Converters
             return new DiscordChannelConverter().ConvertAsync(value, ctx);
         }
     }
+
+    public class FriendlyDiscordMessageConverter : IArgumentConverter<DiscordMessage>
+    {
+        public Task<Optional<DiscordMessage>> ConvertAsync(string value, CommandContext ctx)
+        {
+            if (value == "this")
+            {
+                return Task.FromResult<Optional<DiscordMessage>>(ctx.Message);
+            }
+            return new DiscordMessageConverter().ConvertAsync(value, ctx);
+        }
+    }
 }

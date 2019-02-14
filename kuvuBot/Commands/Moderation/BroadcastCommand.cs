@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Moderation
 {
     public class BroadcastCommand : BaseCommandModule
     {
         [Aliases("ogłoszenie", "ogloszenie", "bc")]
-        [Command("broadcast"), Description("Makes broadcast")]
+        [Command("broadcast"), LocalizedDescription("broadcast.description")]
         [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Broadcast(CommandContext ctx, [RemainingText, Description("Broadcast")] string content)
         {

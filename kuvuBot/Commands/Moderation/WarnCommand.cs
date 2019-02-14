@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 using kuvuBot.Data;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace kuvuBot.Commands.Moderation
 {
-    [Group("warn"), Description("Warn commands"), RequireUserPermissions(Permissions.ManageMessages)]
+    [Group("warn"), LocalizedDescription("warn.group-description"), RequireUserPermissions(Permissions.ManageMessages)]
     public class WarnCommand : BaseCommandModule
     {
-        [GroupCommand, Description("Warns user")]
+        [GroupCommand, LocalizedDescription("warn.description")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Warn(CommandContext ctx, [Description("User to warn")] DiscordUser target, [Description("Weight of warn")] int weight, [Description("Reason")] [RemainingText] string reason)
         {
@@ -43,7 +44,7 @@ namespace kuvuBot.Commands.Moderation
             await ctx.RespondAsync($"Warned {target.Mention} for `{warn.Reason}` (`{warn.Weight}`)");
         }
 
-        [Command("history"), Description("List user's warns"), Aliases("list")]
+        [Command("history"), LocalizedDescription("warn.history"), Aliases("list")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task WarnHistory(CommandContext ctx, [Description("User to list his warns")] DiscordUser target)
         {
@@ -76,7 +77,7 @@ namespace kuvuBot.Commands.Moderation
             }
         }
 
-        [Command("clear"), Description("Clears user's warns")]
+        [Command("clear"), LocalizedDescription("warn.clear")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Clear(CommandContext ctx, [Description("User to clear his warns")] DiscordUser target)
         {

@@ -11,12 +11,13 @@ using OpenWeatherAPI;
 using System.Text.RegularExpressions;
 using System.Net;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
     public class WeatherCommand : BaseCommandModule
     {
-        [Command("weather"), Description("Weather informations")]
+        [Command("weather"), LocalizedDescription("weather.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Weather(CommandContext ctx, [RemainingText] string city)
         {

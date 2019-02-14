@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 using kuvuBot.Data;
 
 namespace kuvuBot.Commands.Moderation
 {
     public class MuteCommand : BaseCommandModule
     {
-        [Command("mute"), Description("Mutes user")]
+        [Command("mute"), LocalizedDescription("mute.description")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages | Permissions.ManageRoles)]
         public async Task Mute(CommandContext ctx, [Description("User to mute")] DiscordMember target, [RemainingText] string reason = null)
         {

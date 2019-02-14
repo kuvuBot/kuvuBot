@@ -7,15 +7,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
     public class RPSCommand : BaseCommandModule
     {
         [Aliases("kpn")]
-        [Command("rps"), Description("Play rock, paper and scissors with bot")]
+        [Command("rps"), LocalizedDescription("rps.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task RPS(CommandContext ctx, string thing)
+        public async Task Rps(CommandContext ctx, string thing)
         {
             var things = new Dictionary<string, string>()
             {

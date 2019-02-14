@@ -6,12 +6,13 @@ using System.Net;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Pictures
 {
     public class SlapCommand : BaseCommandModule
     {
-        [Command("slap"), Description("Slaps the marked user")]
+        [Command("slap"), LocalizedDescription("slap.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Slap(CommandContext ctx, [Description("User to slap")] DiscordUser target)
         {

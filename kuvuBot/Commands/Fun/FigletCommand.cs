@@ -10,12 +10,13 @@ using DSharpPlus.Entities;
 using System.Reflection;
 using System.IO;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Fun
 {
     public class FigletCommand : BaseCommandModule
     {
-        [Command("figlet"), Description("Generates a figlet")]
+        [Command("figlet"), LocalizedDescription("figlet.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Figlet(CommandContext ctx, [RemainingText] string message)
         {

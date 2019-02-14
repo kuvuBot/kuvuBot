@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
     public class GuildCommand : BaseCommandModule
     {
         [Aliases("serwer", "server", "gildia")]
-        [Command("guild"), Description("Guild informations")]
+        [Command("guild"), LocalizedDescription("guild.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Guild(CommandContext ctx)
         {

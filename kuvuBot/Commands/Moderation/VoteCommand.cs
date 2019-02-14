@@ -1,4 +1,4 @@
-using DSharpPlus.CommandsNext;
+ï»¿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Moderation
 {
     public class VoteCommand : BaseCommandModule
     {
-        [Aliases("g³osuj", "glosuj")]
-        [Command("vote"), Description("Makes voting")]
-        [ RequireBotPermissions(Permissions.SendMessages)]
+        [Command("vote"), LocalizedDescription("vote.description")]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Vote(CommandContext ctx, [RemainingText,Description("Question")] string question)
         {            
             var message = await new ModernEmbedBuilder

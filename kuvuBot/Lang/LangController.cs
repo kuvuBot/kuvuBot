@@ -7,19 +7,30 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DSharpPlus.Entities;
 
 namespace kuvuBot.Lang
 {
     public static class LangExt
     {
-        public async static Task<string> Lang(this CommandContext ctx, string term)
+        public static async Task<string> Lang(this KuvuGuild kuvuGuild, string term)
         {
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild();
             var lang = kuvuGuild.Lang;
             return LangController.Get(term, lang);
         }
+
+        public static async Task<string> Lang(this DiscordGuild guild, string term)
+        {
+            var kuvuGuild = await guild.GetKuvuGuild();
+            return await kuvuGuild.Lang(term);
+        }
+
+        public static async Task<string> Lang(this CommandContext ctx, string term)
+        {
+            return await ctx.Guild.Lang(term);
+        }
     }
-    public class LangController
+    public static class LangController
     {
         // Arghh its shitty
         public static string Get(string term, string lang)
@@ -31,11 +42,19 @@ namespace kuvuBot.Lang
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = $"kuvuBot.Lang.{lang}.json";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader sr = new StreamReader(stream))
+            try
             {
-                //     convert object                           context            term   translated      stream     context   term
-                return JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(sr.ReadToEnd())[path[0]][path[1]];
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                using (var sr = new StreamReader(stream))
+                {
+                    //     convert object                           context            term   translated      stream     context   term
+                    var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(sr.ReadToEnd())[path[0]][path[1]];
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Moderation
 {
     public class ClearCommand : BaseCommandModule
     {
-        [Command("clear"), Description("Removes specified amount of messages")]
+        [Command("clear"), LocalizedDescription("clear.description")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Clear(CommandContext ctx, [Description("Messages count")] int messagecount)
         {

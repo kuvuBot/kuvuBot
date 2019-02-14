@@ -9,12 +9,13 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Globalization;
 using kuvuBot.Data;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
     public class UserCommand : BaseCommandModule
     {
-        [Command("user"), Description("User information")]
+        [Command("user"), LocalizedDescription("user.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task User(CommandContext ctx, DiscordUser target = null)
         {

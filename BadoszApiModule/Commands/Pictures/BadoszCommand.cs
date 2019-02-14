@@ -41,7 +41,7 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class ChangeMyMindCommand : BaseCommandModule
     {
-        [Command("changemymind"), Description("~~zmień moje zdanie~~")]
+        [Command("changemymind"), Description("Change my mind gif")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task ChangeMyMind(CommandContext ctx, [RemainingText] string text)
         {

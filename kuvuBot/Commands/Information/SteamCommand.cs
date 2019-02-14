@@ -11,6 +11,7 @@ using SteamWebAPI2.Interfaces;
 using System.Text.RegularExpressions;
 using kuvuBot.Data;
 using DSharpPlus;
+using kuvuBot.Commands.Attributes;
 
 namespace kuvuBot.Commands.Information
 {
@@ -22,7 +23,7 @@ namespace kuvuBot.Commands.Information
             return Regex.Replace(input, "<.*?>", string.Empty);
         }
 
-        [Command("steam"), Description("Informations about steam game")]
+        [Command("steam"), LocalizedDescription("steam.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Steam(CommandContext ctx, [RemainingText] string gameName)
         {
