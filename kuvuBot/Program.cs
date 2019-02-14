@@ -175,6 +175,7 @@ namespace kuvuBot
                 AutoReconnect = true,
                 LogLevel = LogLevel.Debug,
                 UseInternalLogHandler = true,
+                HttpTimeout = TimeSpan.FromSeconds(60)
             };
 
             Client = new DiscordClient(conf);
