@@ -41,7 +41,7 @@ namespace kuvuBot
             if (!File.Exists(ConfigFilename))
             {
                 Console.WriteLine($"{ConfigFilename} not found. Generating one for you, fill it");
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("config.example.json"))
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(Assembly.GetExecutingAssembly().GetManifestResourceNames().FirstOrDefault(x=>x.EndsWith("config.example.json"))))
                 {
                     stream.CopyTo(File.Create(ConfigFilename));
                     System.Environment.Exit(1);
