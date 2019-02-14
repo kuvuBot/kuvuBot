@@ -17,6 +17,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using Newtonsoft.Json.Linq;
 using kuvuBot.Features.Modular;
 using kuvuBot.Commands;
@@ -35,6 +37,7 @@ namespace kuvuBot
         public static DiscordClient Client { get; set; }
         public static Config Config { get; set; }
         public static CommandsNextExtension Commands { get; set; }
+        private static bool Kill { get; set; } = false;
 
         public static Config LoadConfig()
         {
@@ -219,7 +222,10 @@ namespace kuvuBot
 
 
             // prevent app from quit
-            await Task.Delay(-1);
+            await Task.Run(() =>
+            {
+                while (!Kill) {}
+            });
         }
 
         private static async Task Commands_CommandErrored(CommandErrorEventArgs e)
@@ -260,10 +266,14 @@ namespace kuvuBot
 
         private static async void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
+            // TODO Ekhmm, do it less brutally
             Console.WriteLine("Closing kuvuBot...", Color.Black);
-            await Client.UpdateStatusAsync(new DiscordActivity("Restarting bot...", ActivityType.Watching), UserStatus.Idle).ConfigureAwait(false);
+            await Client.UpdateStatusAsync(new DiscordActivity("Restarting bot...", ActivityType.Watching), UserStatus.Idle);
+            await Client.DisconnectAsync();
+            Client.Dispose();
+            Kill = true;
+            Process.GetCurrentProcess().Kill();
             Environment.Exit(-1);
-           
         }
 
         private static void UpdateStatus()
