@@ -7,16 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
     <Content Remove="Pages\Panel\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="bundleconfig.json" />
     <None Include="Pages\Panel\Index.cshtml" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Discord" Version="2.0.1" />
+    <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
+    <PackageReference Include="BundlerMinifier.Core" Version="2.8.391" />
     <PackageReference Include="DSharpPlus.Rest" Version="4.0.0-nightly-00571" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
