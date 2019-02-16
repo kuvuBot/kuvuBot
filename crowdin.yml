@@ -1,0 +1,3 @@
+files:
+  - source: /kuvuBot/Lang/en.json
+    translation: /kuvuBot/Lang/%two_letters_code%.json
