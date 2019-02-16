@@ -14,7 +14,7 @@
         "description": "Zagraj w papier, kamień, nożyce z botem"
     },
     "currency": {
-        "description": "Sprawdź cene waluty w stosunku do innej"
+        "description": "Sprawdź cenę waluty w stosunku do innej"
     },
     "dice": {
         "description": "Rzuć kostką"
@@ -26,7 +26,7 @@
         "description": "Generuje figlet (ascii art)"
     },
     "minesweeper": {
-        "description": "Zacznij gre w sapera"
+        "description": "Zacznij grę w sapera"
     },
     "rep": {
         "description": "Daje użytkownikowi punkt reputacji"
@@ -47,10 +47,10 @@
         "description": "Wysyła zaproszenie bota"
     },
     "leaderboard": {
-        "description": "Pokazuje liste najlepszych użytkowników"
+        "description": "Pokazuje listę najlepszych użytkowników"
     },
     "minecraft": {
-        "description": "Status serwera minecraft"
+        "description": "Status serwera Minecraft"
     },
     "ping": {
         "description": "Pokazuje ping bota"
