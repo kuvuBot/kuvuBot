@@ -1,97 +1,100 @@
 {
-    "vote": {
-        "voting": "Głosowanie",
-        "description": "Tworzy głosowanie"
-    },
-    "global": {
-        "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
-        "badArguments": "Nieprawidłowy argument."
-    },
-    "lang": {
-        "flag": "🇵🇱"
-    },
-    "rps": {
-        "description": "Zagraj w papier, kamień, nożyce z botem"
-    },
-    "currency": {
-        "description": "Sprawdź cenę waluty w stosunku do innej"
-    },
-    "dice": {
-        "description": "Rzuć kostką"
-    },
-    "emojitext": {
-        "description": "Generuje tekst zrobiony z emoji"
-    },
-    "figlet": {
-        "description": "Generuje figlet (ascii art)"
-    },
-    "minesweeper": {
-        "description": "Zacznij grę w sapera"
-    },
-    "rep": {
-        "description": "Daje użytkownikowi punkt reputacji"
-    },
-    "ship": {
-        "description": "Łączy dwóch użytkowników w pare"
-    },
-    "emojireaction": {
-        "description": "Generuje tekst z emoji, i dodaje go do zaznaczonej wiadomości jako reakcje"
-    },
-    "bot": {
-        "description": "Informacje o bocie"
-    },
-    "guild": {
-        "description": "Informacje o serwerze"
-    },
-    "invite": {
-        "description": "Wysyła zaproszenie bota"
-    },
-    "leaderboard": {
-        "description": "Pokazuje listę najlepszych użytkowników"
-    },
-    "minecraft": {
-        "description": "Status serwera Minecraft"
-    },
-    "ping": {
-        "description": "Pokazuje ping bota"
-    },
-    "steam": {
-        "description": "Informacje o danej grze na steam"
-    },
-    "user": {
-        "description": "Informacje o użytkowniku"
-    },
-    "weather": {
-        "description": "Informacje o pogodzie"
-    },
-    "broadcast": {
-        "description": "Tworzy ogłoszenie"
-    },
-    "clear": {
-        "description": "Usuwa podaną ilość wiadomości"
-    },
-    "mute": {
-        "description": "Wycisza użytkownika"
-    },
-    "warn": {
-        "group-description": "Komendy ostrzeżeń",
-        "description": "Ostrzega użytkownika",
-        "history": "Wyświetla listę ostrzeżeń użytkownika",
-        "clear": "Usuwa ostrzeżenia użytkownika"
-    },
-    "cat": {
-        "description": "Pokazuje losowy obrazek kota"
-    },
-    "dog": {
-        "description": "Pokazuje losowy obrazek psa"
-    },
-    "hug": {
-        "description": "Przytula wskazanego użytkownika"
-    },
-    "pat": {
-        "description": "Głaszcze wskazanego użytkownika"
-    },
-    "slap": {
-        "description": "Policzkujesz wskazanego użytkownika"
-    }
+  "vote": {
+    "voting": "Głosowanie",
+    "description": "Tworzy głosowanie"
+  },
+  "global": {
+    "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
+    "badArguments": "Nieprawidłowy argument."
+  },
+  "lang": {
+    "flag": "🇵🇱"
+  },
+  "rps": {
+    "description": "Zagraj w papier, kamień, nożyce z botem"
+  },
+  "currency": {
+    "description": "Sprawdź cenę waluty w stosunku do innej"
+  },
+  "dice": {
+    "description": "Rzuć kostką"
+  },
+  "emojitext": {
+    "description": "Generuje tekst zrobiony z emoji"
+  },
+  "figlet": {
+    "description": "Generuje figlet (ascii art)"
+  },
+  "minesweeper": {
+    "description": "Zacznij grę w sapera"
+  },
+  "rep": {
+    "description": "Daje użytkownikowi punkt reputacji"
+  },
+  "ship": {
+    "description": "Łączy dwóch użytkowników w pare"
+  },
+  "emojireaction": {
+    "description": "Generuje tekst z emoji, i dodaje go do zaznaczonej wiadomości jako reakcje"
+  },
+  "bot": {
+    "description": "Informacje o bocie"
+  },
+  "guild": {
+    "description": "Informacje o serwerze"
+  },
+  "invite": {
+    "description": "Wysyła zaproszenie bota"
+  },
+  "leaderboard": {
+    "description": "Pokazuje listę najlepszych użytkowników"
+  },
+  "minecraft": {
+    "description": "Status serwera Minecraft"
+  },
+  "ping": {
+    "description": "Pokazuje ping bota"
+  },
+  "steam": {
+    "description": "Informacje o danej grze na steam"
+  },
+  "user": {
+    "description": "Informacje o użytkowniku"
+  },
+  "weather": {
+    "description": "Informacje o pogodzie"
+  },
+  "broadcast": {
+    "description": "Tworzy ogłoszenie"
+  },
+  "clear": {
+    "description": "Usuwa podaną ilość wiadomości"
+  },
+  "mute": {
+    "description": "Wycisza użytkownika"
+  },
+  "warn": {
+    "group-description": "Komendy ostrzeżeń",
+    "description": "Ostrzega użytkownika",
+    "history": "Wyświetla listę ostrzeżeń użytkownika",
+    "clear": "Usuwa ostrzeżenia użytkownika"
+  },
+  "cat": {
+    "description": "Pokazuje losowy obrazek kota"
+  },
+  "dog": {
+    "description": "Pokazuje losowy obrazek psa"
+  },
+  "hug": {
+    "description": "Przytula wskazanego użytkownika"
+  },
+  "pat": {
+    "description": "Głaszcze wskazanego użytkownika"
+  },
+  "slap": {
+    "description": "Policzkujesz wskazanego użytkownika"
+  },
+  "avatar": {
+    "description": "Zwraca awatar użytkownika"
+  }
 }
