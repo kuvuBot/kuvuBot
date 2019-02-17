@@ -16,5 +16,11 @@
     "inputFiles": [
       "wwwroot/panel/js/adminlte.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/panel/css/panel.min.css",
+    "inputFiles": [
+      "wwwroot/panel/css/panel.css"
+    ]
   }
 ]

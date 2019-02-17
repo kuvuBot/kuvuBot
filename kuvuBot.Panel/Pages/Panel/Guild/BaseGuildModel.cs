@@ -27,7 +27,7 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
 
         public NavigationItem GuildManage;
 
-        public virtual async Task<ActionResult> OnGetAsync(string id)
+        public virtual async Task<ActionResult> MakeResult(string id)
         {
             _BotContext = new BotContext();
             Client = await HttpContext.GetRestClient();

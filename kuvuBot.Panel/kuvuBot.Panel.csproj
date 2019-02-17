@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\panel\css\panel.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="bundleconfig.json" />
     <None Include="Pages\Panel\Index.cshtml" />
   </ItemGroup>

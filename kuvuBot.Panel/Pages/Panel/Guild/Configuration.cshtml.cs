@@ -11,12 +11,12 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
 {
     public class ConfigurationModel : BaseGuildModel
     {
-        public override async Task<ActionResult> OnGetAsync(string id)
+        public async Task<ActionResult> OnGetAsync(string id)
         {
             if (Request.GetDisplayUrl().EndsWith("/"))
                 Response.Redirect(Request.GetEncodedUrl().TrimEnd('/'));
 
-            var result = await base.OnGetAsync(id);
+            var result = await MakeResult(id);
             ViewData["ActivePage"] = PanelNavigation.Configuration(GuildManage);
             return result;
         }

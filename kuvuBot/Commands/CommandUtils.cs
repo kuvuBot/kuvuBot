@@ -69,7 +69,11 @@ namespace kuvuBot.Commands
             return name;
         }
 
-
+        public static string GetCurrentAvatarUrl(this DiscordUser user, ushort size)
+        {
+            return (user.AvatarHash?.StartsWith("a_") == true ? user.GetAvatarUrl(ImageFormat.Gif, size) : user.GetAvatarUrl(ImageFormat.Png, size)) ?? user.DefaultAvatarUrl;
+        }
+        
         public static async Task SendAutoRemoveMessageAsync(this DiscordChannel channel, TimeSpan delay, string content = null, bool tts = false, DiscordEmbed embed = null)
         {
             var message = await channel.SendMessageAsync(content, tts, embed);

@@ -1,4 +1,70 @@
 ﻿@page "/Panel/Guild/{id?}/Members"
+@using DSharpPlus.Entities
+@using kuvuBot.Commands
+@using kuvuBot.Panel.Data
 @model kuvuBot.Panel.Pages.Panel.Guild.MembersModel
 @{
+    var dGuild = await kuvuBot.Program.Client.GetGuildAsync(Model.DGuild.Id);
+    var pagedResult = dGuild.Members.GetPaged(Model.Page, Model.PageSize);
+
+    var startIndex = Math.Max(pagedResult.CurrentPage - 5, 1);
+    var finishIndex = Math.Min(pagedResult.CurrentPage + 5, pagedResult.PageCount);
 }
+<div class="content">
+    <div class="container">
+        <form class="pb-3" method="post">
+            <button type="submit" asp-page-handler="resetAllLevels" class="btn btn-danger">Reset all levels</button>
+        </form>
+        <ul class="list-group mx-auto">
+            @foreach (var member in pagedResult.Results)
+            {
+                <li class="list-group-item">
+                    <form method="post">
+                        <img src="@member.GetCurrentAvatarUrl(128)" height="25" width="25" class="img-circle elevation-2" alt="A">
+                        @member.Name()
+                        <div class="float-right">
+                            @if (!member.IsBot)
+                            {
+                                var kuvuUser = await member.GetKuvuUser(Model.Guild, Model._BotContext);
+                                var globalUser = await member.GetGlobalUser(Model._BotContext);
+                                if (globalUser.GlobalRank != null)
+                                {
+                                    <span class="badge badge-warning">Global @Enum.GetName(typeof(KuvuGlobalRank), globalUser.GlobalRank)</span>
+                                }
+                                <span class="badge badge-primary">Level @kuvuUser.GetLevel()</span>
+                                <span class="badge badge-success">EXP @kuvuUser.Exp/@KuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)</span>
+
+                                <input type="hidden" name="userId" value="@kuvuUser.Id">
+                                <button type="submit" asp-page-handler="resetLevel" class="badge p-1 btn btn-danger">Reset level</button>
+                            }
+                            else
+                            {
+                                <span class="badge badge-blurpe">BOT</span>
+                            }
+                        </div>
+                    </form>
+                </li>
+            }
+        </ul>
+        <nav class="m-1">
+            @if (pagedResult.PageCount > 1)
+            {
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="@(pagedResult.CurrentPage == 1 ? "" : $"{Url.Action()}?page=1")">First</a></li>
+                    @for (var i = startIndex; i <= finishIndex; i++)
+                    {
+                        if (i == pagedResult.CurrentPage)
+                        {
+                            <li class="page-item"><a class="page-link">@i</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@($"{Url.Action()}?page={i}")">@i</a></li>
+                        }
+                    }
+                    <li class="page-item"><a class="page-link" href="@($"{Url.Action()}?page={pagedResult.PageCount}")">Last</a></li>
+                </ul>
+            }
+        </nav>
+    </div>
+</div>
