@@ -28,7 +28,15 @@ namespace kuvuBot.Features
 
                     if (!kuvuUser.LastExpMessage.HasValue || (DateTime.Now - kuvuUser.LastExpMessage.Value).Minutes >= 1)
                     {
-                        await kuvuUser.AddExp(new Random().Next(1, 5), e.Channel, e.Author.Mention);
+                        if (kuvuGuild.ShowLevelUp)
+                        {
+                            await kuvuUser.AddExp(new Random().Next(1, 5), e.Channel, e.Author.Mention);
+                        }
+                        else
+                        {
+                            await kuvuUser.AddExp(new Random().Next(1, 5));
+                        }
+
                         kuvuUser.LastExpMessage = DateTime.Now;
 
                         await botContext.SaveChangesAsync();

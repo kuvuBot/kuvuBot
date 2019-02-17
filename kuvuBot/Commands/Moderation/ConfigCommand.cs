@@ -164,6 +164,26 @@ namespace kuvuBot.Commands.Moderation
             }
         }
 
+        [Aliases("showlvlup")]
+        [Command("showlevelup"), Description("Toggle level up message")]
+        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
+        public async Task ShowLevelUp(CommandContext ctx, bool? toggle = null)
+        {
+            var botContext = new BotContext();
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
+            if (!toggle.HasValue)
+            {
+                await ctx.RespondAsync($"Current level up message mode is `{(kuvuGuild.ShowLevelUp ? "showed" : "hided")}`");
+            }
+            else
+            {
+                kuvuGuild.ShowLevelUp = toggle.Value;
+                await ctx.RespondAsync($"👌, changed level up message mode to `{(kuvuGuild.ShowLevelUp ? "showed" : "hided")}`");
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+            }
+        }
+
         [Group("mute")]
         [Description("Mute configuration commands")]
         public class MuteCommandGroup : BaseCommandModule

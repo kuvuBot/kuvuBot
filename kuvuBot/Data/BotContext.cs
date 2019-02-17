@@ -157,7 +157,7 @@ namespace kuvuBot.Data
             if (nextLevel > currentLevel)
             {
                 if (channel != null && mention != null)
-                    await channel.SendMessageAsync($"🆙 | {mention} now has level {nextLevel.ToString()} 🎉");
+                    await channel.SendMessageAsync($"🆙 | {mention} has now level {nextLevel.ToString()} 🎉");
             }
         }
 
