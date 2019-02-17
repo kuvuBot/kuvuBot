@@ -54,7 +54,7 @@ namespace kuvuBot.Panel.Pages.Panel
         {
             Text = text;
             Parent = parent;
-            Href = parent?.Href + href ?? text;
+            Href = parent?.Href + (href ?? text).ToLower();
         }
     }
 
@@ -64,9 +64,9 @@ namespace kuvuBot.Panel.Pages.Panel
         public static NavigationItem Guilds => new NavigationItem("My guilds");
 
         // Panel/Guild/{id}/
-        public static NavigationItem GuildManage(string id, string text) => new NavigationItem(text, href: $"/Panel/Guild/{id}/");
-        public static NavigationItem Members(NavigationItem guildManage) => new NavigationItem("Members", guildManage);
-        public static NavigationItem Configuration(NavigationItem guildManage) => new NavigationItem("Configuration", guildManage);
+        public static NavigationItem GuildManage(string id, string text) => new NavigationItem(text, href: $"/panel/guild/{id}/");
+        public static NavigationItem Members(NavigationItem guildManage) => new NavigationItem("members", guildManage);
+        public static NavigationItem Configuration(NavigationItem guildManage) => new NavigationItem("configuration", guildManage);
        
 
         public static NavigationItem ActivePage(ViewContext viewContext)

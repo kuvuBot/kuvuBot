@@ -46,14 +46,11 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/Panel" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a asp-page="/" class="nav-link">Home</a>
                 </li>
             </ul>
 
-            <!-- SEARCH FORM -->
+            <!-- SEARCH FORM ->
             <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
@@ -63,13 +60,13 @@
                         </button>
                     </div>
                 </div>
-            </form>
+            </form>-->
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="/Panel" class="brand-link">
+            <a asp-page="/Panel" class="brand-link">
                 <img src="https://cdn.discordapp.com/avatars/205965341241638912/3204e2fb0d34ff885d7ce2ed1c9982bc.png?size=2048" alt="kuvuBot Panel Logo" class="brand-image img-circle elevation-3"
                      style="opacity: .8">
                 <span class="brand-text font-weight-light">kuvuBot Panel</span>
@@ -83,7 +80,7 @@
                         <img src="@(discord.CurrentUser.AvatarUrl ?? discord.CurrentUser.DefaultAvatarUrl)" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="/Panel/Profile" class="d-block">@discord.CurrentUser.Name()</a>
+                        <a asp-page="/Panel/Profile" class="d-block">@discord.CurrentUser.Name()</a>
                     </div>
                 </div>
 
@@ -101,7 +98,8 @@
                                 else
                                 {
                                     <li class="nav-item">
-                                        <a href="@sidebarItem.Href" class="nav-link @PanelNavigation.PageNavClass(ViewContext, sidebarItem.Page.Text)">
+                                        @* TODO use asp-page instead of ToLower() *@
+                                        <a href="@sidebarItem.Href.ToLower()" class="nav-link @PanelNavigation.PageNavClass(ViewContext, sidebarItem.Page.Text)">
                                             <i class="nav-icon @sidebarItem.Icon"></i>
                                             <p>
                                                 @sidebarItem.Text
@@ -128,7 +126,7 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="/Panel">Home</a></li>
+                                <li class="breadcrumb-item"><a asp-page="/Panel">Home</a></li>
                                 @{
                                     var queue = new List<NavigationItem>();
                                     var currentPage = @PanelNavigation.ActivePage(ViewContext);
