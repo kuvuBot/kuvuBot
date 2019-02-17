@@ -20,12 +20,10 @@
   <ItemGroup>
     <None Remove="big.flf" />
     <None Remove="Lang\en.json" />
-    <None Remove="Lang\pl.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="big.flf" />
     <EmbeddedResource Include="Lang\en.json" />
-    <EmbeddedResource Include="Lang\pl.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
