@@ -95,6 +95,6 @@
     "description": "Policzkujesz wskazanego użytkownika"
   },
   "avatar": {
-    "description": "Returns user's avatar"
+    "description": "Zwraca awatar użytkownika"
   }
 }
