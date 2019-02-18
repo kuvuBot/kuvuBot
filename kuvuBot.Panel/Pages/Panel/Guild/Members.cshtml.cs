@@ -18,9 +18,6 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
 
         public async Task<ActionResult> OnGetAsync(string id)
         {
-            if (Request.GetDisplayUrl().EndsWith("/"))
-                Response.Redirect(Request.GetEncodedUrl().TrimEnd('/'));
-
             if (Request.Query.ContainsKey("page") && int.TryParse(Request.Query["page"].FirstOrDefault(), out var page))
                 Page = page;
             if (Request.Query.ContainsKey("pageSize") && int.TryParse(Request.Query["pageSize"].FirstOrDefault(), out var pageSize))

@@ -23,11 +23,11 @@ namespace kuvuBot.Panel.Pages.Panel
         public string Href { get; set; }
         public NavigationItem Page { get; set; }
 
-        public SidebarItem(string text, string icon, string href = null, NavigationItem page = null)
+        public SidebarItem(string text, string icon, string href, NavigationItem page = null)
         {
             Text = text;
             Icon = icon;
-            Href = href ?? text;
+            Href = href;
             Page = page ?? new NavigationItem(Href);
         }
 
@@ -65,8 +65,8 @@ namespace kuvuBot.Panel.Pages.Panel
 
         // Panel/Guild/{id}/
         public static NavigationItem GuildManage(string id, string text) => new NavigationItem(text, href: $"/panel/guild/{id}/");
-        public static NavigationItem Members(NavigationItem guildManage) => new NavigationItem("members", guildManage);
-        public static NavigationItem Configuration(NavigationItem guildManage) => new NavigationItem("configuration", guildManage);
+        public static NavigationItem Members(NavigationItem guildManage) => new NavigationItem("Members", guildManage);
+        public static NavigationItem Configuration(NavigationItem guildManage) => new NavigationItem("Configuration", guildManage);
        
 
         public static NavigationItem ActivePage(ViewContext viewContext)

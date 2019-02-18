@@ -59,9 +59,9 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
             ViewData.AddToSidebar(new[]
             {
                 new SidebarHeader("Guild management"),
-                new SidebarItem("Information", "fas fa-info-circle", "./", GuildManage),
-                new SidebarItem("Members", "fas fa-users", page: PanelNavigation.Members(GuildManage)),
-                new SidebarItem("Configuration", "fas fa-cogs", page: PanelNavigation.Configuration(GuildManage)),
+                new SidebarItem("Information", "fas fa-info-circle", "/Panel/Guild/Information", GuildManage),
+                new SidebarItem("Members", "fas fa-users", "/Panel/Guild/Members", page: PanelNavigation.Members(GuildManage)),
+                new SidebarItem("Configuration", "fas fa-cogs", "/Panel/Guild/Configuration", page: PanelNavigation.Configuration(GuildManage)),
             });
             return Page();
         }

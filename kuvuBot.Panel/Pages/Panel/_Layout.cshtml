@@ -1,6 +1,7 @@
 ﻿@using kuvuBot.Commands
 @using System.Linq;
 @using kuvuBot.Panel.Pages.Panel;
+@using Microsoft.AspNetCore.Routing
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     var discord = await HttpContextAccessor.HttpContext.GetRestClient();
@@ -8,15 +9,15 @@
     {
         ViewData.AddToSidebar(new[]
         {
-            new SidebarHeader("Global Management"),
-            new SidebarItem("Manage kuvuBot", "fas fa-robot", "/Panel/Global"),
-        });
+    new SidebarHeader("Global Management"),
+    new SidebarItem("Manage kuvuBot", "fas fa-robot", "/Panel/Global"),
+});
     }
     ViewData.AddToSidebar(new[]
     {
-        new SidebarHeader("Management"),
-        new SidebarItem("My guilds", "fa fa-server", "/Panel", PanelNavigation.Guilds),
-    });
+new SidebarHeader("Management"),
+new SidebarItem("My guilds", "fa fa-server", "/Panel/Index", PanelNavigation.Guilds),
+});
 }
 
 <!DOCTYPE html>
@@ -97,9 +98,9 @@
                                 }
                                 else
                                 {
+                                    var page = ViewContext.ActionDescriptor;
                                     <li class="nav-item">
-                                        @* TODO use asp-page instead of ToLower() *@
-                                        <a href="@sidebarItem.Href.ToLower()" class="nav-link @PanelNavigation.PageNavClass(ViewContext, sidebarItem.Page.Text)">
+                                        <a asp-page="@sidebarItem.Href" asp-all-route-data="@ViewContext.RouteData.Values.ToDictionary(x => x.Key, x => x.Value.ToString())" class="nav-link @PanelNavigation.PageNavClass(ViewContext, sidebarItem.Page.Text)">
                                             <i class="nav-icon @sidebarItem.Icon"></i>
                                             <p>
                                                 @sidebarItem.Text

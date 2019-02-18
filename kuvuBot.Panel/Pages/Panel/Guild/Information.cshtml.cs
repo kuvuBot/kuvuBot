@@ -16,9 +16,6 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
     {
         public async Task<ActionResult> OnGetAsync(string id)
         {
-            if (!Request.GetDisplayUrl().EndsWith("/"))
-                Response.Redirect(Request.GetEncodedUrl() + "/");
-
             var result = await MakeResult(id);
             ViewData["ActivePage"] = GuildManage;
             return result;
