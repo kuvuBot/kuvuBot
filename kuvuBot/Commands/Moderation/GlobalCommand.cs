@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using DSharpPlus;
+using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using kuvuBot.Data;
-using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using DSharpPlus.Entities;
 using kuvuBot.Features.Modular;
 using kuvuBot.Commands.Attributes;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -36,12 +37,67 @@ namespace kuvuBot.Commands.Moderation
                 }
             };
 
-            foreach(var module in ModuleManager.Modules)
+            foreach (var module in ModuleManager.Modules)
             {
                 embed.AddField(module.Name, $"Version: {module.Version}, Author: {module.Author}, Description: `{module.Description}`");
             }
 
             await embed.Send(ctx.Message.Channel);
+        }
+
+        public static class Globals
+        {
+            public class EvalContext
+            {
+                public CommandContext Ctx;
+            }
+        }
+
+        [Command("eval"), Description("Evaluate c# code")]
+        [RequireGlobalRank(KuvuGlobalRank.Root)]
+        public async Task Eval(CommandContext ctx, [RemainingText] string code)
+        {
+            try
+            {
+                var state = await CSharpScript.RunAsync(Regex.Replace(code, "```(csharp)?", "").Trim(),
+                    ScriptOptions.Default.WithReferences(typeof(int).Assembly, typeof(CommandContext).Assembly, typeof(Globals.EvalContext).Assembly)
+                        .WithImports("DSharpPlus", "DSharpPlus.Entities", "DSharpPlus.CommandsNext"),
+                    new Globals.EvalContext {Ctx=ctx}, typeof(Globals.EvalContext));
+                if (state.Exception == null)
+                {
+                    var embed = new ModernEmbedBuilder
+                    {
+                        Title = "Evaluation success",
+                        Color = DiscordColor.Green,
+                        Timestamp = DuckTimestamp.Now,
+                        Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                        Fields = new List<DuckField>
+                        {
+                            ("Result", state.ReturnValue?.ToString() ?? "*null*")
+                        }
+                    };
+
+                    if (state.Variables.Any())
+                        embed.AddField("Variables", string.Join("\n", state.Variables.Select(variable => $"*{variable.Type}* **{variable.Name}** = `{variable.Value}`")));
+
+                    await embed.Send(ctx.Message.Channel);
+                }
+                else
+                {
+                    throw state.Exception;
+                }
+            }
+            catch (Exception e)
+            {
+                await new ModernEmbedBuilder
+                {
+                    Title = "Evaluation failed",
+                    Color = DiscordColor.Red,
+                    Timestamp = DuckTimestamp.Now,
+                    Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                    Description = e.ToString().Replace("`", @"\`").Replace("*", @"\*").Replace("~", @"\~").Replace("_", @"\_")
+                }.Send(ctx.Message.Channel);
+            }
         }
     }
 }
