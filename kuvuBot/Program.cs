@@ -197,6 +197,7 @@ namespace kuvuBot
             Commands.RegisterConverter(new FriendlyDiscordMemberConverter());
             Commands.RegisterConverter(new FriendlyDiscordChannelConverter());
             Commands.RegisterConverter(new FriendlyDiscordMessageConverter());
+            Commands.RegisterConverter(new FriendlyBoolConverter());
 
             Commands.CommandExecuted += Commands_CommandExecuted;
             Commands.CommandErrored += Commands_CommandErrored;

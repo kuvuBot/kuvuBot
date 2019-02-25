@@ -56,4 +56,20 @@ namespace kuvuBot.Commands.Converters
             return new DiscordMessageConverter().ConvertAsync(value, ctx);
         }
     }
+
+    public class FriendlyBoolConverter : IArgumentConverter<bool>
+    {
+        public Task<Optional<bool>> ConvertAsync(string value, CommandContext ctx)
+        {
+            if (value == "on" || value == "enable" || value == "show" || value == "1")
+            {
+                return Task.FromResult<Optional<bool>>(true);
+            }
+            else if (value == "off" || value == "disable" || value == "hide" || value == "0")
+            {
+                return Task.FromResult<Optional<bool>>(false);
+            }
+            return new BoolConverter().ConvertAsync(value, ctx);
+        }
+    }
 }
