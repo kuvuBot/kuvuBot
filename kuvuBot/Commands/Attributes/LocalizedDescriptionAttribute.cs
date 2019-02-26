@@ -20,20 +20,20 @@ namespace kuvuBot.Commands.Attributes
             return LangController.Get(desc.Term, lang) ?? command.Description ?? "No description provided";
         }
 
-        public static async Task<string> LocalizedDescription(this Command command, KuvuGuild guild)
+        public static string LocalizedDescription(this Command command, KuvuGuild guild)
         {
             if (!(command.CustomAttributes.FirstOrDefault(x => x is LocalizedDescriptionAttribute) is LocalizedDescriptionAttribute desc))
                 return command.Description ?? "No description provided";
 
-            return await guild.Lang(desc.Term) ?? command.Description ?? "No description provided";
+            return guild.Lang(desc.Term) ?? command.Description ?? "No description provided";
         }
 
-        public static async Task<string> LocalizedDescription(this CommandArgument command, KuvuGuild guild)
+        public static string LocalizedDescription(this CommandArgument command, KuvuGuild guild)
         {
             if (!(command.CustomAttributes.FirstOrDefault(x => x is LocalizedDescriptionAttribute) is LocalizedDescriptionAttribute desc))
                 return command.Description ?? "No description provided";
 
-            return await guild.Lang(desc.Term) ?? command.Description ?? "No description provided";
+            return guild.Lang(desc.Term) ?? command.Description ?? "No description provided";
         }
     }
 

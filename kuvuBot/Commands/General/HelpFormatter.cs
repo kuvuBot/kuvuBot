@@ -41,7 +41,7 @@ namespace kuvuBot.Commands.General
         {
             Command = command;
 
-            EmbedBuilder.Description = $"{Formatter.InlineCode(command.Name)}: {command.LocalizedDescription(KuvuGuild).GetAwaiter().GetResult() ?? "No description provided."}";
+            EmbedBuilder.Description = $"{Formatter.InlineCode(command.Name)}: {command.LocalizedDescription(KuvuGuild) ?? "No description provided."}";
 
             if (command is CommandGroup cgroup && cgroup.IsExecutableWithoutSubcommands)
                 EmbedBuilder.Description = $"{EmbedBuilder.Description}\n\nThis group can be executed as a standalone command.";
@@ -63,7 +63,7 @@ namespace kuvuBot.Commands.General
                     sb.Append("`\n");
 
                     foreach (var arg in ovl.Arguments)
-                        sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.LocalizedDescription(KuvuGuild).GetAwaiter().GetResult() ?? "No description provided.").Append('\n');
+                        sb.Append('`').Append(arg.Name).Append(" (").Append(CommandsNext.GetUserFriendlyTypeName(arg.Type)).Append(")`: ").Append(arg.LocalizedDescription(KuvuGuild) ?? "No description provided.").Append('\n');
 
                     sb.Append('\n');
                 }

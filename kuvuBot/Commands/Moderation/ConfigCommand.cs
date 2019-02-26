@@ -8,13 +8,51 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using DSharpPlus.Entities;
+using HSNXT.DSharpPlus.ModernEmbedBuilder;
 
 namespace kuvuBot.Commands.Moderation
 {
     [Group("config")]
     [Description("Configuration commands")]
+    [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
     public class ConfigCommandGroup : BaseCommandModule
     {
+        private enum OptionType { Field }
+        private class Option
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public OptionType Type { get; set; }
+
+            public Option(string name, string description, OptionType type = OptionType.Field)
+            {
+                Name = name;
+                Description = description;
+                Type = type;
+            }
+
+            public static List<Option> Options = new List<Option>
+            {
+                new Option("prefix", "Change bot prefix")
+            };
+        }
+
+        [Command("list"), Description("Lists config options"), GroupCommand]
+        public async Task List(CommandContext ctx)
+        {
+            await new ModernEmbedBuilder
+            {
+                Title = "Config options",
+                Color = Program.Config.EmbedColor,
+                Timestamp = DuckTimestamp.Now,
+                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                Fields =
+                {
+                    ("Available options", string.Join("\n", Option.Options.Select(x=>$"**{x.Name}**: `{x.Description}`")))
+                }
+            }.Send(ctx.Message.Channel);
+        }
+
         [Command("prefix"), Description("Change bot prefix")]
         [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Prefix(CommandContext ctx, string prefix = null)

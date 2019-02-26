@@ -11,7 +11,7 @@ namespace kuvuBot.Panel
 {
     public static class DiscordExtensions
     {
-        public static async Task<string> GetIconUrl(this DiscordConnection discordConnection)
+        public static string GetIconUrl(this DiscordConnection discordConnection)
         {
             switch (discordConnection.Type)
             {

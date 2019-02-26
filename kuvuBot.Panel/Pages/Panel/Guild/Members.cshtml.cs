@@ -13,13 +13,13 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
 {
     public class MembersModel : BaseGuildModel
     {
-        public int Page { get; set; } = 1;
+        public int PaginationPage { get; set; } = 1;
         public int PageSize { get; set; } = 10;
 
         public async Task<ActionResult> OnGetAsync(string id)
         {
             if (Request.Query.ContainsKey("page") && int.TryParse(Request.Query["page"].FirstOrDefault(), out var page))
-                Page = page;
+                PaginationPage = page;
             if (Request.Query.ContainsKey("pageSize") && int.TryParse(Request.Query["pageSize"].FirstOrDefault(), out var pageSize))
                 PageSize = pageSize;
 

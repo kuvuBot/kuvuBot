@@ -13,7 +13,7 @@ namespace kuvuBot.Lang
 {
     public static class LangExt
     {
-        public static async Task<string> Lang(this KuvuGuild kuvuGuild, string term)
+        public static string Lang(this KuvuGuild kuvuGuild, string term)
         {
             var lang = kuvuGuild.Lang;
             return LangController.Get(term, lang);
@@ -22,7 +22,7 @@ namespace kuvuBot.Lang
         public static async Task<string> Lang(this DiscordGuild guild, string term)
         {
             var kuvuGuild = await guild.GetKuvuGuild();
-            return await kuvuGuild.Lang(term);
+            return kuvuGuild.Lang(term);
         }
 
         public static async Task<string> Lang(this CommandContext ctx, string term)
