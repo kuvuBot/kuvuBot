@@ -10,10 +10,9 @@
     var categories = commands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x).ToList();
 }
 
-<div class="container">
-    <section id="commands">
+    <section id="commands" class="container">
         <h1>Commands</h1>
-        <div data-aos="fade-left" class="container content">
+        <div data-aos="fade-left" class="container section-content">
             <nav>
                 <div class="nav nav-tabs cmds-tabs" id="nav-tab" role="tablist">
                     @foreach (var category in categories)
@@ -53,9 +52,9 @@
         </div>
     </section>
 
-    <section id="stats">
+    <section id="stats" class="container pb-3">
         <h1>Stats</h1>
-        <div class="container content info-content">
+        <div class="container info-content">
             <div class="row">
                 <div class="col-md-4 col-12">
                     <div class="card text-white bg-success mb-3 text-center">
@@ -84,4 +83,22 @@
             </div>
         </div>
     </section>
-</div>
+
+    <section id="info">
+        <div class="container section-content">
+            <h1 data-aos="fade-right">Useful links</h1>
+            <div data-aos="fade-up" class="container info-content">
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <a href="https://github.com/kuvuBot/kuvuBot" class="btn btn-outline-light btn-lg btn-block btn-sq-lg">View on Github</a>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <a href="https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8" class="btn btn-outline-light btn-lg btn-block btn-sq-lg">Add kuvuBot</a>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <a href="https://discord.gg/KbUdeKe" class="btn btn-outline-light btn-lg btn-block btn-sq-lg">kuvuBot Discord Server</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

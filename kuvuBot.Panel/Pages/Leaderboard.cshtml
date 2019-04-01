@@ -13,71 +13,74 @@
 }
 @if (Model.Guild != null)
 {
-    <img class="float-left rounded-circle p-1" src="@(Model.DGuild.IconUrl)" width="60" height="60" />
-    <h1>@Model.DGuild.Name leaderboard</h1>
-    <section id="leaderboard">
-        <div class="container">
-            <table class="table mx-auto">
-                <thead>
-                    <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Nickname</th>
-                        <th scope="col">Level</th>
-                        <th scope="col">EXP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int rank = 1; }
-                    @foreach (var player in Model._BotContext.Users.Where(x => x.Guild == Model.Guild).OrderByDescending(x => x.Exp).Take(10))
-                    {
-                        var duser = await kuvuBot.Program.Client.GetUserAsync(player.DiscordUser);
+    <div class="container">
+        <img class="float-left rounded-circle p-1" src="@(Model.DGuild.IconUrl)" width="60" height="60" />
+        <h1>@Model.DGuild.Name leaderboard</h1>
+        <section id="leaderboard">
+            <div class="container">
+                <table class="table mx-auto">
+                    <thead>
                         <tr>
-                            <th scope="row">@rank</th>
-                            <th><img src="@(duser.AvatarUrl)" class="rounded-circle" height="40" width="40" /> @duser.Username#@duser.Discriminator</th>
-                            <td>@player.GetLevel()</td>
-                            <td>@player.Exp/@KuvuUser.ConvertLevelToExp(player.GetLevel() + 1)</td>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Nickname</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">EXP</th>
                         </tr>
-                        rank++;
-                    }
-                </tbody>
-            </table>
-        </div>
-    </section>
+                    </thead>
+                    <tbody>
+                        @{ int rank = 1; }
+                        @foreach (var player in Model._BotContext.Users.Where(x => x.Guild == Model.Guild).OrderByDescending(x => x.Exp).Take(10))
+                        {
+                            var duser = await kuvuBot.Program.Client.GetUserAsync(player.DiscordUser);
+                            <tr>
+                                <th scope="row">@rank</th>
+                                <th><img src="@(duser.AvatarUrl)" class="rounded-circle" height="40" width="40" /> @duser.Username#@duser.Discriminator</th>
+                                <td>@player.GetLevel()</td>
+                                <td>@player.Exp/@KuvuUser.ConvertLevelToExp(player.GetLevel() + 1)</td>
+                            </tr>
+                            rank++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 }
 else
 {
-
-    <p>Search guild by name or id:</p>
-    <div class="input-group mb-3">
-        <input id="guildIdInput" type="text" class="form-control" placeholder="Discord guild name or id" aria-label="Discord guild id" aria-describedby="button-addon2">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="window.location.assign('Leaderboard?search=' + $('#guildIdInput').val())">Go</button>
+    <div class="container">
+        <p>Search guild by name or id:</p>
+        <div class="input-group mb-3">
+            <input id="guildIdInput" type="text" class="form-control" placeholder="Discord guild name or id" aria-label="Discord guild id" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="window.location.assign('Leaderboard?search=' + $('#guildIdInput').val())">Go</button>
+            </div>
         </div>
-    </div>
-    @if (!User.Identity.IsAuthenticated)
-    {
-        <p>or, login with discord to see guilds are you in.</p>
-    }
-    else
-    {
-        <div class="row mx-auto">
-            @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => Model._BotContext.Guilds.Any(k => k.GuildId == x.Id)))
-            {
-                <div class="card m-2 mx-auto" style="width: 8rem;">
-                    <img src="@(guild.IconUrl ?? "https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon">
-                    <div class="card-body">
-                        <h5 class="card-title">@guild.Name</h5>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <p>or, login with discord to see guilds are you in.</p>
+        }
+        else
+        {
+            <div class="row mx-auto">
+                @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => Model._BotContext.Guilds.Any(k => k.GuildId == x.Id)))
+                {
+                    <div class="card m-2 mx-auto" style="width: 8rem;">
+                        <img src="@(guild.IconUrl ?? "https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon">
+                        <div class="card-body">
+                            <h5 class="card-title">@guild.Name</h5>
 
-                        @{
-                            var routeData = new Dictionary<string, string>()
-                            {
-                                ["search"] = guild.Id.ToString(),
-                            };
-                        }
-                        <a asp-page="/Leaderboard" asp-all-route-data="routeData" class="btn btn-primary">Go</a>
+                            @{
+                                var routeData = new Dictionary<string, string>()
+                                {
+                                    ["search"] = guild.Id.ToString(),
+                                };
+                            }
+                            <a asp-page="/Leaderboard" asp-all-route-data="routeData" class="btn btn-primary">Go</a>
+                        </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
+    </div>
 }
