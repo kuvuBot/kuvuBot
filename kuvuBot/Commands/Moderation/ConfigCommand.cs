@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using System.Linq;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using System.Reflection;
+using DSharpPlus.CommandsNext.Converters;
+using kuvuBot.Lang;
+using kuvuBot.Commands.Converters;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -22,24 +26,55 @@ namespace kuvuBot.Commands.Moderation
         {
             public string Name { get; set; }
             public string Description { get; set; }
+            public string Field { get; set; }
+            public Type FieldType { get; set; }
+            public IArgumentConverter Converter { get; set; }
+            public string[] Aliases { get; set; }
             public OptionType Type { get; set; }
 
-            public Option(string name, string description, OptionType type = OptionType.Field)
+            public Option(string name, string description, OptionType type = OptionType.Field, params string[] aliases)
             {
                 Name = name;
                 Description = description;
                 Type = type;
+                Aliases = aliases;
+            }
+
+            private PropertyInfo GetProperty(object instance)
+            {
+                var type = instance.GetType();
+                return type.GetProperty(Field);
+            }
+
+            public object GetValue(object instance)
+            {
+                return GetProperty(instance).GetValue(instance);
+            }
+
+            public void SetValue(object instance, object value)
+            {
+                GetProperty(instance).SetValue(instance, value);
             }
 
             public static List<Option> Options = new List<Option>
             {
-                new Option("prefix", "Change bot prefix")
+                new Option("prefix", "Bot's commands prefix") { Field = "Prefix" },
+                new Option("language", "Bot language", aliases: "lang") { Field = "Lang", Converter = new LangConverter() },
+                new Option("logchannel", "Channel where bot will log") { Field = "LogChannel", Converter = new FriendlyDiscordChannelConverter() },
+                new Option("greetingchannel", "Channel where bot will say greeting to new users") { Field = "GreetingChannel", Converter = new FriendlyDiscordChannelConverter() },
+                new Option("goodbyechannel", "Channel where bot will say goodbye to leaving users") { Field = "GoodbyeChannel", Converter = new FriendlyDiscordChannelConverter() },
+                new Option("greeting", "Greeting message") { Field = "GreetingMessage" },
+                new Option("goodbye", "Goodbye message") { Field = "GoodbyeMessage" },
+                new Option("autorole", "Role that will be given to new users") { Field = "AutoRole", Converter = new DiscordRoleConverter() },
+                new Option("muterole", "Role that will be given to muted users") { Field = "MuteRole", Converter = new DiscordRoleConverter() },
+                new Option("showlevelup", "Option that enable level up messages") { Field = "ShowLevelUp", Converter = new FriendlyBoolConverter() },
             };
         }
 
         [Command("list"), Description("Lists config options"), GroupCommand]
         public async Task List(CommandContext ctx)
         {
+            var kuvuGuild = await ctx.Guild.GetKuvuGuild();
             await new ModernEmbedBuilder
             {
                 Title = "Config options",
@@ -48,219 +83,50 @@ namespace kuvuBot.Commands.Moderation
                 Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 Fields =
                 {
-                    ("Available options", string.Join("\n", Option.Options.Select(x=>$"**{x.Name}**: `{x.Description}`")))
+                    ("Available options", string.Join("\n", Option.Options.Select(x=>$"**{x.Name}**: `{x.Description}` = `{x.GetValue(kuvuGuild) ?? "not set"}`"))),
+                    ("To set option: ", $"{kuvuGuild.Prefix}config (option name) (option value)", true),
+                    ("To view option: ", $"{kuvuGuild.Prefix}config (option name)", true)
                 }
             }.Send(ctx.Message.Channel);
         }
 
-        [Command("prefix"), Description("Change bot prefix")]
+        [Description("Change config option"), GroupCommand]
         [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Prefix(CommandContext ctx, string prefix = null)
+        public async Task Set(CommandContext ctx, string optionName, [RemainingText] string value = null)
         {
             var botContext = new BotContext();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (prefix == null)
+            var option = Option.Options.FirstOrDefault(x => x.Name == optionName);
+            if (option == null)
             {
-                await ctx.RespondAsync($"Current prefix is `{kuvuGuild.Prefix}`");
+                await List(ctx);
+                return;
             }
-            else
-            {
-                kuvuGuild.Prefix = prefix;
-                await ctx.RespondAsync($"👌, changed prefix to `{kuvuGuild.Prefix}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
 
-        [Command("lang"), Description("Change bot language"), Aliases("language", "język", "jezyk")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Lang(CommandContext ctx, string lang = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (lang == null)
+            if (value == null)
             {
-                await ctx.RespondAsync($"Current language is `{kuvuGuild.Lang}`");
+                await ctx.RespondAsync($"Current {option.Name} is `{option.GetValue(kuvuGuild)}`");
             }
             else
             {
-                kuvuGuild.Lang = lang;
-                await ctx.RespondAsync($"👌, changed language to `{kuvuGuild.Lang}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
+                object converted = value;
 
-        [Command("logchannel"), Description("Change log channel")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task LogChannel(CommandContext ctx, DiscordChannel channel = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (channel == null)
-            {
-                await ctx.RespondAsync($"Current log channel is `{(kuvuGuild.LogChannel.HasValue ? kuvuGuild.LogChannel.ToString() : "none")}`");
-            }
-            else
-            {
-                kuvuGuild.LogChannel = channel.Id;
-                await ctx.RespondAsync($"👌, changed log to `{kuvuGuild.LogChannel.ToString()}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-        [Command("greetingchannel"), Description("Change greeting channel")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task GreetingChannel(CommandContext ctx, DiscordChannel channel = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (channel == null)
-            {
-                await ctx.RespondAsync($"Current greeting channel is `{(kuvuGuild.GreetingChannel.HasValue ? kuvuGuild.GreetingChannel.ToString() : "none")}`");
-            }
-            else
-            {
-                kuvuGuild.GreetingChannel = channel.Id;
-                await ctx.RespondAsync($"👌, changed greeting to `{kuvuGuild.GreetingChannel.ToString()}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-        [Command("goodbyechannel"), Description("Change goodbye channel")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task GoodbyeChannel(CommandContext ctx, DiscordChannel channel = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (channel == null)
-            {
-                await ctx.RespondAsync($"Current goodbye channel is `{(kuvuGuild.GoodbyeChannel.HasValue ? kuvuGuild.GoodbyeChannel.ToString() : "none")}`");
-            }
-            else
-            {
-                kuvuGuild.GoodbyeChannel = channel.Id;
-                await ctx.RespondAsync($"👌, changed goodbye to `{kuvuGuild.GoodbyeChannel.ToString()}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-
-        [Command("greeting"), Description("Change greeting message")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Greeting(CommandContext ctx, [RemainingText] string message = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (message == null)
-            {
-                await ctx.RespondAsync($"Current greeting message is `{(kuvuGuild.GreetingMessage ?? "none")}`");
-            }
-            else
-            {
-                kuvuGuild.GreetingMessage = message;
-                await ctx.RespondAsync($"👌, changed greeting message to `{kuvuGuild.GreetingMessage}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-        [Command("goodbye"), Description("Change goodbye message")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Goodbye(CommandContext ctx, [RemainingText] string message = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (message == null)
-            {
-                await ctx.RespondAsync($"Current goodbye message is `{(kuvuGuild.GoodbyeMessage ?? "none")}`");
-            }
-            else
-            {
-                kuvuGuild.GoodbyeMessage = message;
-                await ctx.RespondAsync($"👌, changed goodbye message to `{kuvuGuild.GoodbyeMessage}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-
-        [Command("autorole"), Description("Change autorole")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Autorole(CommandContext ctx, DiscordRole role = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (role == null)
-            {
-                await ctx.RespondAsync($"Current autorole is `{(kuvuGuild.AutoRole.HasValue ? kuvuGuild.AutoRole.ToString() : "none")}`");
-            }
-            else
-            {
-                kuvuGuild.AutoRole = role.Id;
-                await ctx.RespondAsync($"👌, changed autorole to `{kuvuGuild.AutoRole.ToString()}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-
-        [Aliases("showlvlup")]
-        [Command("showlevelup"), Description("Toggle level up message")]
-        [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task ShowLevelUp(CommandContext ctx, bool? toggle = null)
-        {
-            var botContext = new BotContext();
-            var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-            if (!toggle.HasValue)
-            {
-                await ctx.RespondAsync($"Current level up message mode is `{(kuvuGuild.ShowLevelUp ? "showed" : "hided")}`");
-            }
-            else
-            {
-                kuvuGuild.ShowLevelUp = toggle.Value;
-                await ctx.RespondAsync($"👌, changed level up message mode to `{(kuvuGuild.ShowLevelUp ? "showed" : "hided")}`");
-                botContext.Guilds.Update(kuvuGuild);
-                await botContext.SaveChangesAsync();
-            }
-        }
-
-        [Group("mute")]
-        [Description("Mute configuration commands")]
-        public class MuteCommandGroup : BaseCommandModule
-        {
-            [Command("setup"), Description("Setup mute role")]
-            [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
-            public async Task Setup(CommandContext ctx, DiscordRole role = null)
-            {
-                var botContext = new BotContext();
-                var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
-                if (role == null)
+                if (option.Converter != null)
                 {
-                    if (kuvuGuild.AutoRole.HasValue)
+                    var task = (dynamic)option.Converter.GetType().GetMethod("ConvertAsync").Invoke(option.Converter, new object[] { value, ctx });
+                    dynamic optional = await task;
+                    if (!optional.HasValue)
                     {
-                        await ctx.RespondAsync($"Current mute role is `{kuvuGuild.AutoRole.ToString()}`");
+                        await ctx.RespondAsync("Bad value type");
+                        return;
                     }
-                    else
-                    {
-                        await ctx.RespondAsync($"Creating mute role...");
-                        await ctx.Channel.TriggerTypingAsync();
-                        try
-                        {
-                            role = await ctx.Guild.CreateRoleAsync("Muted", Permissions.None.Revoke(Permissions.SendMessages));
-                            await ctx.RespondAsync($"Created {role.Mention}. Roles above will bypass mute");
-                        }
-                        catch (Exception)
-                        {
-                            await ctx.RespondAsync($"Can't create role.");
-                        }
-                    }
+                    converted = optional.Value;
+                }
 
-                }
-                if (role != null)
-                {
-                    kuvuGuild.MuteRole = role.Id;
-                    await ctx.RespondAsync($"👌, changed mute role to `{kuvuGuild.MuteRole.ToString()}`");
-                    botContext.Guilds.Update(kuvuGuild);
-                    await botContext.SaveChangesAsync();
-                }
+                option.SetValue(kuvuGuild, converted);
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+                await ctx.RespondAsync($"👌, changed {option.Name} to `{option.GetValue(kuvuGuild)}`");
             }
         }
     }

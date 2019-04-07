@@ -70,9 +70,9 @@ namespace kuvuBot.Features
                 var channel = e.Guild.GetChannel(kuvuGuild.LogChannel.Value);
                 await Log("⬅", $"{e.Member.Name()} leave guild", kuvuGuild, channel, e.Member);
             }
-            if (kuvuGuild.GoodbyeChannel.HasValue && !string.IsNullOrWhiteSpace(kuvuGuild.GoodbyeMessage))
+            if (kuvuGuild.GoodbyeChannelId.HasValue && !string.IsNullOrWhiteSpace(kuvuGuild.GoodbyeMessage))
             {
-                var channel = e.Guild.GetChannel(kuvuGuild.GoodbyeChannel.Value);
+                var channel = e.Guild.GetChannel(kuvuGuild.GoodbyeChannelId.Value);
                 await channel.SendMessageAsync(kuvuGuild.GoodbyeMessage
                     .Replace("%name%", e.Member.DisplayName)
                     .Replace("%discriminator%", e.Member.Discriminator)
@@ -88,9 +88,9 @@ namespace kuvuBot.Features
                 var channel = e.Guild.GetChannel(kuvuGuild.LogChannel.Value);
                 await Log("➡", $"{e.Member.Name()} joined guild", kuvuGuild, channel, e.Member);
             }
-            if (kuvuGuild.GreetingChannel.HasValue && !string.IsNullOrWhiteSpace(kuvuGuild.GreetingMessage))
+            if (kuvuGuild.GreetingChannelId.HasValue && !string.IsNullOrWhiteSpace(kuvuGuild.GreetingMessage))
             {
-                var channel = e.Guild.GetChannel(kuvuGuild.GoodbyeChannel.Value);
+                var channel = e.Guild.GetChannel(kuvuGuild.GoodbyeChannelId.Value);
                 await channel.SendMessageAsync(kuvuGuild.GreetingMessage
                     .Replace("%name%", e.Member.DisplayName)
                     .Replace("%discriminator%", e.Member.Discriminator)

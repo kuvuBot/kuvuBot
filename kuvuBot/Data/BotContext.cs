@@ -36,7 +36,7 @@ namespace kuvuBot.Data
             return kuvuGuild;
         }
 
-        public static async Task<GlobalUser> GetGlobalUser(this DiscordUser user,BotContext botContext = null)
+        public static async Task<GlobalUser> GetGlobalUser(this DiscordUser user, BotContext botContext = null)
         {
             if (user.IsBot) throw new Exception("Can't get bot GlobalUser");
             botContext = botContext ?? new BotContext();
@@ -90,9 +90,36 @@ namespace kuvuBot.Data
 
         public bool ShowLevelUp { get; set; } = false;
 
-        public ulong? GreetingChannel { get; set; }
+        public ulong? GreetingChannelId { get; set; }
+
+        [NotMapped]
+        public DiscordChannel GreetingChannel
+        {
+            get
+            {
+                if (!GreetingChannelId.HasValue)
+                    return null;
+
+                return Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GreetingChannelId.Value);
+            }
+            set { GreetingChannelId = value.Id; }
+        }
         public string GreetingMessage { get; set; }
-        public ulong? GoodbyeChannel { get; set; }
+
+        public ulong? GoodbyeChannelId { get; set; }
+
+        [NotMapped]
+        public DiscordChannel GoodbyeChannel
+        {
+            get
+            {
+                if (!GoodbyeChannelId.HasValue)
+                    return null;
+
+                return Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GoodbyeChannelId.Value);
+            }
+            set { GoodbyeChannelId = value.Id; }
+        }
         public string GoodbyeMessage { get; set; }
 
         public ulong? MuteRole { get; set; }

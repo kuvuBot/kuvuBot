@@ -33,7 +33,7 @@ namespace kuvuBot.Commands.Fun
         public List<Field> Fields;
         public Difficulty Difficulty;
 
-        public Field GetPoleAt(int x, int y)
+        public Field GetFieldAt(int x, int y)
         {
             return Fields.FirstOrDefault(p => p.x == x && p.y == y);
         }
@@ -75,7 +75,7 @@ namespace kuvuBot.Commands.Fun
 
             for (int i = 1; i <= mines; i++)
             {
-                GetPoleAt(new Random().Next(1, size), new Random().Next(1, size)).isMine = true;
+                GetFieldAt(new Random().Next(1, size), new Random().Next(1, size)).isMine = true;
             }
         }
 
@@ -89,13 +89,13 @@ namespace kuvuBot.Commands.Fun
             }
 
             var lastY = 1;
-            foreach (Field pole in Fields)
+            foreach (Field field in Fields)
             {
-                if (lastY != pole.y)
+                if (lastY != field.y)
                 {
                     builder.Append("\n");
                 }
-                if (pole.isMine)
+                if (field.isMine)
                 {
                     builder.Append(spoiler ? $"||💣||" : "💣");
                 }
@@ -118,14 +118,14 @@ namespace kuvuBot.Commands.Fun
 
                     foreach (var xy in sequence)
                     {
-                        var p = GetPoleAt(pole.x + xy.Item1, pole.y + xy.Item2);
+                        var p = GetFieldAt(field.x + xy.Item1, field.y + xy.Item2);
                         if (p != null && p.isMine)
                             minesAround++;
                     }
 
                     builder.Append(spoiler ? $"||:{EmojiTextCommand.nums[minesAround]}:||" : $":{EmojiTextCommand.nums[minesAround]}:");
                 }
-                lastY = pole.y;
+                lastY = field.y;
             }
             return builder.ToString();
         }
