@@ -79,5 +79,15 @@ namespace kuvuBot.Commands
             var message = await channel.SendMessageAsync(content, tts, embed);
             await Task.Delay(delay).ContinueWith(async t => await message.DeleteAsync());
         }
+
+        public static IEnumerable<DiscordRole> Selectable(this IEnumerable<DiscordRole> roles, ulong guildId)
+        {
+            return roles.Where(x => x.Id != guildId);
+        }
+
+        public static IEnumerable<DiscordChannel> Selectable(this IEnumerable<DiscordChannel> channels, ChannelType type = ChannelType.Text, bool canBeCategory = false)
+        {
+            return channels.Where(x => x.IsCategory == canBeCategory && x.Type == type);
+        }
     }
 }

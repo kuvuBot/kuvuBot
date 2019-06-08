@@ -32,7 +32,7 @@ namespace kuvuBot
 {
     public class Program
     {
-        const string ConfigFilename = "config.json";
+        private const string ConfigFilename = "config.json";
 
         public static DiscordClient Client { get; set; }
         public static Config Config { get; set; }
@@ -43,12 +43,7 @@ namespace kuvuBot
         {
             if (!File.Exists(ConfigFilename))
             {
-                Console.WriteLine($"{ConfigFilename} not found. Generating one for you, fill it");
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(Assembly.GetExecutingAssembly().GetManifestResourceNames().FirstOrDefault(x=>x.EndsWith("config.example.json"))))
-                {
-                    stream.CopyTo(File.Create(ConfigFilename));
-                    System.Environment.Exit(1);
-                }
+                throw new Exception($"{ConfigFilename} not found. Copy from example and fill it");
             }
             return Config ?? (Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(ConfigFilename)));
         }
@@ -86,86 +81,6 @@ namespace kuvuBot
 
         public static async Task Main(string[] args)
         {
-            if (args != null && args.Length >= 1 && args[0] == "--migrate")
-            {
-                Console.WriteLine(new Figlet().ToAscii("Migration tool mode"), Color.Red);
-                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.migrate.json"));
-
-                var botContext = new BotContext();
-                UpdateDatabase();
-
-                if (File.Exists("stats.json"))
-                {
-                    Console.WriteLine("Migrating stats...");
-                    var legacyStats = JArray.Parse((File.ReadAllText("stats.json")));
-
-                    foreach (JToken legacyStat in legacyStats.Children<JToken>())
-                    {
-                        botContext.Statistics.Add(new KuvuStat()
-                        {
-                            Date = DateTime.Parse(legacyStat.First.ToObject<string>()),
-
-                            Guilds = (int)legacyStat.Last.ToObject<LegacyStat>().Guilds,
-                            Channels = (int)legacyStat.Last.ToObject<LegacyStat>().Channels,
-                            Users = (int)legacyStat.Last.ToObject<LegacyStat>().Users,
-                        });
-                    }
-                    Console.WriteLine("Updating database...");
-                    await botContext.SaveChangesAsync();
-
-                }
-                else
-                {
-                    Console.WriteLine("config.migrate.json not found - skipping");
-                }
-
-                if (File.Exists("config.migrate.json") && File.Exists("out.json"))
-                {
-
-                    var legacyDb = LegacyGuild.FromJson(File.ReadAllText("out.json"));
-
-                    foreach (var legacyGuild in legacyDb)
-                    {
-                        if (ulong.TryParse(legacyGuild.Id, out ulong id) == false)
-                            continue;
-
-                        var kuvuGuild = new KuvuGuild()
-                        {
-                            GuildId = id,
-                            Lang = legacyGuild.Lang ?? "en",
-                            Prefix = legacyGuild.Prefix ?? "kb!",
-                            ShowLevelUp = legacyGuild.Showlvl ?? true,
-                        };
-                        botContext.Guilds.Add(kuvuGuild);
-                        if (legacyGuild.Users.HasValue && legacyGuild.Users.Value.UserMap != null)
-                            foreach (var legacyUser in legacyGuild.Users.Value.UserMap)
-                            {
-                                if (ulong.TryParse(legacyUser.Key, out ulong userId) == false)
-                                    continue;
-                                var kuvuUser = new KuvuUser()
-                                {
-                                    DiscordUser = userId,
-                                    Exp = KuvuUser.ConvertLevelToExp((int)legacyUser.Value.Lvl),
-                                    Guild = kuvuGuild
-                                };
-                                botContext.Users.Add(kuvuUser);
-                            }
-                    }
-
-                    Console.WriteLine("Updating database...");
-                    await botContext.SaveChangesAsync();
-                }
-                else
-                {
-                    Console.WriteLine("config.migrate.json or out.json not found - skipping");
-                }
-
-                Console.WriteLine("Done! :3");
-                Console.ReadKey();
-                return;
-            }
-
-            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
 
             LoadConfig();
@@ -263,18 +178,6 @@ namespace kuvuBot
         {
             Client.DebugLogger.LogMessage(LogLevel.Debug, "kuvuLogging", $"{e.Context.User.Username} executed '{e.Command.QualifiedName}' in {e.Context.Channel.Name}.", DateTime.Now);
             return Task.CompletedTask;
-        }
-
-        private static async void CurrentDomain_ProcessExit(object sender, EventArgs e)
-        {
-            // TODO Ekhmm, do it less brutally
-            Console.WriteLine("Closing kuvuBot...", Color.Black);
-            await Client.UpdateStatusAsync(new DiscordActivity("Restarting bot...", ActivityType.Watching), UserStatus.Idle);
-            await Client.DisconnectAsync();
-            Client.Dispose();
-            Kill = true;
-            Process.GetCurrentProcess().Kill();
-            Environment.Exit(-1);
         }
 
         private static void UpdateStatus()

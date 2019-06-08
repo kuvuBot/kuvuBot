@@ -35,12 +35,12 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
                 return Unauthorized();
             }
 
-            foreach(var kuvuUser in _BotContext.Users.Where(x=>x.Guild.GuildId == DGuild.Id))
+            foreach(var kuvuUser in BotContext.Users.Where(x=>x.Guild.GuildId == DiscordGuild.Id))
             {
                 kuvuUser.Exp = 0;
                 kuvuUser.LastExpMessage = null;
             }
-            await _BotContext.SaveChangesAsync();
+            await BotContext.SaveChangesAsync();
 
             return RedirectToPage();
         }
@@ -52,12 +52,12 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
                 return Unauthorized();
             }
 
-            var kuvuUser = _BotContext.Users.Find(userId);
-            if (kuvuUser.Guild.GuildId != DGuild.Id)
+            var kuvuUser = BotContext.Users.Find(userId);
+            if (kuvuUser.Guild.GuildId != DiscordGuild.Id)
                 return Unauthorized();
             kuvuUser.Exp = 0;
             kuvuUser.LastExpMessage = null;
-            await _BotContext.SaveChangesAsync();
+            await BotContext.SaveChangesAsync();
 
             return RedirectToPage();
         }

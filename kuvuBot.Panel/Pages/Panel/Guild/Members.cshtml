@@ -4,7 +4,7 @@
 @using kuvuBot.Panel.Data
 @model kuvuBot.Panel.Pages.Panel.Guild.MembersModel
 @{
-    var dGuild = await kuvuBot.Program.Client.GetGuildAsync(Model.DGuild.Id);
+    var dGuild = await kuvuBot.Program.Client.GetGuildAsync(Model.DiscordGuild.Id);
     var pagedResult = dGuild.Members.GetPaged(Model.PaginationPage, Model.PageSize);
 
     var startIndex = Math.Max(pagedResult.CurrentPage - 5, 1);
@@ -25,8 +25,8 @@
                         <div class="float-right">
                             @if (!member.IsBot)
                             {
-                                var kuvuUser = await member.GetKuvuUser(Model.Guild, Model._BotContext);
-                                var globalUser = await member.GetGlobalUser(Model._BotContext);
+                                var kuvuUser = await member.GetKuvuUser(Model.Guild, Model.BotContext);
+                                var globalUser = await member.GetGlobalUser(Model.BotContext);
                                 if (globalUser.GlobalRank != null)
                                 {
                                     <span class="badge badge-warning">Global @Enum.GetName(typeof(KuvuGlobalRank), globalUser.GlobalRank)</span>

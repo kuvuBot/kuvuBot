@@ -57,6 +57,19 @@ namespace kuvuBot.Commands.Converters
         }
     }
 
+    public class FriendlyDiscordRoleConverter : IArgumentConverter<DiscordRole>
+    {
+        public Task<Optional<DiscordRole>> ConvertAsync(string value, CommandContext ctx)
+        {
+            return new DiscordRoleConverter().ConvertAsync(value, ctx);
+        }
+
+        public ulong ConvertToDatabaseFormat(DiscordRole value)
+        {
+            return value.Id;
+        }
+    }
+
     public class FriendlyBoolConverter : IArgumentConverter<bool>
     {
         public Task<Optional<bool>> ConvertAsync(string value, CommandContext ctx)

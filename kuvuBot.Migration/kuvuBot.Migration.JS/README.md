@@ -1,3 +1,0 @@
-﻿# kuvuBot.Migration.JS
-
-

@@ -16,36 +16,42 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
     [Authorize]
     public class BaseGuildModel : PageModel
     {
-        public DiscordRestClient Client;
-        public BotContext _BotContext;
+        public DiscordRestClient RestClient;
+        public DiscordClient BotClient;
+        public BotContext BotContext;
 
         public bool Global = false;
-        public GlobalUser globalUser;
+        public GlobalUser GlobalUser;
 
         public KuvuGuild Guild;
-        public DiscordGuild DGuild;
+        public DiscordGuild DiscordGuild;
+        public DiscordGuild RestGuild;
 
         public NavigationItem GuildManage;
 
-        public virtual async Task<ActionResult> MakeResult(string id)
+        public virtual async Task<ActionResult> MakeResult([FromQuery] string id)
         {
-            _BotContext = new BotContext();
-            Client = await HttpContext.GetRestClient();
+            BotContext = new BotContext();
+            RestClient = await HttpContext.GetRestClient();
+            BotClient = kuvuBot.Program.Client;
 
             if (ulong.TryParse(id, out var guildId))
             {
-                Guild = _BotContext.Guilds.FirstOrDefault(x => x.GuildId == guildId);
+                Guild = BotContext.Guilds.FirstOrDefault(x => x.GuildId == guildId);
                 if (Guild != null)
-                    DGuild = Client.Guilds.Values.FirstOrDefault(x => x.Id == Guild.GuildId);
-                if (Guild == null || DGuild == null || !DGuild.Permissions.HasValue || !DGuild.Permissions.Value.HasPermission(Permissions.ManageGuild))
+                {
+                    DiscordGuild = await BotClient.GetGuildAsync(Guild.GuildId);
+                    RestGuild = RestClient.Guilds.Values.FirstOrDefault(x=>x.Id == Guild.GuildId);
+                }
+                if (Guild == null || DiscordGuild == null || RestGuild == null || !RestGuild.Permissions.HasValue || !RestGuild.Permissions.Value.HasPermission(Permissions.ManageGuild))
                 {
                     return Unauthorized();
                 }
             }
             else if (id == "global")
             {
-                globalUser = await Client.CurrentUser.GetGlobalUser(_BotContext);
-                if (globalUser.GlobalRank >= KuvuGlobalRank.Admin)
+                GlobalUser = await RestClient.CurrentUser.GetGlobalUser(BotContext);
+                if (GlobalUser.GlobalRank >= KuvuGlobalRank.Admin)
                 {
                     Global = true;
                 }
@@ -55,7 +61,7 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
                 }
             }
 
-            GuildManage = PanelNavigation.GuildManage(id, DGuild.Name);
+            GuildManage = PanelNavigation.GuildManage(id, DiscordGuild.Name);
             ViewData.AddToSidebar(new[]
             {
                 new SidebarHeader("Guild management"),
