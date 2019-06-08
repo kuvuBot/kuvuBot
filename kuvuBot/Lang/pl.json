@@ -8,7 +8,8 @@
     "badArguments": "Nieprawidłowy argument."
   },
   "lang": {
-    "flag": "🇵🇱"
+    "flag": "🇵🇱",
+    "aliases": "polish|polski"
   },
   "rps": {
     "description": "Zagraj w papier, kamień, nożyce z botem"

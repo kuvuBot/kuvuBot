@@ -7,7 +7,6 @@
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/kuvubot/localized.svg)](https://crowdin.kuvubot.xyz/project/kuvubot)
 
 ## Links
-**Website:** https://kuvuBot.xyz<br>
-**Discord server:** https://discord.gg/WhCjqqj<br>
+**Website:** https://kuvuBot.xyz
+**Discord server:** https://discord.gg/WhCjqqj
 **Bot invite:** http://bit.ly/kuvuBotAdd
-

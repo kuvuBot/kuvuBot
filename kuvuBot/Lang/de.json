@@ -8,7 +8,8 @@
     "badArguments": "Incorrect argument."
   },
   "lang": {
-    "flag": "🇬🇧"
+    "flag": "🇩🇪",
+    "aliases": "german|deutsch"
   },
   "rps": {
     "description": "Play rock, paper and scissors with bot"
