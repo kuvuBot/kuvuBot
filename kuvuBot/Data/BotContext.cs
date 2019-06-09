@@ -102,7 +102,7 @@ namespace kuvuBot.Data
 
                 return Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GreetingChannelId.Value);
             }
-            set { GreetingChannelId = value.Id; }
+            set => GreetingChannelId = value?.Id;
         }
         public string GreetingMessage { get; set; }
 
@@ -118,7 +118,7 @@ namespace kuvuBot.Data
 
                 return Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GoodbyeChannelId.Value);
             }
-            set { GoodbyeChannelId = value.Id; }
+            set => GoodbyeChannelId = value?.Id;
         }
         public string GoodbyeMessage { get; set; }
 
