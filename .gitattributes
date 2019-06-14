@@ -61,3 +61,5 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+kuvuBot.Panel/wwwroot/panel/css/adminlte*.css linguist-vendored
