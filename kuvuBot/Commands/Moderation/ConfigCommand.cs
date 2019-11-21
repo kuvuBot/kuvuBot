@@ -144,7 +144,7 @@ namespace kuvuBot.Commands.Moderation
                     await botContext.SaveChangesAsync();
                     await ctx.RespondAsync($"👌, changed {option.Name} to `{option.GetValue(kuvuGuild)}`");
                 }
-                catch (Exception e)
+                catch
                 {
                     await ctx.RespondAsync("Bad value type");
                 }

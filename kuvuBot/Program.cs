@@ -53,24 +53,26 @@ namespace kuvuBot
             Console.WriteLine("Checking database connection...");
             try
             {
-                var botContext = new BotContext();
-                if (botContext.Database.CanConnect())
+                using (var botContext = new BotContext())
                 {
-                    Console.WriteLine("Database connection is OK");
-                    Console.WriteLine("Migrating database...");
-                    try
+                    if (botContext.Database.CanConnect())
                     {
-                        botContext.Database.Migrate();
-                        Console.WriteLine("Database migration SUCCESS");
+                        Console.WriteLine("Database connection is OK");
+                        Console.WriteLine("Migrating database...");
+                        try
+                        {
+                            botContext.Database.Migrate();
+                            Console.WriteLine("Database migration SUCCESS");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Database migration error\n {e.ToString()}");
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Console.WriteLine($"Database migration error\n {e.ToString()}");
+                        Console.WriteLine($"Database error");
                     }
-                }
-                else
-                {
-                    Console.WriteLine($"Database error");
                 }
             }
             catch (Exception e)
