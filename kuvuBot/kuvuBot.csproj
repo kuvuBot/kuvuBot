@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <StartupObject></StartupObject>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8</LangVersion>
     <Authors>kuvuś, js6pak</Authors>
     <Company>kuvuBot</Company>
     <Version>0.0.4</Version>
