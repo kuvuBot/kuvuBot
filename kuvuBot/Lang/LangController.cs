@@ -37,15 +37,16 @@ namespace kuvuBot.Lang
     {
         public Task<Optional<string>> ConvertAsync(string value, CommandContext ctx)
         {
-            if(LangController.Languages.Contains(value))
+            if (LangController.Languages.Contains(value))
             {
                 return Task.FromResult(new Optional<string>(value));
-            }else
+            }
+            else
             {
-                foreach(var lang in LangController.Languages)
+                foreach (var lang in LangController.Languages)
                 {
                     var aliases = LangController.Get("lang.aliases", lang).Split("|");
-                    if(aliases.Contains(value))
+                    if (aliases.Contains(value))
                     {
                         return Task.FromResult(new Optional<string>(lang));
                     }
@@ -58,7 +59,8 @@ namespace kuvuBot.Lang
     public static class LangController
     {
         public static List<string> Languages = new List<string> { "en", "pl", "de", "fr" };
-        // Arghh its shitty
+
+        // TODO rework this, json path maybe?
         public static string Get(string term, string lang)
         {
             // Split term to content.term
@@ -70,18 +72,20 @@ namespace kuvuBot.Lang
 
             try
             {
-                using (var stream = assembly.GetManifestResourceStream(resourceName))
-                using (var sr = new StreamReader(stream))
+                using var stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream != null)
                 {
-                    //     convert object                           context            term   translated      stream     context   term
+                    using var sr = new StreamReader(stream);
                     var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(sr.ReadToEnd())[path[0]][path[1]];
                     return result;
                 }
             }
-            catch (Exception)
+            catch
             {
-                return null;
+                // ignored
             }
+
+            return null;
         }
     }
 }

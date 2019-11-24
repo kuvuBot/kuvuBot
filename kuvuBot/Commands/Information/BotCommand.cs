@@ -24,19 +24,19 @@ namespace kuvuBot.Commands.Information
             int channels = ctx.Client.Guilds.Values.SelectMany(g => g.Channels).Count();
             await new ModernEmbedBuilder
             {
-                Title = ctx.Lang("bot.title").Result,
+                Title = await ctx.Lang("bot.title"),
                 Fields =
                 {
-                    (ctx.Lang("bot.name").Result, ctx.Client.CurrentUser.Mention, inline: true),
-                    (ctx.Lang("bot.version").Result, Assembly.GetExecutingAssembly().GetName().Version.ToString(3), inline: true),
-                    (ctx.Lang("bot.numOfGuilds").Result, guilds.ToString(), inline: true),
-                    (ctx.Lang("bot.numOfChannels").Result, channels.ToString(), inline: true),
-                    (ctx.Lang("bot.git").Result, "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),
-                    (ctx.Lang("bot.website").Result, "[Check out](https://kuvuBot.xyz)", inline: true),
+                    (await ctx.Lang("bot.name"), ctx.Client.CurrentUser.Mention, inline: true),
+                    (await ctx.Lang("bot.version"), Assembly.GetExecutingAssembly().GetName().Version.ToString(3), inline: true),
+                    (await ctx.Lang("bot.numOfGuilds"), guilds.ToString(), inline: true),
+                    (await ctx.Lang("bot.numOfChannels"), channels.ToString(), inline: true),
+                    (await ctx.Lang("bot.git"), "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),
+                    (await ctx.Lang("bot.website"), "[Check out](https://kuvuBot.xyz)", inline: true),
                 },
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
+                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Client.CurrentUser.AvatarUrl,
             }.Send(ctx.Message.Channel);
         }

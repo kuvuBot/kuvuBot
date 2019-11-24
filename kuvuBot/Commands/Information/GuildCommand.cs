@@ -21,19 +21,19 @@ namespace kuvuBot.Commands.Information
         {
             await new ModernEmbedBuilder
             {
-                Title = ctx.Lang("guild.title").Result,
+                Title = await ctx.Lang("guild.title"),
                 Fields =
                     {
-                        (ctx.Lang("guild.name").Result, ctx.Guild.Name, inline: true),
-                        (ctx.Lang("guild.owner").Result, ctx.Guild.Owner.DisplayName, inline: true),
-                        (ctx.Lang("guild.numOfMembers").Result, ctx.Guild.MemberCount.ToString(), inline: true),
-                        (ctx.Lang("guild.numOfRoles").Result, ctx.Guild.Roles.Count.ToString(), inline: true),
-                        (ctx.Lang("guild.region").Result, ctx.Guild.VoiceRegion.Name, inline: true),
-                        (ctx.Lang("guild.verification").Result, ctx.Guild.VerificationLevel.ToString(), inline: true),
+                        (await ctx.Lang("guild.name"), ctx.Guild.Name, inline: true),
+                        (await ctx.Lang("guild.owner"), ctx.Guild.Owner.DisplayName, inline: true),
+                        (await ctx.Lang("guild.numOfMembers"), ctx.Guild.MemberCount.ToString(), inline: true),
+                        (await ctx.Lang("guild.numOfRoles"), ctx.Guild.Roles.Count.ToString(), inline: true),
+                        (await ctx.Lang("guild.region"), ctx.Guild.VoiceRegion.Name, inline: true),
+                        (await ctx.Lang("guild.verification"), ctx.Guild.VerificationLevel.ToString(), inline: true),
                     },
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
+                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Guild.IconUrl,
             }.Send(ctx.Message.Channel);
         }

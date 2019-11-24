@@ -20,13 +20,14 @@ namespace kuvuBot.Commands.Fun
         public async Task Dice(CommandContext ctx, int? walls = null)
         {
             walls ??= 4;
-            if(walls < 2)
+            if (walls < 2)
             {
-                await ctx.RespondAsync(ctx.Lang("dice.minimum").Result);
-            }else
+                await ctx.RespondAsync(await ctx.Lang("dice.minimum"));
+            }
+            else
             {
                 var result = new Random().Next(1, walls.Value);
-                await ctx.RespondAsync(ctx.Lang("dice.result").Result.Replace("{result}", result.ToString()));
+                await ctx.RespondAsync((await ctx.Lang("dice.result")).Replace("{result}", result.ToString()));
             }
         }
     }

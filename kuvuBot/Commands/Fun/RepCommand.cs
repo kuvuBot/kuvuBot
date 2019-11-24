@@ -18,9 +18,9 @@ namespace kuvuBot.Commands.Fun
         [Command("rep"), LocalizedDescription("rep.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Rep(CommandContext ctx, DiscordUser target)
-        {            
+        {
             await ctx.Channel.TriggerTypingAsync();
-            if(ctx.User == target)
+            if (ctx.User == target)
             {
                 await ctx.RespondAsync($"You can't give rep yourself");
                 return;
@@ -35,14 +35,15 @@ namespace kuvuBot.Commands.Fun
                 globalTarget.Reputation += 1;
                 globalUser.LastGivedRep = DateTime.Now;
                 await botContext.SaveChangesAsync();
-                await ctx.RespondAsync(ctx.Lang("rep.success").Result
+                await ctx.RespondAsync((await ctx.Lang("rep.success"))
                     .Replace("{user}", target.Mention)
                     .Replace("{points}", globalTarget.Reputation.ToString()));
-            }else
+            }
+            else
             {
                 var nextRep = globalUser.LastGivedRep.Value.AddHours(24);
                 var span = nextRep - DateTime.Now;
-                await ctx.RespondAsync(ctx.Lang("rep.limit").Result
+                await ctx.RespondAsync((await ctx.Lang("rep.limit"))
                     .Replace("{hours}", span.Hours.ToString())
                     .Replace("{minutes}", span.Minutes.ToString()));
             }

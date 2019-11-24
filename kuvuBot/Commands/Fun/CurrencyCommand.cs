@@ -38,15 +38,15 @@ namespace kuvuBot.Commands.Fun
                 try
                 {
                     var response = JsonConvert.DeserializeObject<ExchangeRateApiResponse>(wc.DownloadString($"https://api.exchangeratesapi.io/latest?base={baseCur.ToUpper()}"));
-                    if(response.Rates.ContainsKey(targetCur.ToUpper()) || string.Equals(targetCur, "ALL", StringComparison.OrdinalIgnoreCase))
+                    if (response.Rates.ContainsKey(targetCur.ToUpper()) || string.Equals(targetCur, "ALL", StringComparison.OrdinalIgnoreCase))
                     {
                         var embed = new ModernEmbedBuilder
                         {
-                            Title = ctx.Lang("currency.title").Result,
+                            Title = await ctx.Lang("currency.title"),
                             Url = "https://exchangeratesapi.io/",
                             Color = Program.Config.EmbedColor,
                             Timestamp = DateTimeOffset.Parse(response.Date),
-                            Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
+                            Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                         };
 
                         embed.AddField($"{amount} {response.Base}",
@@ -55,14 +55,15 @@ namespace kuvuBot.Commands.Fun
                                 : $"**{response.Rates[targetCur.ToUpper()]}** {targetCur.ToUpper()}");
 
                         await embed.Send(ctx.Message.Channel);
-                    }else
+                    }
+                    else
                     {
-                        await ctx.RespondAsync(ctx.Lang("currency.badTarget").Result);
+                        await ctx.RespondAsync(await ctx.Lang("currency.badTarget"));
                     }
                 }
                 catch (Exception)
                 {
-                    await ctx.RespondAsync(ctx.Lang("currency.badBase").Result);
+                    await ctx.RespondAsync(await ctx.Lang("currency.badBase"));
                 }
             }
         }
