@@ -1,11 +1,12 @@
 {
   "vote": {
     "voting": "Głosowanie",
-    "description": "Tworzy głosowanie"
+    "description": "Makes a voting"
   },
   "global": {
-    "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
-    "badArguments": "Nieprawidłowy argument."
+    "nopermission": "You don't have sufficient permissions to execute this command!",
+    "badArguments": "Nieprawidłowy argument.",
+    "footer": "Generated for {user}"
   },
   "lang": {
     "flag": "🇵🇱",
@@ -15,10 +16,15 @@
     "description": "Zagraj w papier, kamień, nożyce z botem"
   },
   "currency": {
-    "description": "Sprawdź cenę waluty w stosunku do innej"
+    "description": "Sprawdź cenę waluty w stosunku do innej",
+    "title": "Currency calculator",
+    "badTarget": "You've specified wrong target currency",
+    "badBase": "You've specified wrong base currency"
   },
   "dice": {
-    "description": "Rzuć kostką"
+    "description": "Rolls a dice",
+    "minimum": "The minimum number of dice walls is 2!",
+    "result": "You threw {result}!"
   },
   "emojitext": {
     "description": "Generuje tekst zrobiony z emoji"
@@ -30,22 +36,38 @@
     "description": "Zacznij grę w sapera"
   },
   "rep": {
-    "description": "Daje użytkownikowi punkt reputacji"
+    "description": "Daje użytkownikowi punkt reputacji",
+    "limit": "You've already given reputation point to this user recently. Please wait another {hours} hours and {minutes} before you do this again.",
+    "success": "{user} now has {points} reputation points!"
   },
   "ship": {
     "description": "Łączy dwóch użytkowników w pare"
   },
   "emojireaction": {
-    "description": "Generuje tekst z emoji, i dodaje go do zaznaczonej wiadomości jako reakcje"
+    "description": "Generates an emoji text, and react it to desired message"
   },
   "bot": {
-    "description": "Informacje o bocie"
+    "description": "Bot information",
+    "title": "Bot information",
+    "name": "Name",
+    "version": "Version",
+    "numOfGuilds": "Number of servers",
+    "numOfChannels": "Number of channels",
+    "git": "Github",
+    "website": "Website"
   },
   "guild": {
-    "description": "Informacje o serwerze"
+    "description": "Guild information",
+    "title": "Guild information",
+    "name": "Name",
+    "owner": "Owner",
+    "numOfMembers": "Number of members",
+    "numOfRoles": "Number of roles",
+    "region": "Region",
+    "verification": "Verification level"
   },
   "invite": {
-    "description": "Wysyła zaproszenie bota"
+    "description": "Sends bot invite link"
   },
   "leaderboard": {
     "description": "Pokazuje listę najlepszych użytkowników"
@@ -57,13 +79,13 @@
     "description": "Pokazuje ping bota"
   },
   "steam": {
-    "description": "Informacje o danej grze na steam"
+    "description": "Information about steam game"
   },
   "user": {
     "description": "Informacje o użytkowniku"
   },
   "weather": {
-    "description": "Informacje o pogodzie"
+    "description": "Weather information"
   },
   "broadcast": {
     "description": "Tworzy ogłoszenie"
