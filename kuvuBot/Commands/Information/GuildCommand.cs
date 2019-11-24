@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Information
 {
@@ -20,19 +21,19 @@ namespace kuvuBot.Commands.Information
         {
             await new ModernEmbedBuilder
             {
-                Title = "Guild informations",
+                Title = ctx.Lang("guild.title").Result,
                 Fields =
                     {
-                        ("Name", ctx.Guild.Name, inline: true),
-                        ("Owner", ctx.Guild.Owner.DisplayName, inline: true),
-                        ("Number of members", ctx.Guild.MemberCount.ToString(), inline: true),
-                        ("Number of roles", ctx.Guild.Roles.Count.ToString(), inline: true),
-                        ("Region", ctx.Guild.VoiceRegion.Name, inline: true),
-                        ("Verification level", ctx.Guild.VerificationLevel.ToString(), inline: true),
+                        (ctx.Lang("guild.name").Result, ctx.Guild.Name, inline: true),
+                        (ctx.Lang("guild.owner").Result, ctx.Guild.Owner.DisplayName, inline: true),
+                        (ctx.Lang("guild.numOfMembers").Result, ctx.Guild.MemberCount.ToString(), inline: true),
+                        (ctx.Lang("guild.numOfRoles").Result, ctx.Guild.Roles.Count.ToString(), inline: true),
+                        (ctx.Lang("guild.region").Result, ctx.Guild.VoiceRegion.Name, inline: true),
+                        (ctx.Lang("guild.verification").Result, ctx.Guild.VerificationLevel.ToString(), inline: true),
                     },
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Guild.IconUrl,
             }.Send(ctx.Message.Channel);
         }

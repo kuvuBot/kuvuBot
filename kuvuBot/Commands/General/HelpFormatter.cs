@@ -32,8 +32,7 @@ namespace kuvuBot.Commands.General
                 Title = "Command list",
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-                //Footer = $"kuvuBot - {Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}",
+                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
             };
         }
 

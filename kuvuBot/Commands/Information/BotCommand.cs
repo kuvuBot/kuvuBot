@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Information
 {
@@ -23,19 +24,19 @@ namespace kuvuBot.Commands.Information
             int channels = ctx.Client.Guilds.Values.SelectMany(g => g.Channels).Count();
             await new ModernEmbedBuilder
             {
-                Title = "Bot info",
+                Title = ctx.Lang("bot.title").Result,
                 Fields =
                 {
-                    ("Name", ctx.Client.CurrentUser.Mention, inline: true),
-                    ("Version", Assembly.GetExecutingAssembly().GetName().Version.ToString(3), inline: true),
-                    ("Number of guilds", guilds.ToString(), inline: true),
-                    ("Number of channels", channels.ToString(), inline: true),
-                    ("Github", "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),
-                    ("Website", "[Check out](https://kuvuBot.xyz)", inline: true),
+                    (ctx.Lang("bot.name").Result, ctx.Client.CurrentUser.Mention, inline: true),
+                    (ctx.Lang("bot.version").Result, Assembly.GetExecutingAssembly().GetName().Version.ToString(3), inline: true),
+                    (ctx.Lang("bot.numOfGuilds").Result, guilds.ToString(), inline: true),
+                    (ctx.Lang("bot.numOfChannels").Result, channels.ToString(), inline: true),
+                    (ctx.Lang("bot.git").Result, "[Check out](https://github.com/kuvuBot/kuvuBot)", inline: true),
+                    (ctx.Lang("bot.website").Result, "[Check out](https://kuvuBot.xyz)", inline: true),
                 },
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Client.CurrentUser.AvatarUrl,
             }.Send(ctx.Message.Channel);
         }

@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Net;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -41,11 +42,11 @@ namespace kuvuBot.Commands.Fun
                     {
                         var embed = new ModernEmbedBuilder
                         {
-                            Title = "Currency calculator",
+                            Title = ctx.Lang("currency.title").Result,
                             Url = "https://exchangeratesapi.io/",
                             Color = Program.Config.EmbedColor,
                             Timestamp = DateTimeOffset.Parse(response.Date),
-                            Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
+                            Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                         };
 
                         embed.AddField($"{amount} {response.Base}",
@@ -56,12 +57,12 @@ namespace kuvuBot.Commands.Fun
                         await embed.Send(ctx.Message.Channel);
                     }else
                     {
-                        await ctx.RespondAsync("Bad target currency");
+                        await ctx.RespondAsync(ctx.Lang("currency.badTarget").Result);
                     }
                 }
                 catch (Exception)
                 {
-                    await ctx.RespondAsync("Bad base currency");
+                    await ctx.RespondAsync(ctx.Lang("currency.badBase").Result);
                 }
             }
         }

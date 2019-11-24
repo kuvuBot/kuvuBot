@@ -1,11 +1,12 @@
 {
   "vote": {
     "voting": "Voting",
-    "description": "Makes voting"
+    "description": "Makes a voting"
   },
   "global": {
-    "nopermission": "You do not have sufficient permissions to execute this command!",
-    "badArguments": "Incorrect argument."
+    "nopermission": "You don't have sufficient permissions to execute this command!",
+    "badArguments": "Incorrect argument.",
+    "footer": "Generated for {user}"
   },
   "lang": {
     "flag": "🇬🇧",
@@ -15,10 +16,15 @@
     "description": "Play rock, paper and scissors with bot"
   },
   "currency": {
-    "description": "Check currency rate relative to other"
+    "description": "Check currency rate relative to other",
+    "title": "Currency calculator",
+    "badTarget": "You've specified wrong target currency",
+    "badBase": "You've specified wrong base currency"
   },
   "dice": {
-    "description": "Roll dice"
+    "description": "Rolls a dice",
+    "minimum": "The minimum number of dice walls is 2!",
+    "result": "You threw {result}!"
   },
   "emojitext": {
     "description": "Generates a emoji text"
@@ -30,22 +36,38 @@
     "description": "Start a minesweeper game"
   },
   "rep": {
-    "description": "Gives user reputation point"
+    "description": "Gives user reputation point",
+    "limit": "You've already given reputation point to this user recently. Please wait another {hours} hours and {minutes} before you do this again.",
+    "success": "{user} now has {points} reputation points!"
   },
   "ship": {
     "description": "Ships two users"
   },
   "emojireaction": {
-    "description": "Generates a emoji text, and react it to desired message"
+    "description": "Generates an emoji text, and react it to desired message"
   },
   "bot": {
-    "description": "Bot informations"
+    "description": "Bot information",
+    "title": "Bot information",
+    "name": "Name",
+    "version": "Version",
+    "numOfGuilds": "Number of servers",
+    "numOfChannels": "Number of channels",
+    "git": "Github",
+    "website": "Website"
   },
   "guild": {
-    "description": "Guild informations"
+    "description": "Guild information",
+    "title": "Guild information",
+    "name": "Name",
+    "owner": "Owner",
+    "numOfMembers": "Number of members",
+    "numOfRoles": "Number of roles",
+    "region": "Region",
+    "verification": "Verification level"
   },
   "invite": {
-    "description": "Send bot invite link"
+    "description": "Sends bot invite link"
   },
   "leaderboard": {
     "description": "Shows level leaderboard"
@@ -57,13 +79,13 @@
     "description": "Shows bot ping"
   },
   "steam": {
-    "description": "Informations about steam game"
+    "description": "Information about steam game"
   },
   "user": {
     "description": "User information"
   },
   "weather": {
-    "description": "Weather informations"
+    "description": "Weather information"
   },
   "broadcast": {
     "description": "Makes broadcast"

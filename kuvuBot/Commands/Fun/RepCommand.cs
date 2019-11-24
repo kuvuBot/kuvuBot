@@ -9,6 +9,7 @@ using SkiaSharp;
 using kuvuBot.Data;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -34,12 +35,16 @@ namespace kuvuBot.Commands.Fun
                 globalTarget.Reputation += 1;
                 globalUser.LastGivedRep = DateTime.Now;
                 await botContext.SaveChangesAsync();
-                await ctx.RespondAsync($"🎉 | {target.Mention} now have {globalTarget.Reputation} rep!");
+                await ctx.RespondAsync(ctx.Lang("rep.success").Result
+                    .Replace("{user}", target.Mention)
+                    .Replace("{points}", globalTarget.Reputation.ToString()));
             }else
             {
                 var nextRep = globalUser.LastGivedRep.Value.AddHours(24);
                 var span = nextRep - DateTime.Now;
-                await ctx.RespondAsync($"You already give rep recently. Please wait {span.Hours} hours, {span.Minutes} minutes");
+                await ctx.RespondAsync(ctx.Lang("rep.limit").Result
+                    .Replace("{hours}", span.Hours.ToString())
+                    .Replace("{minutes}", span.Minutes.ToString()));
             }
         }
     }

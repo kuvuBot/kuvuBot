@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -18,14 +19,14 @@ namespace kuvuBot.Commands.Fun
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Dice(CommandContext ctx, int? walls = null)
         {
-            walls = walls ?? 4;
+            walls ??= 4;
             if(walls < 2)
             {
-                await ctx.RespondAsync("The minimum number of dice walls is 2!");
+                await ctx.RespondAsync(ctx.Lang("dice.minimum").Result);
             }else
             {
                 var result = new Random().Next(1, walls.Value);
-                await ctx.RespondAsync($"You threw {result}!");
+                await ctx.RespondAsync(ctx.Lang("dice.result").Result.Replace("{result}", result.ToString()));
             }
         }
     }
