@@ -36,7 +36,7 @@
                                 {
                                     <select name="@option.Name" class="form-control">
                                         <option value="null" class="text-muted" selected="@(value == null ? "selected" : null)">@(value == null ? "Select channel" : "None")</option>
-                                        @foreach (var channel in Model.DiscordGuild.Channels.Selectable())
+                                        @foreach (var channel in Model.DiscordGuild.Channels.Values.Selectable())
                                         {
                                             <option value="@channel.Id">#@(channel.Name)</option>
                                         }
@@ -46,7 +46,7 @@
                                 {
                                     <select name="@option.Name" class="form-control">
                                         <option value="null" class="text-muted" selected="@(value == null ? "selected" : null)">@(value == null ? "Select role" : "None")</option>
-                                        @foreach (var role in Model.DiscordGuild.Roles.Selectable(Model.DiscordGuild.Id))
+                                        @foreach (var role in Model.DiscordGuild.Roles.Values.Selectable(Model.DiscordGuild.Id))
                                         {
                                             <option value="@role.Id" selected="@(value != null && (ulong)value == role.Id ? "selected" : null)" style="color: rgb(@(role.Color.R.ToString()), @(role.Color.G.ToString()), @(role.Color.B.ToString()))">@role.Name</option>
                                         }

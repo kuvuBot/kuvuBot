@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
@@ -9,6 +11,18 @@ using DSharpPlus.CommandsNext.Converters;
 
 namespace kuvuBot.Commands.Converters
 {
+    public static class ConverterHelper
+    {
+        // TODO find a way to do this without reflection
+        public static Task<Optional<T>> ConvertAsync<T>(this IArgumentConverter<T> converter, string value, CommandContext ctx)
+        {
+            var method = converter.GetType().GetRuntimeMethods().FirstOrDefault(x => x.Name.EndsWith("ConvertAsync"));
+            var task = method?.Invoke(converter, new object[] { value, ctx });
+
+            return task is Task<Optional<T>> o ? o : null;
+        }
+    }
+
     public class FriendlyDiscordUserConverter : IArgumentConverter<DiscordUser>
     {
         public Task<Optional<DiscordUser>> ConvertAsync(string value, CommandContext ctx)

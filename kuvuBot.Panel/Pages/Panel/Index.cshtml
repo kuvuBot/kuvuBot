@@ -9,7 +9,7 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => x.Permissions.HasValue && x.Permissions.Value.HasPermission(Permissions.ManageGuild) && Model._BotContext.Guilds.Any(k => k.GuildId == x.Id)))
+            @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => x.Permissions.HasValue && x.Permissions.Value.HasPermission(Permissions.ManageGuild) && Model.BotContext.Guilds.Any(k => k.GuildId == x.Id)))
             {
                 <div class="col-md-3">
                     <div class="card text-center">

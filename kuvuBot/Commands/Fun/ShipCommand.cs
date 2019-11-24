@@ -20,7 +20,7 @@ namespace kuvuBot.Commands.Fun
         {
             await ctx.Channel.TriggerTypingAsync();
             
-            var target2 = ctx.Guild.Members.ToList()[new Random().Next(ctx.Guild.Members.Count)];
+            var target2 = ctx.Guild.Members.Values.ToList()[new Random().Next(ctx.Guild.Members.Count)];
             
             var httpClient = new System.Net.Http.HttpClient();
 

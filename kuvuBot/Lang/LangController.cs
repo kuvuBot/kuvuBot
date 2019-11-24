@@ -39,7 +39,7 @@ namespace kuvuBot.Lang
         {
             if(LangController.Languages.Contains(value))
             {
-                return Task.FromResult(Optional<string>.FromValue(value));
+                return Task.FromResult(new Optional<string>(value));
             }else
             {
                 foreach(var lang in LangController.Languages)
@@ -47,10 +47,10 @@ namespace kuvuBot.Lang
                     var aliases = LangController.Get("lang.aliases", lang).Split("|");
                     if(aliases.Contains(value))
                     {
-                        return Task.FromResult(Optional<string>.FromValue(lang));
+                        return Task.FromResult(new Optional<string>(lang));
                     }
                 }
-                return Task.FromResult(Optional<string>.FromNoValue());
+                return Task.FromResult(new Optional<string>());
             }
         }
     }

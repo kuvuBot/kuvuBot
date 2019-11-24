@@ -98,8 +98,9 @@ namespace kuvuBot.Commands.General
                 EmbedBuilder.AddField("For more information type", $"{KuvuGuild.Prefix}help <command>");
                 if (!Program.Config.CustomBot)
                     EmbedBuilder.AddField("Support server", "[Join our support server](https://discord.gg/KbUdeKe)", true);
-                    EmbedBuilder.AddField("Add kuvuBot", "[Add kuvuBot to your guild](https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8)", true);
-            }else
+                EmbedBuilder.AddField("Add kuvuBot", "[Add kuvuBot to your guild](https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8)", true);
+            }
+            else
             {
                 EmbedBuilder.AddField("For more information type", $"{KuvuGuild.Prefix}help {Command.Name} <subcommand>");
             }

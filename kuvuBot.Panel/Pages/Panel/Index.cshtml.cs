@@ -14,10 +14,11 @@ namespace kuvuBot.Panel.Pages.Panel
     public class IndexModel : PageModel
     {
         public DiscordRestClient Client;
-        public BotContext _BotContext;
+        public BotContext BotContext;
+
         public async Task OnGetAsync()
         {
-            _BotContext = new BotContext();
+            BotContext = new BotContext();
             Client = await HttpContext.GetRestClient();
         }
     }

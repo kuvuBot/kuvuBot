@@ -5,7 +5,7 @@
 @model kuvuBot.Panel.Pages.Panel.Guild.MembersModel
 @{
     var dGuild = await kuvuBot.Program.Client.GetGuildAsync(Model.DiscordGuild.Id);
-    var pagedResult = dGuild.Members.GetPaged(Model.PaginationPage, Model.PageSize);
+    var pagedResult = dGuild.Members.Values.GetPaged(Model.PaginationPage, Model.PageSize);
 
     var startIndex = Math.Max(pagedResult.CurrentPage - 5, 1);
     var finishIndex = Math.Min(pagedResult.CurrentPage + 5, pagedResult.PageCount);
