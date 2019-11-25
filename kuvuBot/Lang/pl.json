@@ -5,7 +5,8 @@
   },
   "global": {
     "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
-    "badArguments": "Nieprawidłowy argument."
+    "badArguments": "Nieprawidłowy argument.",
+    "footer": "Wygenerowano dla {user}"
   },
   "lang": {
     "flag": "🇵🇱",
@@ -15,10 +16,15 @@
     "description": "Zagraj w papier, kamień, nożyce z botem"
   },
   "currency": {
-    "description": "Sprawdź cenę waluty w stosunku do innej"
+    "description": "Sprawdź cenę waluty w stosunku do innej",
+    "title": "Kalkulator walutowy",
+    "badTarget": "Podałeś złą walutę docelową",
+    "badBase": "Podałeś złą walutę bazową"
   },
   "dice": {
-    "description": "Rzuć kostką"
+    "description": "Rzuć kostką",
+    "minimum": "Minimalna liczba ścianek kostki wynosi 2!",
+    "result": "Wyrzuciłeś {result}!"
   },
   "emojitext": {
     "description": "Generuje tekst zrobiony z emoji"
@@ -30,7 +36,9 @@
     "description": "Zacznij grę w sapera"
   },
   "rep": {
-    "description": "Daje użytkownikowi punkt reputacji"
+    "description": "Daje użytkownikowi punkt reputacji",
+    "limit": "Ostatnio już dałeś temu użytkownikowi punkt reputacji. Poczekaj kolejne {hours} godzin i {minutes} minut, zanim zrobisz to ponownie.",
+    "success": "{user} ma teraz {points} punktów reputacji!"
   },
   "ship": {
     "description": "Łączy dwóch użytkowników w pare"
@@ -39,10 +47,24 @@
     "description": "Generuje tekst z emoji, i dodaje go do zaznaczonej wiadomości jako reakcje"
   },
   "bot": {
-    "description": "Informacje o bocie"
+    "description": "Informacje o bocie",
+    "title": "Informacje o bocie",
+    "name": "Nazwa",
+    "version": "Wersja",
+    "numOfGuilds": "Liczba serwerów",
+    "numOfChannels": "Liczba kanałów",
+    "git": "GitHub",
+    "website": "Strona internetowa"
   },
   "guild": {
-    "description": "Informacje o serwerze"
+    "description": "Informacje o serwerze",
+    "title": "Informacje o serwerze",
+    "name": "Nazwa",
+    "owner": "Właściciel",
+    "numOfMembers": "Liczba członków",
+    "numOfRoles": "Liczba ról",
+    "region": "Region",
+    "verification": "Poziom weryfikacji"
   },
   "invite": {
     "description": "Wysyła zaproszenie bota"
