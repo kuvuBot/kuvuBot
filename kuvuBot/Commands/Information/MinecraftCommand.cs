@@ -100,7 +100,7 @@ namespace kuvuBot.Commands.Information
             [JsonProperty("online")]
             public long Online { get; set; }
 
-            [JsonProperty("max")]
+            [JsonProperty("max")]await ctx.Lang("minecraft.")
             public long Max { get; set; }
 
             [JsonProperty("sample")]
@@ -140,17 +140,17 @@ namespace kuvuBot.Commands.Information
                 {
                     await new ModernEmbedBuilder
                     {
-                        Title = "Minecraft server status",
+                        Title = await ctx.Lang("minecraft.title"),
                         Fields =
                         {
-                            ("Status", "Online", inline: true),
-                            ("Players", $"{response.Players.Online}/{response.Players.Max}", inline: true),
-                            ("Version", $"{response.Version.Name}", inline: true),
-                            ("Motd", $"```{response.Description.Text}```", inline: false),
+                            (await ctx.Lang("minecraft.status"), await ctx.Lang("minecraft.online"), inline: true),
+                            (await ctx.Lang("minecraft.players"), $"{response.Players.Online}/{response.Players.Max}", inline: true),
+                            (await ctx.Lang("minecraft.version"), $"{response.Version.Name}", inline: true),
+                            (await ctx.Lang("minecraft.motd"), $"```{response.Description.Text}```", inline: false),
                         },
                         Color = new DuckColor(139, 195, 74),
                         Timestamp = DuckTimestamp.Now,
-                        Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
+                        Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                         ThumbnailUrl = response.Favicon.ToString(),
                     }.Send(ctx.Message.Channel);
                 }
@@ -161,11 +161,11 @@ namespace kuvuBot.Commands.Information
                         Title = "Minecraft server status",
                         Fields =
                         {
-                            ("Status", "Offline", inline: true),
+                            (await ctx.Lang("minecraft.status"), await ctx.Lang("minecraft.offline"), inline: true),
                         },
                         Color = new DuckColor(244, 67, 54),
                         Timestamp = DuckTimestamp.Now,
-                        Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
+                        Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                     }.Send(ctx.Message.Channel);
                 }
             }
