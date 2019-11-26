@@ -70,10 +70,18 @@
     "description": "Wysyła zaproszenie bota"
   },
   "leaderboard": {
-    "description": "Pokazuje listę najlepszych użytkowników"
+    "description": "Pokazuje listę najlepszych użytkowników",
+    "title": "Level leaderboard"
   },
   "minecraft": {
-    "description": "Status serwera Minecraft"
+    "description": "Status serwera Minecraft",
+    "title": "Minecraft server status",
+    "status": "Status",
+    "players": "Players",
+    "version": "Version",
+    "motd": "MOTD",
+    "online": "Online",
+    "offline": "Offline"
   },
   "ping": {
     "description": "Pokazuje ping bota"
