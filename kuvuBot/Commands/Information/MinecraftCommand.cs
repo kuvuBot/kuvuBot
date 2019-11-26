@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Information
 {
@@ -100,7 +101,7 @@ namespace kuvuBot.Commands.Information
             [JsonProperty("online")]
             public long Online { get; set; }
 
-            [JsonProperty("max")]await ctx.Lang("minecraft.")
+            [JsonProperty("max")]
             public long Max { get; set; }
 
             [JsonProperty("sample")]

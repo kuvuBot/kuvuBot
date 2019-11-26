@@ -10,6 +10,7 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands.Attributes;
 using kuvuBot.Data;
 using Microsoft.EntityFrameworkCore.Internal;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Information
 {
