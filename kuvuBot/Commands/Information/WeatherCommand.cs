@@ -43,7 +43,7 @@ namespace kuvuBot.Commands.Information
                 },
                     Color = Program.Config.EmbedColor,
                     Timestamp = DuckTimestamp.Now,
-                    Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                    Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 };
 
                 var weatherIcon = weather.Icon;
