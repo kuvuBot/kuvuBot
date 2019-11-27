@@ -70,10 +70,18 @@
     "description": "Sends bot invite link"
   },
   "leaderboard": {
-    "description": "Shows level leaderboard"
+    "description": "Shows level leaderboard",
+    "title": "Level leaderboard"
   },
   "minecraft": {
-    "description": "Minecraft server status"
+    "description": "Minecraft server status",
+    "title": "Minecraft server status",
+    "status": "Status",
+    "players": "Players",
+    "version": "Version",
+    "motd": "MOTD",
+    "online": "Online",
+    "offline": "Offline"
   },
   "ping": {
     "description": "Shows bot ping"
