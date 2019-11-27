@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Information
 {
@@ -33,12 +34,12 @@ namespace kuvuBot.Commands.Information
 
                 var embed = new ModernEmbedBuilder
                 {
-                    Title = "Weather",
+                    Title = await ctx.Lang("weather.title"),
                     Fields =
                 {
-                    ("City", $"{(weather.Icon.Contains("n") ? "🏙" : "🌆")} {query.Name}", inline: true),
-                    ("Country", $"{flag} {query.Sys.Country}", inline: true),
-                    ("Temperature", "🌡 " + query.Main.Temperature.CelsiusCurrent.ToString() + "℃", inline: true),
+                    (await ctx.Lang("weather.city"), $"{(weather.Icon.Contains("n") ? "🏙" : "🌆")} {query.Name}", inline: true),
+                    (await ctx.Lang("weather.country"), $"{flag} {query.Sys.Country}", inline: true),
+                    (await ctx.Lang("weather.temperature"), "🌡 " + query.Main.Temperature.CelsiusCurrent.ToString() + "℃", inline: true),
                 },
                     Color = Program.Config.EmbedColor,
                     Timestamp = DuckTimestamp.Now,
@@ -56,20 +57,20 @@ namespace kuvuBot.Commands.Information
                 weatherIcon = Regex.Replace(weatherIcon, @"13.", "🌨");
                 weatherIcon = Regex.Replace(weatherIcon, @"50.", "🌁");
 
-                embed.AddField("Weather conditions", $"{weatherIcon} {weather.Description}", true);
+                embed.AddField(await ctx.Lang("weather.conditions"), $"{weatherIcon} {weather.Description}", true);
                 if (query.Clouds != null)
-                    embed.AddField("☁ Clouds", $"{query.Clouds.All}%", true);
+                    embed.AddField($"☁ {await ctx.Lang("weather.conditionTypes.clouds")}", $"{query.Clouds.All}%", true);
                 if (query.Rain != null)
-                    embed.AddField("🌧 Rain", $"H3: {query.Rain.H3}", true);
+                    embed.AddField($"🌧 {await ctx.Lang("weather.conditionTypes.rain")}", $"H3: {query.Rain.H3}", true);
                 if (query.Snow != null)
-                    embed.AddField("🌨 Snow", $"H3: {query.Snow.H3}", true);
+                    embed.AddField($"🌨 {await ctx.Lang("weather.conditionTypes.snow")}", $"H3: {query.Snow.H3}", true);
                 if (query.Wind != null)
-                    embed.AddField("💨 Wind", $"{query.Wind.SpeedMetersPerSecond}m/s", true);
+                    embed.AddField($"💨 {await ctx.Lang("weather.conditionTypes.wind")}", $"{query.Wind.SpeedMetersPerSecond}m/s", true);
                 await embed.Send(ctx.Message.Channel);
             }
             catch (WebException)
             {
-                await ctx.RespondAsync("Unkown city");
+                await ctx.RespondAsync(await ctx.Lang("weather.unknown"));
             }
         }
     }

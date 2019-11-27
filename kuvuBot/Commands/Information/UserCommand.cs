@@ -10,6 +10,7 @@ using System.Globalization;
 using kuvuBot.Data;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Information
 {
@@ -22,18 +23,18 @@ namespace kuvuBot.Commands.Information
             target = target ?? ctx.User;
             var embed = new ModernEmbedBuilder
             {
-                Title = "User information",
+                Title = await ctx.Lang("user.title"),
                 Fields =
                     {
                         ("Discord tag", target.Name(true), inline: true),
-                        ("Id", target.Id.ToString(), inline: true),
-                        ("Registration date",
+                        ("ID", target.Id.ToString(), inline: true),
+                        (await ctx.Lang("user.registration"),
                             target.CreationTimestamp.DateTime.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL")),
                             inline: false),
                     },
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Name()}", ctx.User.AvatarUrl),
+                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = target.AvatarUrl ?? target.DefaultAvatarUrl,
             };
             using (var botContext = new BotContext())
@@ -43,9 +44,9 @@ namespace kuvuBot.Commands.Information
                     var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
                     var globalUser = await target.GetGlobalUser(botContext);
 
-                    embed.AddField("Level", kuvuUser.GetLevel().ToString(), inline: true);
-                    embed.AddField("EXP", $"{kuvuUser.Exp}/{KuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true);
-                    embed.AddField("Reputation", globalUser.Reputation.ToString(), inline: true);
+                    embed.AddField(await ctx.Lang("user.level"), kuvuUser.GetLevel().ToString(), inline: true);
+                    embed.AddField(await ctx.Lang("user.exp"), $"{kuvuUser.Exp}/{KuvuUser.ConvertLevelToExp(kuvuUser.GetLevel() + 1)}", inline: true);
+                    embed.AddField(await ctx.Lang("user.rep"), globalUser.Reputation.ToString(), inline: true);
                 }
             await embed.Send(ctx.Message.Channel);
         }
