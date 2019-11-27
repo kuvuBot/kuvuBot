@@ -54,7 +54,8 @@
     "numOfGuilds": "Liczba serwerów",
     "numOfChannels": "Liczba kanałów",
     "git": "GitHub",
-    "website": "Strona internetowa"
+    "website": "Strona internetowa",
+    "checkout": "Sprawdź"
   },
   "guild": {
     "description": "Informacje o serwerze",
@@ -71,17 +72,17 @@
   },
   "leaderboard": {
     "description": "Pokazuje listę najlepszych użytkowników",
-    "title": "Level leaderboard"
+    "title": "Ranking poziomów"
   },
   "minecraft": {
     "description": "Status serwera Minecraft",
-    "title": "Minecraft server status",
+    "title": "Status serwera Minecraft",
     "status": "Status",
-    "players": "Players",
-    "version": "Version",
+    "players": "Gracze",
+    "version": "Wersja",
     "motd": "MOTD",
-    "online": "Online",
-    "offline": "Offline"
+    "online": "Włączony",
+    "offline": "Wyłączony"
   },
   "ping": {
     "description": "Pokazuje ping bota"
@@ -90,10 +91,27 @@
     "description": "Informacje o danej grze na steam"
   },
   "user": {
-    "description": "Informacje o użytkowniku"
+    "description": "Informacje o użytkowniku",
+    "title": "Informacje o użytkowniku",
+    "registration": "Data rejestracji",
+    "level": "Poziom",
+    "exp": "Punkty doświadczenia",
+    "rep": "Reputacja"
   },
   "weather": {
-    "description": "Informacje o pogodzie"
+    "description": "Informacje o pogodzie",
+    "title": "Informacje o pogodzie",
+    "city": "Miasto",
+    "country": "Kraj",
+    "temperature": "Temperatura",
+    "conditions": "Warunki pogodowe",
+    "conditionTypes": {
+      "clouds": "Zachmurzenie",
+      "rain": "Deszczowo",
+      "snow": "Opady śniegu",
+      "wind": "Wiatr"
+    },
+    "unknown": "Nieznane miasto"
   },
   "broadcast": {
     "description": "Tworzy ogłoszenie"

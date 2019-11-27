@@ -54,7 +54,8 @@
     "numOfGuilds": "Number of servers",
     "numOfChannels": "Number of channels",
     "git": "Github",
-    "website": "Website"
+    "website": "Website",
+    "checkout": "Check out"
   },
   "guild": {
     "description": "Guild information",
@@ -90,10 +91,27 @@
     "description": "Information about steam game"
   },
   "user": {
-    "description": "User information"
+    "description": "User information",
+    "title": "User information",
+    "registration": "Registration date",
+    "level": "Level",
+    "exp": "EXP",
+    "rep": "Reputation"
   },
   "weather": {
-    "description": "Weather information"
+    "description": "Weather information",
+    "title": "Weather information",
+    "city": "City",
+    "country": "Country",
+    "temperature": "Temperature",
+    "conditions": "Weather conditions",
+    "conditionTypes": {
+      "clouds": "Clouds",
+      "rain": "Rain",
+      "snow": "Snow",
+      "wind": "Wind"
+    },
+    "unknown": "Unknown city"
   },
   "broadcast": {
     "description": "Makes broadcast"
