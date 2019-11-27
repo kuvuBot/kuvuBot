@@ -166,7 +166,7 @@ namespace kuvuBot.Commands.Information
                         },
                         Color = new DuckColor(244, 67, 54),
                         Timestamp = DuckTimestamp.Now,
-                        Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
+                        Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                     }.Send(ctx.Message.Channel);
                 }
             }
