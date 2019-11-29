@@ -48,7 +48,6 @@ namespace kuvuBot.Panel
                     x.ClientId = kuvuBot.Program.LoadConfig().ClientId;
                     x.ClientSecret = kuvuBot.Program.LoadConfig().ClientSecret;
                     x.Scope.Add("guilds");
-                    x.Scope.Add("connections");
                     x.SaveTokens = true;
                     x.SignInScheme = "Cookies";
 
