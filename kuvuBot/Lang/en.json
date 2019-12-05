@@ -114,10 +114,12 @@
     "unknown": "Unknown city"
   },
   "broadcast": {
-    "description": "Makes broadcast"
+    "description": "Makes broadcast",
+    "title": "Broadcast"
   },
   "clear": {
-    "description": "Removes specified amount of messages"
+    "description": "Removes specified amount of messages",
+    "success": ":ok_hand:, deleted {count} messages!"
   },
   "mute": {
     "description": "Mutes user"

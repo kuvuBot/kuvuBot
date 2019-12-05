@@ -21,11 +21,11 @@ namespace kuvuBot.Commands.Moderation
         {
             var message = await new ModernEmbedBuilder
             {
-                Title = "Broadcast",
+                Title = await ctx.Lang("broadcast.title"),
                 Description = content,
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
             }.Send(ctx.Message.Channel);
         }
     }
