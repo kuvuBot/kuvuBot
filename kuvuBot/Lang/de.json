@@ -111,7 +111,9 @@
       "snow": "Snow",
       "wind": "Wind"
     },
-    "unknown": "Unknown city"
+    "error": "Error",
+    "lastHour": "Last hour",
+    "lang": "en"
   },
   "broadcast": {
     "description": "Makes broadcast",
