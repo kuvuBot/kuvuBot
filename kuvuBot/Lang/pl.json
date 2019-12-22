@@ -111,7 +111,9 @@
       "snow": "Opady śniegu",
       "wind": "Wiatr"
     },
-    "unknown": "Nieznane miasto"
+    "error": "Error",
+    "lastHour": "Last hour",
+    "lang": "en"
   },
   "broadcast": {
     "description": "Tworzy ogłoszenie",
