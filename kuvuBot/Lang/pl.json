@@ -111,17 +111,17 @@
       "snow": "Opady śniegu",
       "wind": "Wiatr"
     },
-    "error": "Error",
-    "lastHour": "Last hour",
-    "lang": "en"
+    "error": "Błąd",
+    "lastHour": "Ostatnia godzina",
+    "lang": "pl"
   },
   "broadcast": {
     "description": "Tworzy ogłoszenie",
-    "title": "Broadcast"
+    "title": "Ogłoszenie"
   },
   "clear": {
     "description": "Usuwa podaną ilość wiadomości",
-    "success": ":ok_hand:, deleted {count} messages!"
+    "success": ":ok_hand:, usunięto {count} wiadomości!"
   },
   "mute": {
     "description": "Wycisza użytkownika"
