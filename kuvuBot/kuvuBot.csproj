@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject></StartupObject>
     <LangVersion>8</LangVersion>
     <Authors>kuvuś, js6pak</Authors>
@@ -33,36 +33,34 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
-    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00635" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00635" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00635" />
-    <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00635" />
+    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00641" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00641" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00641" />
+    <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00641" />
     <PackageReference Include="HSNXT.DSharpPlus.CNextNotifier" Version="3.0.198" />
     <PackageReference Include="HSNXT.DSharpPlus.CommandsNext.Extended" Version="3.0.198" />
     <PackageReference Include="HSNXT.DSharpPlus.Extended.Emoji" Version="3.0.198" />
     <PackageReference Include="HSNXT.DSharpPlus.ModernEmbedBuilder" Version="3.0.198" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.3.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="morelinq" Version="3.2.0" />
+    <PackageReference Include="morelinq" Version="3.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0007" />
-    <PackageReference Include="SkiaSharp" Version="1.68.1" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="1.68.1" />
-    <PackageReference Include="SteamWebAPI2" Version="4.0.12" />
-    <!--<PackageReference Include="HSNXT.DSharpPlus.ModernEmbedBuilder" Version="3.0.176" />
-    <PackageReference Include="HSNXT.DSharpPlus.CommandsNext.Extended" Version="3.0.176" />-->
+    <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="1.68.1.1" />
+    <PackageReference Include="SteamWebAPI2" Version="4.0.14" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Migrations\20181225140800_AddGuilds.Designer.cs">

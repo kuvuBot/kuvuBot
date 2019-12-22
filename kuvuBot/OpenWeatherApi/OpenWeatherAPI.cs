@@ -1,32 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
-namespace OpenWeatherAPI
+namespace kuvuBot.OpenWeatherApi
 {
-    public class OpenWeatherAPI
+    public static class OpenWeatherApiExt
     {
-        private string openWeatherAPIKey;
-
-        public OpenWeatherAPI(string apiKey)
+        public static decimal KelvinToCelsius(this decimal kelvin)
         {
-            openWeatherAPIKey = apiKey;
+            return kelvin - (decimal) 273.15;
+        }
+    }
+    
+    public class OpenWeatherApi
+    {
+        private readonly string apiKey;
+        private readonly string language;
+        private readonly HttpClient httpClient = new HttpClient();
+
+        public OpenWeatherApi(string apiKey, string language = "en")
+        {
+            this.apiKey = apiKey;
+            this.language = language;
+            httpClient.BaseAddress = new Uri($"https://api.openweathermap.org/data/2.5/");
         }
 
-        public void UpdateAPIKey(string apiKey)
+        private async Task<City> GetCity(string query)
         {
-            openWeatherAPIKey = apiKey;
+            var json = await httpClient.GetAsync($"weather?appid={apiKey}&lang={language}{query}");
+            return JsonConvert.DeserializeObject<City>(await json.Content.ReadAsStringAsync());
         }
 
-        //Returns null if invalid request
-        public Query Query(string queryStr)
+        public async Task<City> GetWeatherByCityName(string cityName)
         {
-            Query newQuery = new Query(openWeatherAPIKey, queryStr);
-            if (newQuery.ValidRequest)
-                return newQuery;
-            return null;
+            return await GetCity($"&q={cityName}");
+        }
+
+        public async Task<City> GetWeatherByCityId(int cityId)
+        {
+            return await GetCity($"&id={cityId}");
+        }
+
+        public async Task<City> GetWeatherByCoords(long lat, long lon)
+        {
+            return await GetCity($"&lat={lat}&lon={lon}");
         }
     }
 }
