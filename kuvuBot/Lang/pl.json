@@ -114,10 +114,12 @@
     "unknown": "Nieznane miasto"
   },
   "broadcast": {
-    "description": "Tworzy ogłoszenie"
+    "description": "Tworzy ogłoszenie",
+    "title": "Broadcast"
   },
   "clear": {
-    "description": "Usuwa podaną ilość wiadomości"
+    "description": "Usuwa podaną ilość wiadomości",
+    "success": ":ok_hand:, deleted {count} messages!"
   },
   "mute": {
     "description": "Wycisza użytkownika"
