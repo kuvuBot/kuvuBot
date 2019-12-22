@@ -32,11 +32,8 @@ namespace kuvuBot.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var embed = new ModernEmbedBuilder
             {
-                Title = breed == null ? "Random dog" : $"Random {breed} dog",
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-            };
+                Title = breed == null ? "Random dog" : $"Random {breed} dog"
+            }.AddGeneratedForFooter(ctx);
             var url = breed == null ? "https://dog.ceo/api/breeds/image/random" : $"https://dog.ceo/api/breed/{breed}/images/random";
 
             WebResponse response = null;

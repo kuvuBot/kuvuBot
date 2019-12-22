@@ -64,7 +64,7 @@ namespace kuvuBot.Commands
             var name = $"{user.Username}#{user.Discriminator}";
             if (displayBot && user.IsBot)
             {
-                return "[BOT] " + name;
+                return $"{name} <:bot:658366346048045099>";
             }
             return name;
         }

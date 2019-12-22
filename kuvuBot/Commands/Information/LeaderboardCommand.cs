@@ -26,11 +26,8 @@ namespace kuvuBot.Commands.Information
             await new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("leaderboard.title"),
-                Description = users.Select(u=>$"{users.IndexOf(u)+1}. {ctx.Guild.GetMemberAsync(u.DiscordUser).Result.Name(true)} Level: {u.GetLevel()} Exp: {u.Exp}").Join("\n"),
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-            }.Send(ctx.Message.Channel);
+                Description = users.Select(u => $"{users.IndexOf(u) + 1}. {ctx.Guild.GetMemberAsync(u.DiscordUser).Result.Name(true)} Level: {u.GetLevel()} Exp: {u.Exp}").Join("\n"),
+            }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
         }
     }
 }

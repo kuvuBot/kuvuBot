@@ -20,7 +20,7 @@ namespace kuvuBot.Commands.Information
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task User(CommandContext ctx, DiscordUser target = null)
         {
-            target = target ?? ctx.User;
+            target ??= ctx.User;
             var embed = new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("user.title"),
@@ -32,11 +32,8 @@ namespace kuvuBot.Commands.Information
                             target.CreationTimestamp.DateTime.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL")),
                             inline: false),
                     },
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = target.AvatarUrl ?? target.DefaultAvatarUrl,
-            };
+            }.AddGeneratedForFooter(ctx);
             using (var botContext = new BotContext())
                 if (!target.IsBot)
                 {

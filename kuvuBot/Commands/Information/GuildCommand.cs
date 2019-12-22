@@ -31,11 +31,8 @@ namespace kuvuBot.Commands.Information
                         (await ctx.Lang("guild.region"), ctx.Guild.VoiceRegion.Name, inline: true),
                         (await ctx.Lang("guild.verification"), ctx.Guild.VerificationLevel.ToString(), inline: true),
                     },
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Guild.IconUrl,
-            }.Send(ctx.Message.Channel);
+            }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
         }
     }
 }

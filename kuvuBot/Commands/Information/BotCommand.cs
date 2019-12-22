@@ -34,11 +34,8 @@ namespace kuvuBot.Commands.Information
                     (await ctx.Lang("bot.git"), $"[{await ctx.Lang("bot.checkout")}](https://github.com/kuvuBot/kuvuBot)", inline: true),
                     (await ctx.Lang("bot.website"), $"[{await ctx.Lang("bot.checkout")}](https://kuvuBot.xyz)", inline: true),
                 },
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 ThumbnailUrl = ctx.Client.CurrentUser.AvatarUrl,
-            }.Send(ctx.Message.Channel);
+            }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
         }
     }
 }

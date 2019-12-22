@@ -19,14 +19,11 @@ namespace kuvuBot.Commands.Moderation
         [RequireUserPermissions(Permissions.ManageGuild), RequireBotPermissions(Permissions.SendMessages)]
         public async Task Broadcast(CommandContext ctx, [RemainingText, Description("Broadcast")] string content)
         {
-            var message = await new ModernEmbedBuilder
+            await new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("broadcast.title"),
-                Description = content,
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-            }.Send(ctx.Message.Channel);
+                Description = content
+            }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
         }
     }
 }

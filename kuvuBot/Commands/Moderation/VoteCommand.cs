@@ -21,11 +21,8 @@ namespace kuvuBot.Commands.Moderation
             var message = await new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("vote.voting"),
-                Description = question,
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-            }.Send(ctx.Message.Channel);
+                Description = question
+            }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
             await message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsup:"));
             await message.CreateReactionAsync(DiscordEmoji.FromName(ctx.Client, ":thumbsdown:"));
         }

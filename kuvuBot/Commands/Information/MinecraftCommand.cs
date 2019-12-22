@@ -149,11 +149,8 @@ namespace kuvuBot.Commands.Information
                             (await ctx.Lang("minecraft.version"), $"{response.Version.Name}", inline: true),
                             (await ctx.Lang("minecraft.motd"), $"```{response.Description.Text}```", inline: false),
                         },
-                        Color = new DuckColor(139, 195, 74),
-                        Timestamp = DuckTimestamp.Now,
-                        Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                         ThumbnailUrl = response.Favicon.ToString(),
-                    }.Send(ctx.Message.Channel);
+                    }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
                 }
                 else
                 {
@@ -163,11 +160,8 @@ namespace kuvuBot.Commands.Information
                         Fields =
                         {
                             (await ctx.Lang("minecraft.status"), await ctx.Lang("minecraft.offline"), inline: true),
-                        },
-                        Color = new DuckColor(244, 67, 54),
-                        Timestamp = DuckTimestamp.Now,
-                        Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-                    }.Send(ctx.Message.Channel);
+                        }
+                    }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
                 }
             }
         }

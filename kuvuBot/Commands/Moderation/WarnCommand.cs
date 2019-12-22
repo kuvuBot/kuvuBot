@@ -64,11 +64,8 @@ namespace kuvuBot.Commands.Moderation
                         {
                             ($"{kuvuUser.Warns.Count} warns, {kuvuUser.Warns.Select(w => w.Weight).Sum()} total weight",
                                 kuvuUser.Warns.Select(w => $"[{w.Date.ToString("g", CultureInfo.CreateSpecificCulture("pl-PL"))}] Warning `{ctx.Client.GetUserAsync(w.Warning).Result.Name()}` Weight: `{w.Weight}` Reason: `{w.Reason}`").Join("\n"))
-                        },
-                        Color = Program.Config.EmbedColor,
-                        Timestamp = DuckTimestamp.Now,
-                        Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-                    }.Send(ctx.Message.Channel);
+                        }
+                    }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
                 }
                 else
                 {
