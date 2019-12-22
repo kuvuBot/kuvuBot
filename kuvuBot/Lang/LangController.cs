@@ -7,9 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext.Converters;
+using Newtonsoft.Json.Linq;
+using Console = Colorful.Console;
 
 namespace kuvuBot.Lang
 {
@@ -37,13 +40,13 @@ namespace kuvuBot.Lang
     {
         public Task<Optional<string>> ConvertAsync(string value, CommandContext ctx)
         {
-            if (LangController.Languages.Contains(value))
+            if (LangController.Languages.Keys.Contains(value))
             {
                 return Task.FromResult(new Optional<string>(value));
             }
             else
             {
-                foreach (var lang in LangController.Languages)
+                foreach (var lang in LangController.Languages.Keys)
                 {
                     var aliases = LangController.Get("lang.aliases", lang).Split("|");
                     if (aliases.Contains(value))
@@ -58,34 +61,31 @@ namespace kuvuBot.Lang
 
     public static class LangController
     {
-        public static List<string> Languages = new List<string> { "en", "pl", "de", "fr" };
+        public static Dictionary<string, JObject> Languages = new Dictionary<string, JObject>();
 
-        // TODO rework this, json path maybe?
-        public static string Get(string term, string lang)
+        public static async Task LoadTranslations()
         {
-            // Split term to content.term
-            var path = term.Split('.');
-
-            // Get lang file from assembly
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = $"kuvuBot.Lang.{lang}.json";
+            var regex = new Regex($@"{typeof(LangController).Namespace}.(\w+).json");
+            var languages = assembly.GetManifestResourceNames().Select(x => regex.Match(x)).Where(x => x.Groups.Count > 1);
 
-            try
+            foreach (var match in languages)
             {
-                using var stream = assembly.GetManifestResourceStream(resourceName);
+                var language = match.Groups[1].Value;
+                await using var stream = assembly.GetManifestResourceStream(match.Value);
                 if (stream != null)
                 {
-                    using var sr = new StreamReader(stream);
-                    var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(sr.ReadToEnd())[path[0]][path[1]];
-                    return result;
+                    using var reader = new StreamReader(stream);
+                    var json = JObject.Parse(await reader.ReadToEndAsync());
+                    Languages.Add(language, json);
+                    Console.WriteLine($"Loaded {language} translation");
                 }
             }
-            catch
-            {
-                // ignored
-            }
+        }
 
-            return null;
+        public static string Get(string path, string lang)
+        {
+            return Languages[lang].SelectToken(path)?.ToString();
         }
     }
 }

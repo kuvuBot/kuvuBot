@@ -16,12 +16,7 @@ using kuvuBot.Features;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
-using Newtonsoft.Json.Linq;
 using kuvuBot.Features.Modular;
-using kuvuBot.Commands;
 using DSharpPlus.CommandsNext.Exceptions;
 using kuvuBot.Commands.Converters;
 using DSharpPlus.CommandsNext.Attributes;
@@ -45,7 +40,7 @@ namespace kuvuBot
             {
                 throw new Exception($"{ConfigFilename} not found. Copy from example and fill it");
             }
-            return Config ?? (Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(ConfigFilename)));
+            return Config ??= JsonConvert.DeserializeObject<Config>(File.ReadAllText(ConfigFilename));
         }
 
         public static void UpdateDatabase()
@@ -86,6 +81,7 @@ namespace kuvuBot
             Console.WriteLine(new Figlet().ToAscii("kuvuBot"), Color.Cyan);
 
             LoadConfig();
+            await LangController.LoadTranslations();
 
             var conf = new DiscordConfiguration
             {

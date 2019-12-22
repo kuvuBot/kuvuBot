@@ -55,7 +55,7 @@
                                 else if (option.Converter is LangConverter)
                                 {
                                     <select name="@option.Name" class="form-control">
-                                        @foreach (var lang in LangController.Languages)
+                                        @foreach (var lang in LangController.Languages.Keys)
                                         {
                                             <option value="@lang" selected="@(lang != null && (string)value == lang ? "selected" : null)">@lang</option>
                                         }

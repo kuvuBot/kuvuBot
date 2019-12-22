@@ -17,8 +17,8 @@
     "database": "MYSQL DATABASE"
   },
   "status": {
-    "activityType": 2,
-    "userStatus": 1,
+    "activityType": "ListeningTo",
+    "userStatus": "Online",
     "activity": "%defualtprefix%help | %guilds% guilds"
   },
   "customBot": false,

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-kuvuBot.Panel-4F736DC9-4060-462A-A6BE-F7BD57151687</UserSecretsId>
   </PropertyGroup>
 
