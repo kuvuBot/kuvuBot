@@ -61,8 +61,6 @@
     <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="1.68.1.1" />
     <PackageReference Include="SteamWebAPI2" Version="4.0.14" />
-    <!--<PackageReference Include="HSNXT.DSharpPlus.ModernEmbedBuilder" Version="3.0.176" />
-    <PackageReference Include="HSNXT.DSharpPlus.CommandsNext.Extended" Version="3.0.176" />-->
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Migrations\20181225140800_AddGuilds.Designer.cs">
