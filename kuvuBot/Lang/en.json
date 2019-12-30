@@ -38,7 +38,8 @@
   "rep": {
     "description": "Gives user reputation point",
     "limit": "You've already given reputation point to this user recently. Please wait another {hours} hours and {minutes} before you do this again.",
-    "success": "{user} now has {points} reputation points!"
+    "success": "{user} now has {points} reputation points!",
+    "self": "You can't give reputation to yourself"
   },
   "ship": {
     "description": "Ships two users"
