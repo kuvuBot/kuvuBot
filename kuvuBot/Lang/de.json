@@ -159,5 +159,8 @@
   },
   "avatar": {
     "description": "Returns user's avatar"
+  },
+  "level": {
+    "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
   }
 }
