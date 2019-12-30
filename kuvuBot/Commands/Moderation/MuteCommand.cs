@@ -63,7 +63,7 @@ namespace kuvuBot.Commands.Moderation
             if (role != null)
             {
                 kuvuGuild.MuteRole = role.Id;
-                await ctx.RespondAsync(ctx.Lang("mute.muteRole.changed").Result.Replace("{role}", kuvuGuild.MuteRole.ToString()));
+                await ctx.RespondAsync((await ctx.Lang("mute.muteRole.changed")).Replace("{role}", kuvuGuild.MuteRole.ToString()));
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }
