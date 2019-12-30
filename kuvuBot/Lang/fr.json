@@ -124,7 +124,16 @@
     "success": ":ok_hand:, deleted {count} messages!"
   },
   "mute": {
-    "description": "Mutes user"
+    "description": "Mutes user",
+    "success": "Successfuly muted {user} with reason `{reason}`",
+    "muteRole": {
+      "noRole": "There is no mute role. Type `{prefix}mute setup` to create it.",
+      "current": "Current mute role is <@&{role}>",
+      "creating": "Creating mute role..",
+      "created": "Created mute role named {role}. All roles above it will bypass mute.",
+      "error": "Can't create mute role. Check if bot has enough permissions.",
+      "changed": ":ok_hand:, successfully change mute role to <@&{role}>"
+    }
   },
   "warn": {
     "group-description": "Warn commands",
