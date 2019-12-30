@@ -159,5 +159,8 @@
   },
   "avatar": {
     "description": "Zwraca awatar użytkownika"
+  },
+  "level": {
+    "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
   }
 }
