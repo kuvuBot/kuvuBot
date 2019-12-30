@@ -38,7 +38,8 @@
   "rep": {
     "description": "Daje użytkownikowi punkt reputacji",
     "limit": "Ostatnio już dałeś temu użytkownikowi punkt reputacji. Poczekaj kolejne {hours} godzin i {minutes} minut, zanim zrobisz to ponownie.",
-    "success": "{user} ma teraz {points} punktów reputacji!"
+    "success": "{user} ma teraz {points} punktów reputacji!",
+    "self": "You can't give reputation to yourself"
   },
   "ship": {
     "description": "Łączy dwóch użytkowników w pare"
