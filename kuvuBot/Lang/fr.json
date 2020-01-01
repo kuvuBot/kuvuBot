@@ -158,7 +158,9 @@
     }
   },
   "dog": {
-    "description": "Display random dog image"
+    "description": "Display random dog image",
+    "random": "Random dog",
+    "randomBreed": "Random {breed} dog"
   },
   "hug": {
     "description": "Hugs the marked user"
@@ -170,7 +172,8 @@
     "description": "Slaps the marked user"
   },
   "avatar": {
-    "description": "Returns user's avatar"
+    "description": "Returns user's avatar",
+    "title": "{target}'s avatar"
   },
   "level": {
     "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
