@@ -39,7 +39,7 @@
     "description": "Daje użytkownikowi punkt reputacji",
     "limit": "Ostatnio już dałeś temu użytkownikowi punkt reputacji. Poczekaj kolejne {hours} godzin i {minutes} minut, zanim zrobisz to ponownie.",
     "success": "{user} ma teraz {points} punktów reputacji!",
-    "self": "You can't give reputation to yourself"
+    "self": "Nie możesz dać punktu reputacji samemu sobie"
   },
   "ship": {
     "description": "Łączy dwóch użytkowników w pare"
@@ -126,14 +126,14 @@
   },
   "mute": {
     "description": "Wycisza użytkownika",
-    "success": "Successfuly muted {user} with reason `{reason}`",
+    "success": "Pomyślnie wyciszono {user} z powodu `{reason}`",
     "muteRole": {
-      "noRole": "There is no mute role. Type `{prefix}mute setup` to create it.",
-      "current": "Current mute role is <@&{role}>",
-      "creating": "Creating mute role..",
-      "created": "Created mute role named {role}. All roles above it will bypass mute.",
-      "error": "Can't create mute role. Check if bot has enough permissions.",
-      "changed": ":ok_hand:, successfully change mute role to <@&{role}>"
+      "noRole": "Rola wyciszenia nie istnieje. Wpisz `{prefix}mute setup` aby ją utworzyć.",
+      "current": "Obecna rola wyciszenia to <@&{role}>",
+      "creating": "Tworzenie roli wyciszenia..",
+      "created": "Utworzono rolę wyciszenia o nazwie {role}. Wszystkie role powyżej niej będą omijać wyciszenie.",
+      "error": "Nie można utworzyć roli wyciszenia. Sprawdź, czy bot ma wystarczające uprawnienia.",
+      "changed": ":ok_hand:, pomyślnie zmieniono rolę wyciszenia na <@&{role}>"
     }
   },
   "warn": {
@@ -161,6 +161,6 @@
     "description": "Zwraca awatar użytkownika"
   },
   "level": {
-    "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
+    "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
   }
 }
