@@ -46,7 +46,12 @@ namespace kuvuBot.Commands.Moderation
         {
             public class EvalContext
             {
-                public CommandContext Ctx;
+                public CommandContext ctx;
+
+                public EvalContext(CommandContext ctx)
+                {
+                    this.ctx = ctx;
+                }
             }
         }
 
@@ -59,7 +64,7 @@ namespace kuvuBot.Commands.Moderation
                 var state = await CSharpScript.RunAsync(Regex.Replace(code, "```(csharp)?", "").Trim(),
                     ScriptOptions.Default.WithReferences(typeof(int).Assembly, typeof(CommandContext).Assembly, typeof(Globals.EvalContext).Assembly)
                         .WithImports("DSharpPlus", "DSharpPlus.Entities", "DSharpPlus.CommandsNext"),
-                    new Globals.EvalContext {Ctx=ctx}, typeof(Globals.EvalContext));
+                    new Globals.EvalContext(ctx), typeof(Globals.EvalContext));
                 if (state.Exception == null)
                 {
                     var embed = new ModernEmbedBuilder
