@@ -173,7 +173,8 @@
     "description": "Slaps the marked user"
   },
   "avatar": {
-    "description": "Returns user's avatar"
+    "description": "Returns user's avatar",
+    "title": "{target}'s avatar"
   },
   "level": {
     "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
