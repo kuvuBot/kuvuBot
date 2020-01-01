@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using System;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -68,7 +69,7 @@ namespace kuvuBot.Commands.Pictures
                     Color = Program.Config.EmbedColor,
                     Timestamp = DuckTimestamp.Now,
                     ImageUrl = "https://rra.ram.moe" + response.Path,
-                    Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                    Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                 };
                 return await embed.Send(ctx.Channel);
             }
