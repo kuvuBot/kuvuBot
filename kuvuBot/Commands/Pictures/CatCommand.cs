@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -129,10 +130,10 @@ namespace kuvuBot.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var embed = new ModernEmbedBuilder
             {
-                Title = breed == "list" ? "Cat breed list" : breed == null ? "Random cat" : $"Random {breed.ToLower()} cat",
+                Title = breed == "list" ? await ctx.Lang("cat.list"): breed == null ? await ctx.Lang("cat.random") : (await ctx.Lang("cat.randomBreed")).Replace("{breed}", breed.ToLower()),
                 Color = Program.Config.EmbedColor,
                 Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
+                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
             };
 
             if (breed != null && BreedList == null) RefreshList("https://api.thecatapi.com/v1/breeds?limit=100");
@@ -147,8 +148,8 @@ namespace kuvuBot.Commands.Pictures
 
             if (breed == "list")
             {
-                embed.AddField("Breeds", string.Join(", ", BreedList.Select(b => b.Name)));
-                embed.AddField($"For more information type `{ctx.Prefix}cat <breed>`", "*info from thecatapi*");
+                embed.AddField(await ctx.Lang("cat.list"), string.Join(", ", BreedList.Select(b => b.Name)));
+                embed.AddField((await ctx.Lang("cat.moreInfo")).Replace("{prefix}", ctx.Prefix), "*info from thecatapi*");
             }
             else
             {
@@ -156,7 +157,7 @@ namespace kuvuBot.Commands.Pictures
 
                 if (catresponse == null)
                 {
-                    embed.AddField("Error", "Unkown breed");
+                    embed.AddField(await ctx.Lang("global.error"), await ctx.Lang("cat.breed.unknown"));
                 }
                 else if (catresponse.Url != null)
                 {
@@ -164,10 +165,10 @@ namespace kuvuBot.Commands.Pictures
                     var catbreed = catresponse.Breeds.FirstOrDefault();
                     if (catbreed != null)
                     {
-                        embed.AddField("Breed", catbreed.Name, true);
-                        embed.AddField("Origin", catbreed.Origin, true);
-                        embed.AddField("Life span", catbreed.LifeSpan, true);
-                        embed.AddField("Description", catbreed.Description);
+                        embed.AddField(await ctx.Lang("cat.breed.breed"), catbreed.Name, true);
+                        embed.AddField(await ctx.Lang("cat.breed.origin"), catbreed.Origin, true);
+                        embed.AddField(await ctx.Lang("cat.breed.lifeSpan"), catbreed.LifeSpan, true);
+                        embed.AddField(await ctx.Lang("cat.breed.description"), catbreed.Description);
                         embed.Url = catbreed.WikipediaUrl.ToString();
                     }
                 }
@@ -175,7 +176,7 @@ namespace kuvuBot.Commands.Pictures
                 {
                     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                     TextInfo textInfo = cultureInfo.TextInfo;
-                    embed.AddField($"Error", "unkown");
+                    embed.AddField(await ctx.Lang("global.error"), ".");
                 }
             }
             await embed.Send(ctx.Channel);
