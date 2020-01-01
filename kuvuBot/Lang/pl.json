@@ -159,8 +159,8 @@
   },
   "dog": {
     "description": "Pokazuje losowy obrazek psa",
-    "random": "Random dog",
-    "randomBreed": "Random {breed} dog"
+    "random": "Losowy pies",
+    "randomBreed": "Losowy pies rasy {breed}"
   },
   "hug": {
     "description": "Przytula wskazanego użytkownika"
@@ -173,7 +173,7 @@
   },
   "avatar": {
     "description": "Zwraca awatar użytkownika",
-    "title": "{target}'s avatar"
+    "title": "Avatar {target}"
   },
   "level": {
     "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
