@@ -1,0 +1,181 @@
+{
+  "vote": {
+    "voting": "Voting",
+    "description": "Makes a voting"
+  },
+  "global": {
+    "nopermission": "You don't have sufficient permissions to execute this command!",
+    "badArguments": "Incorrect argument.",
+    "footer": "Generated for {user}",
+    "error": "An error ocurred"
+  },
+  "lang": {
+    "flag": "🇬🇧",
+    "aliases": "english"
+  },
+  "rps": {
+    "description": "Play rock, paper and scissors with bot"
+  },
+  "currency": {
+    "description": "Check currency rate relative to other",
+    "title": "Currency calculator",
+    "badTarget": "You've specified wrong target currency",
+    "badBase": "You've specified wrong base currency"
+  },
+  "dice": {
+    "description": "Rolls a dice",
+    "minimum": "The minimum number of dice walls is 2!",
+    "result": "You threw {result}!"
+  },
+  "emojitext": {
+    "description": "Generates a emoji text"
+  },
+  "figlet": {
+    "description": "Generates a figlet"
+  },
+  "minesweeper": {
+    "description": "Start a minesweeper game"
+  },
+  "rep": {
+    "description": "Gives user reputation point",
+    "limit": "You've already given reputation point to this user recently. Please wait another {hours} hours and {minutes} before you do this again.",
+    "success": "{user} now has {points} reputation points!",
+    "self": "You can't give reputation to yourself"
+  },
+  "ship": {
+    "description": "Ships two users"
+  },
+  "emojireaction": {
+    "description": "Generates an emoji text, and react it to desired message"
+  },
+  "bot": {
+    "description": "Bot information",
+    "title": "Bot information",
+    "name": "Name",
+    "version": "Version",
+    "numOfGuilds": "Number of servers",
+    "numOfChannels": "Number of channels",
+    "git": "Github",
+    "website": "Website",
+    "checkout": "Check out"
+  },
+  "guild": {
+    "description": "Guild information",
+    "title": "Guild information",
+    "name": "Name",
+    "owner": "Owner",
+    "numOfMembers": "Number of members",
+    "numOfRoles": "Number of roles",
+    "region": "Region",
+    "verification": "Verification level"
+  },
+  "invite": {
+    "description": "Sends bot invite link"
+  },
+  "leaderboard": {
+    "description": "Shows level leaderboard",
+    "title": "Level leaderboard"
+  },
+  "minecraft": {
+    "description": "Minecraft server status",
+    "title": "Minecraft server status",
+    "status": "Status",
+    "players": "Players",
+    "version": "Version",
+    "motd": "MOTD",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "ping": {
+    "description": "Shows bot ping"
+  },
+  "steam": {
+    "description": "Information about steam game"
+  },
+  "user": {
+    "description": "User information",
+    "title": "User information",
+    "registration": "Registration date",
+    "level": "Level",
+    "exp": "EXP",
+    "rep": "Reputation"
+  },
+  "weather": {
+    "description": "Weather information",
+    "title": "Weather information",
+    "city": "City",
+    "country": "Country",
+    "temperature": "Temperature",
+    "conditions": "Weather conditions",
+    "conditionTypes": {
+      "clouds": "Clouds",
+      "rain": "Rain",
+      "snow": "Snow",
+      "wind": "Wind"
+    },
+    "error": "Error",
+    "lastHour": "Last hour",
+    "lang": "en"
+  },
+  "broadcast": {
+    "description": "Makes broadcast",
+    "title": "Broadcast"
+  },
+  "clear": {
+    "description": "Removes specified amount of messages",
+    "success": ":ok_hand:, deleted {count} messages!"
+  },
+  "mute": {
+    "description": "Mutes user",
+    "success": "Successfuly muted {user} with reason `{reason}`",
+    "muteRole": {
+      "noRole": "There is no mute role. Type `{prefix}mute setup` to create it.",
+      "current": "Current mute role is <@&{role}>",
+      "creating": "Creating mute role..",
+      "created": "Created mute role named {role}. All roles above it will bypass mute.",
+      "error": "Can't create mute role. Check if bot has enough permissions.",
+      "changed": ":ok_hand:, successfully change mute role to <@&{role}>"
+    }
+  },
+  "warn": {
+    "group-description": "Warn commands",
+    "description": "Warns user",
+    "history": "List user's warns",
+    "clear": "Clears user's warns"
+  },
+  "cat": {
+    "description": "Display random cat image",
+    "list": "List of cat breeds",
+    "moreInfo": "For more information type `{prefix}cat <breed>`",
+    "random": "Random cat",
+    "randomBreed": "Random {breed} cat",
+    "breed": {
+      "unknown": "Unknown breed",
+      "breed": "Breed",
+      "origin": "Origin",
+      "lifeSpan": "Life span",
+      "description": "Description"
+    }
+  },
+  "dog": {
+    "description": "Display random dog image",
+    "random": "Random dog",
+    "randomBreed": "Random {breed} dog"
+  },
+  "hug": {
+    "description": "Hugs the marked user"
+  },
+  "pat": {
+    "description": "Pats the marked user"
+  },
+  "slap": {
+    "description": "Slaps the marked user"
+  },
+  "avatar": {
+    "description": "Returns user's avatar",
+    "title": "{target}'s avatar"
+  },
+  "level": {
+    "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
+  }
+}
