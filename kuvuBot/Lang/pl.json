@@ -6,7 +6,8 @@
   "global": {
     "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
     "badArguments": "Nieprawidłowy argument.",
-    "footer": "Wygenerowano dla {user}"
+    "footer": "Wygenerowano dla {user}",
+    "error": "An error ocurred"
   },
   "lang": {
     "flag": "🇵🇱",
@@ -143,7 +144,18 @@
     "clear": "Usuwa ostrzeżenia użytkownika"
   },
   "cat": {
-    "description": "Pokazuje losowy obrazek kota"
+    "description": "Pokazuje losowy obrazek kota",
+    "list": "List of cat breeds",
+    "moreInfo": "For more information type `{prefix}cat <breed>`",
+    "random": "Random cat",
+    "randomBreed": "Random {breed} cat",
+    "breed": {
+      "unknown": "Unknown breed",
+      "breed": "Breed",
+      "origin": "Origin",
+      "lifeSpan": "Life span",
+      "description": "Description"
+    }
   },
   "dog": {
     "description": "Pokazuje losowy obrazek psa"
