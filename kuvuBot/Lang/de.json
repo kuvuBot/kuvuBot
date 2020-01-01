@@ -6,7 +6,8 @@
   "global": {
     "nopermission": "You don't have sufficient permissions to execute this command!",
     "badArguments": "Incorrect argument.",
-    "footer": "Generated for {user}"
+    "footer": "Generated for {user}",
+    "error": "An error ocurred"
   },
   "lang": {
     "flag": "🇩🇪",
@@ -143,7 +144,18 @@
     "clear": "Clears user's warns"
   },
   "cat": {
-    "description": "Display random cat image"
+    "description": "Display random cat image",
+    "list": "List of cat breeds",
+    "moreInfo": "For more information type `{prefix}cat <breed>`",
+    "random": "Random cat",
+    "randomBreed": "Random {breed} cat",
+    "breed": {
+      "unknown": "Unknown breed",
+      "breed": "Breed",
+      "origin": "Origin",
+      "lifeSpan": "Life span",
+      "description": "Description"
+    }
   },
   "dog": {
     "description": "Display random dog image"
