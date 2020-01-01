@@ -151,7 +151,7 @@ namespace kuvuBot.Commands.Information
                         },
                         Color = new DuckColor(139, 195, 74),
                         Timestamp = DuckTimestamp.Now,
-                        Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
+                        Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
                         ThumbnailUrl = response.Favicon.ToString(),
                     }.Send(ctx.Message.Channel);
                 }
