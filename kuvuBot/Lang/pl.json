@@ -38,7 +38,8 @@
   "rep": {
     "description": "Daje użytkownikowi punkt reputacji",
     "limit": "Ostatnio już dałeś temu użytkownikowi punkt reputacji. Poczekaj kolejne {hours} godzin i {minutes} minut, zanim zrobisz to ponownie.",
-    "success": "{user} ma teraz {points} punktów reputacji!"
+    "success": "{user} ma teraz {points} punktów reputacji!",
+    "self": "Nie możesz dać punktu reputacji samemu sobie"
   },
   "ship": {
     "description": "Łączy dwóch użytkowników w pare"
@@ -117,14 +118,23 @@
   },
   "broadcast": {
     "description": "Tworzy ogłoszenie",
-    "title": "Broadcast"
+    "title": "Ogłoszenie"
   },
   "clear": {
     "description": "Usuwa podaną ilość wiadomości",
-    "success": ":ok_hand:, deleted {count} messages!"
+    "success": ":ok_hand:, usunięto {count} wiadomości!"
   },
   "mute": {
-    "description": "Wycisza użytkownika"
+    "description": "Wycisza użytkownika",
+    "success": "Pomyślnie wyciszono {user} z powodu `{reason}`",
+    "muteRole": {
+      "noRole": "Rola wyciszenia nie istnieje. Wpisz `{prefix}mute setup` aby ją utworzyć.",
+      "current": "Obecna rola wyciszenia to <@&{role}>",
+      "creating": "Tworzenie roli wyciszenia..",
+      "created": "Utworzono rolę wyciszenia o nazwie {role}. Wszystkie role powyżej niej będą omijać wyciszenie.",
+      "error": "Nie można utworzyć roli wyciszenia. Sprawdź, czy bot ma wystarczające uprawnienia.",
+      "changed": ":ok_hand:, pomyślnie zmieniono rolę wyciszenia na <@&{role}>"
+    }
   },
   "warn": {
     "group-description": "Komendy ostrzeżeń",
@@ -149,5 +159,8 @@
   },
   "avatar": {
     "description": "Zwraca awatar użytkownika"
+  },
+  "level": {
+    "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
   }
 }
