@@ -7,7 +7,7 @@
     "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
     "badArguments": "Nieprawidłowy argument.",
     "footer": "Wygenerowano dla {user}",
-    "error": "An error ocurred"
+    "error": "Wystąpił błąd"
   },
   "lang": {
     "flag": "🇵🇱",
@@ -145,20 +145,22 @@
   },
   "cat": {
     "description": "Pokazuje losowy obrazek kota",
-    "list": "List of cat breeds",
-    "moreInfo": "For more information type `{prefix}cat <breed>`",
-    "random": "Random cat",
-    "randomBreed": "Random {breed} cat",
+    "list": "Lista ras kotów",
+    "moreInfo": "Aby uzyskać więcej informacji wpisz `{prefix}kot <rasa>`",
+    "random": "Losowy kot",
+    "randomBreed": "Losowy kot rasy {breed}",
     "breed": {
-      "unknown": "Unknown breed",
-      "breed": "Breed",
-      "origin": "Origin",
-      "lifeSpan": "Life span",
-      "description": "Description"
+      "unknown": "Nieznana rasa",
+      "breed": "Rasa",
+      "origin": "Pochodzenie",
+      "lifeSpan": "Długość życia",
+      "description": "Opis"
     }
   },
   "dog": {
-    "description": "Pokazuje losowy obrazek psa"
+    "description": "Pokazuje losowy obrazek psa",
+    "random": "Random dog",
+    "randomBreed": "Random {breed} dog"
   },
   "hug": {
     "description": "Przytula wskazanego użytkownika"
@@ -170,7 +172,8 @@
     "description": "Policzkujesz wskazanego użytkownika"
   },
   "avatar": {
-    "description": "Zwraca awatar użytkownika"
+    "description": "Zwraca awatar użytkownika",
+    "title": "{target}'s avatar"
   },
   "level": {
     "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
