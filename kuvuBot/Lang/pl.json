@@ -177,5 +177,8 @@
   },
   "level": {
     "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
+  },
+  "reverse": {
+    "description": "Reverses the given text"
   }
 }
