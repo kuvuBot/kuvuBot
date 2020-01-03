@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -28,7 +29,7 @@ namespace kuvuBot.Commands.Pictures
                 var response = JsonConvert.DeserializeObject<RemResponse>(wc.DownloadString("https://rra.ram.moe/i/r?type=hug"));
                 var embed = new ModernEmbedBuilder
                 {
-                    Title = $"{ctx.User.Username} hugged {target.Username}",
+                    Title = (await ctx.Lang("hug.title")).Replace("{user}", ctx.User.Username).Replace("{target}", target.Username),
                     ImageUrl = "https://rra.ram.moe" + response.Path
                 }.AddGeneratedForFooter(ctx);
                 await embed.Send(ctx.Channel);

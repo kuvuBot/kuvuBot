@@ -10,8 +10,8 @@
     "error": "An error ocurred"
   },
   "lang": {
-    "flag": "🇫🇷",
-    "aliases": "french|francais"
+    "flag": "🇬🇧",
+    "aliases": "english"
   },
   "rps": {
     "description": "Play rock, paper and scissors with bot"

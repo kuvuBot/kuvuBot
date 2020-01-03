@@ -42,20 +42,20 @@ namespace kuvuBot.Commands.Moderation
             {
                 if (kuvuGuild.MuteRole.HasValue)
                 {
-                    await ctx.RespondAsync($"Current mute role is `{kuvuGuild.MuteRole.ToString()}`");
+                    await ctx.RespondAsync((await ctx.Lang("mute.muteRole.current")).Replace("{role}", kuvuGuild.MuteRole.ToString()));
                 }
                 else
                 {
-                    await ctx.RespondAsync($"Creating mute role...");
+                    await ctx.RespondAsync(await ctx.Lang("mute.muteRole.creating"));
                     await ctx.Channel.TriggerTypingAsync();
                     try
                     {
                         role = await ctx.Guild.CreateRoleAsync("Muted", Permissions.None.Revoke(Permissions.SendMessages));
-                        await ctx.RespondAsync($"Created {role.Mention}. Roles above will bypass mute");
+                        await ctx.RespondAsync((await ctx.Lang("mute.muteRole.created")).Replace("{role}", role.Mention));
                     }
                     catch (Exception)
                     {
-                        await ctx.RespondAsync($"Can't create role.");
+                        await ctx.RespondAsync(await ctx.Lang("mute.muteRole.error"));
                     }
                 }
 
@@ -63,7 +63,7 @@ namespace kuvuBot.Commands.Moderation
             if (role != null)
             {
                 kuvuGuild.MuteRole = role.Id;
-                await ctx.RespondAsync($"👌, changed mute role to `{kuvuGuild.MuteRole.ToString()}`");
+                await ctx.RespondAsync((await ctx.Lang("mute.muteRole.changed")).Replace("{role}", kuvuGuild.MuteRole.ToString()));
                 botContext.Guilds.Update(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }

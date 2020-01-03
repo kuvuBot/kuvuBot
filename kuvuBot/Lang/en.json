@@ -6,7 +6,8 @@
   "global": {
     "nopermission": "You don't have sufficient permissions to execute this command!",
     "badArguments": "Incorrect argument.",
-    "footer": "Generated for {user}"
+    "footer": "Generated for {user}",
+    "error": "An error ocurred"
   },
   "lang": {
     "flag": "🇬🇧",
@@ -38,7 +39,8 @@
   "rep": {
     "description": "Gives user reputation point",
     "limit": "You've already given reputation point to this user recently. Please wait another {hours} hours and {minutes} before you do this again.",
-    "success": "{user} now has {points} reputation points!"
+    "success": "{user} now has {points} reputation points!",
+    "self": "You can't give reputation to yourself"
   },
   "ship": {
     "description": "Ships two users"
@@ -113,7 +115,7 @@
     },
     "error": "Error",
     "lastHour": "Last hour",
-    "lang": "en" 
+    "lang": "en"
   },
   "broadcast": {
     "description": "Makes broadcast",
@@ -124,7 +126,16 @@
     "success": ":ok_hand:, deleted {count} messages!"
   },
   "mute": {
-    "description": "Mutes user"
+    "description": "Mutes user",
+    "success": "Successfuly muted {user} with reason `{reason}`",
+    "muteRole": {
+      "noRole": "There is no mute role. Type `{prefix}mute setup` to create it.",
+      "current": "Current mute role is <@&{role}>",
+      "creating": "Creating mute role..",
+      "created": "Created mute role named {role}. All roles above it will bypass mute.",
+      "error": "Can't create mute role. Check if bot has enough permissions.",
+      "changed": ":ok_hand:, successfully change mute role to <@&{role}>"
+    }
   },
   "warn": {
     "group-description": "Warn commands",
@@ -133,10 +144,24 @@
     "clear": "Clears user's warns"
   },
   "cat": {
-    "description": "Display random cat image"
+    "description": "Display random cat image",
+    "list": "List of cat breeds",
+    "moreInfo": "For more information type `{prefix}cat <breed>`",
+    "random": "Random cat",
+    "randomBreed": "Random {breed} cat",
+    "breed": {
+      "unknown": "Unknown breed",
+      "breed": "Breed",
+      "origin": "Origin",
+      "lifeSpan": "Life span",
+      "description": "Description"
+    }
+
   },
   "dog": {
-    "description": "Display random dog image"
+    "description": "Display random dog image",
+    "random": "Random dog",
+    "randomBreed": "Random {breed} dog"
   },
   "hug": {
     "description": "Hugs the marked user"
@@ -148,6 +173,13 @@
     "description": "Slaps the marked user"
   },
   "avatar": {
-    "description": "Returns user's avatar"
+    "description": "Returns user's avatar",
+    "title": "{target}'s avatar"
+  },
+  "level": {
+    "promotion": "🆙 | {mention} is now on level {level}! Congratulations 🎉"
+  },
+  "reverse": {
+    "description": "Reverses the given text"
   }
 }

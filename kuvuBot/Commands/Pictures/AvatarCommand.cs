@@ -8,6 +8,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -20,7 +21,7 @@ namespace kuvuBot.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             await new ModernEmbedBuilder()
             {
-                Title = $"{target.Name()}'s avatar",
+                Title = (await ctx.Lang("avatar.title")).Replace("{target}", target.Name()),
                 ImageUrl = target.AvatarUrl ?? target.DefaultAvatarUrl,
                 Color = Program.Config.EmbedColor,
             }.Send(ctx.Channel);

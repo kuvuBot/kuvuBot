@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
@@ -32,7 +33,7 @@ namespace kuvuBot.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var embed = new ModernEmbedBuilder
             {
-                Title = breed == null ? "Random dog" : $"Random {breed} dog"
+                Title = breed == null ? await ctx.Lang("dog.random") : (await ctx.Lang("dog.randomBreed")).Replace("{breed}", breed),
             }.AddGeneratedForFooter(ctx);
             var url = breed == null ? "https://dog.ceo/api/breeds/image/random" : $"https://dog.ceo/api/breed/{breed}/images/random";
 

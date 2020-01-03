@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using kuvuBot.Lang;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
@@ -184,7 +185,7 @@ namespace kuvuBot.Data
             if (nextLevel > currentLevel)
             {
                 if (channel != null && mention != null)
-                    await channel.SendMessageAsync($"🆙 | {mention} has now level {nextLevel.ToString()} 🎉");
+                    await channel.SendMessageAsync((await channel.Guild.Lang("level.promotion")).Replace("{mention}", mention).Replace("{level}", nextLevel.ToString()));
             }
         }
 

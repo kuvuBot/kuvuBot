@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using System;
+using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {

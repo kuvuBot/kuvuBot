@@ -22,7 +22,7 @@ namespace kuvuBot.Commands.Fun
             await ctx.Channel.TriggerTypingAsync();
             if (ctx.User == target)
             {
-                await ctx.RespondAsync($"You can't give rep yourself");
+                await ctx.RespondAsync(await ctx.Lang("rep.self"));
                 return;
             }
 
