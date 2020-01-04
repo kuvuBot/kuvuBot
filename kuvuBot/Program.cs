@@ -159,12 +159,12 @@ namespace kuvuBot
                 {
                     var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
                     var dm = await e.Context.Member.CreateDmChannelAsync();
-                    await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
+                    await dm.SendMessageAsync((await e.Context.Lang("global.noBotPermissions")).Replace("{permissions}", req.Permissions.ToPermissionString()));
                     return;
                 }
                 if ((ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute)))
                 {
-                    await e.Context.RespondAsync(await e.Context.Lang("global.nopermission"));
+                    await e.Context.RespondAsync(await e.Context.Lang("global.noPermissions"));
                     return;
                 }
             }
