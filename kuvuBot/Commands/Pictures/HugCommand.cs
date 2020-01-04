@@ -30,11 +30,8 @@ namespace kuvuBot.Commands.Pictures
                 var embed = new ModernEmbedBuilder
                 {
                     Title = (await ctx.Lang("hug.title")).Replace("{user}", ctx.User.Username).Replace("{target}", target.Username),
-                    Color = Program.Config.EmbedColor,
-                    Timestamp = DuckTimestamp.Now,
-                    ImageUrl = "https://rra.ram.moe" + response.Path,
-                    Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-                };
+                    ImageUrl = "https://rra.ram.moe" + response.Path
+                }.AddGeneratedForFooter(ctx);
                 await embed.Send(ctx.Channel);
             }
         }

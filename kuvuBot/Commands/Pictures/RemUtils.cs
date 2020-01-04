@@ -66,11 +66,8 @@ namespace kuvuBot.Commands.Pictures
                 var embed = new ModernEmbedBuilder
                 {
                     Title = target == null ? type.Name : $"{ctx.User.Username} {type.PastVerb} {target.Username}",
-                    Color = Program.Config.EmbedColor,
-                    Timestamp = DuckTimestamp.Now,
-                    ImageUrl = "https://rra.ram.moe" + response.Path,
-                    Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-                };
+                    ImageUrl = "https://rra.ram.moe" + response.Path
+                }.AddGeneratedForFooter(ctx);
                 return await embed.Send(ctx.Channel);
             }
         }

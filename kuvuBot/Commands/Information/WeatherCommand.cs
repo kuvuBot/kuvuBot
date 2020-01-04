@@ -23,14 +23,14 @@ namespace kuvuBot.Commands.Information
             var api = new OpenWeatherApi.OpenWeatherApi(Program.Config.Apis.OpenWeatherApi, await ctx.Lang("weather.lang"));
             var city = await api.GetWeatherByCityName(cityName);
 
-            if (city.Cod != (int) HttpStatusCode.OK)
+            if (city.Cod != (int)HttpStatusCode.OK)
             {
                 await new ModernEmbedBuilder
                 {
                     Title = await ctx.Lang("weather.error") + $" ({city.Cod})",
-                    Color = new DuckColor(231, 76, 60),
+                    Color = EmbedUtils.Red,
                     Description = city.Message.First().ToString().ToUpper() + city.Message.Substring(1)
-                }.Send(ctx.Message.Channel);
+                }.AddGeneratedForFooter(ctx, false).Send(ctx.Message.Channel);
                 return;
             }
 
@@ -42,15 +42,12 @@ namespace kuvuBot.Commands.Information
             {
                 Title = await ctx.Lang("weather.title"),
                 Fields =
-                    {
-                        (await ctx.Lang("weather.city"), $"{(weather.Icon.Contains("n") ? "🏙" : "🌆")} {city.Name}", inline: true),
-                        (await ctx.Lang("weather.country"), $"{flag} {city.Sys.Country}", inline: true),
-                        (await ctx.Lang("weather.temperature"), "🌡 " + city.Main.Temperature.KelvinToCelsius() + "℃", inline: true),
-                    },
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-            };
+                {
+                    (await ctx.Lang("weather.city"), $"{(weather.Icon.Contains("n") ? "🏙" : "🌆")} {city.Name}", inline: true),
+                    (await ctx.Lang("weather.country"), $"{flag} {city.Sys.Country}", inline: true),
+                    (await ctx.Lang("weather.temperature"), "🌡 " + city.Main.Temperature.KelvinToCelsius() + "℃", inline: true),
+                }
+            }.AddGeneratedForFooter(ctx);
 
             var weatherIcon = weather.Icon;
             weatherIcon = Regex.Replace(weatherIcon, @"01.", "☀");

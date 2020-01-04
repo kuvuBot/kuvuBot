@@ -14,8 +14,15 @@ namespace kuvuBot.Data
         [JsonProperty("user")] public string User { get; set; }
         [JsonProperty("password")] public string Password { get; set; }
         [JsonProperty("database")] public string Database { get; set; }
-
     }
+
+    public class LavalinkConfig
+    {
+        [JsonProperty("ip")] public string Ip { get; set; }
+        [JsonProperty("port")] public int Port { get; set; }
+        [JsonProperty("password")] public string Password { get; set; }
+    }
+
     public partial class Apis : Dictionary<string, string>
     {
         public string Cat => this["cat"];
@@ -44,6 +51,7 @@ namespace kuvuBot.Data
         [JsonProperty("apis")] public Apis Apis { get; set; }
         [JsonProperty("defualtPrefix")] public string DefualtPrefix { get; set; }
         [JsonProperty("mySql")] public MySQLConfig MySQL { get; set; }
+        [JsonProperty("lavalink")] public LavalinkConfig Lavalink { get; set; }
         [JsonProperty("status")] public Status Status { get; set; }
         [JsonProperty("customBot")] public bool CustomBot { get; set; }
         [JsonProperty("embedColor")] internal string embedColor { get; set; }

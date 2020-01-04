@@ -9,6 +9,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using kuvuBot.Commands;
+using SixLabors.ImageSharp.ColorSpaces;
 
 namespace BadoszApiModule
 {
@@ -25,44 +27,34 @@ namespace BadoszApiModule
 
         public static async Task<string> GetJson(BadoszEndpoint endpoint, NameValueCollection parameters = null)
         {
-            using (var wc = GetWebClient())
+            using var wc = GetWebClient();
+            var uri = new UriBuilder("https" + $"://api.badosz.com/{Enum.GetName(typeof(BadoszEndpoint), endpoint)}")
             {
-                var uri = new UriBuilder("https" + $"://api.badosz.com/{Enum.GetName(typeof(BadoszEndpoint), endpoint)}")
-                {
-                    Query = parameters?.ToString()
-                };
-                return await wc.DownloadStringTaskAsync(uri.Uri);
-            }
+                Query = parameters?.ToString()
+            };
+            return await wc.DownloadStringTaskAsync(uri.Uri);
         }
 
         public static async Task<Stream> GetStream(BadoszEndpoint endpoint, NameValueCollection parameters = null)
         {
-            using (var wc = GetWebClient())
+            using var wc = GetWebClient();
+            var uri = new UriBuilder("https" + $"://api.badosz.com/{Enum.GetName(typeof(BadoszEndpoint), endpoint)}")
             {
-                var uri = new UriBuilder("https" + $"://api.badosz.com/{Enum.GetName(typeof(BadoszEndpoint), endpoint)}")
-                {
-                    Query = parameters?.ToString()
-                };
-                return new MemoryStream(await wc.DownloadDataTaskAsync(uri.Uri));
-            }
+                Query = parameters?.ToString()
+            };
+            return new MemoryStream(await wc.DownloadDataTaskAsync(uri.Uri));
         }
 
-        //HttpUtility.ParseQueryString(string.Empty)
         public static async Task<DiscordMessage> SendEmbedImage(CommandContext ctx, BadoszEndpoint endpoint, string title = null, NameValueCollection parameters = null)
         {
-            using (var stream = await GetStream(endpoint, parameters))
+            await using var stream = await GetStream(endpoint, parameters);
+            var str = Enum.GetName(typeof(BadoszEndpoint), endpoint);
+            var embed = new ModernEmbedBuilder
             {
-                string str = Enum.GetName(typeof(BadoszEndpoint), endpoint);
-                var embed = new ModernEmbedBuilder
-                {
-                    Title = title ?? char.ToUpper(str[0]) + str.Substring(1),
-                    Color = new DuckColor(33, 150, 243),
-                    Timestamp = DuckTimestamp.Now,
-                    Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-                    ImageUrl = "attachment://image.gif"
-                };
-                return await ctx.RespondWithFileAsync(embed: embed.Build(), fileData: stream, fileName: $"image.gif");
-            }
+                Title = title ?? char.ToUpper(str[0]) + str.Substring(1),
+                ImageUrl = "attachment://image.gif"
+            }.AddGeneratedForFooter(ctx);
+            return await ctx.RespondWithFileAsync(embed: embed.Build(), fileData: stream, fileName: $"image.gif");
         }
     }
 }

@@ -130,11 +130,13 @@ namespace kuvuBot.Commands.Pictures
             await ctx.Channel.TriggerTypingAsync();
             var embed = new ModernEmbedBuilder
             {
-                Title = breed == "list" ? await ctx.Lang("cat.list"): breed == null ? await ctx.Lang("cat.random") : (await ctx.Lang("cat.randomBreed")).Replace("{breed}", breed.ToLower()),
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-            };
+                Title = breed switch
+                {
+                    "list" => "Cat breed list",
+                    null => "Random cat",
+                    _ => $"Random {breed.ToLower()} cat"
+                }
+            }.AddGeneratedForFooter(ctx);
 
             if (breed != null && BreedList == null) RefreshList("https://api.thecatapi.com/v1/breeds?limit=100");
             if (BreedList != null)

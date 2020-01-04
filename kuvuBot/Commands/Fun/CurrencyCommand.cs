@@ -44,10 +44,7 @@ namespace kuvuBot.Commands.Fun
                         {
                             Title = await ctx.Lang("currency.title"),
                             Url = "https://exchangeratesapi.io/",
-                            Color = Program.Config.EmbedColor,
-                            Timestamp = DateTimeOffset.Parse(response.Date),
-                            Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-                        };
+                        }.AddGeneratedForFooter(ctx);
 
                         embed.AddField($"{amount} {response.Base}",
                             string.Equals(targetCur, "ALL", StringComparison.OrdinalIgnoreCase)

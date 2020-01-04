@@ -106,16 +106,13 @@ namespace kuvuBot.Commands.Moderation
             await new ModernEmbedBuilder
             {
                 Title = "Config options",
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 Fields =
                 {
                     ("Available options", string.Join("\n", Option.Options.Select(x=>$"**{x.Name}**: `{x.Description}` = `{x.GetValue(kuvuGuild) ?? "not set"}`"))),
                     ("To set option: ", $"{kuvuGuild.Prefix}config (option name) (option value)", true),
                     ("To view option: ", $"{kuvuGuild.Prefix}config (option name)", true)
                 }
-            }.Send(ctx.Message.Channel);
+            }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
         }
 
         [DSharpPlus.CommandsNext.Attributes.Description("Change config option"), GroupCommand]

@@ -20,8 +20,15 @@ using kuvuBot.Features.Modular;
 using DSharpPlus.CommandsNext.Exceptions;
 using kuvuBot.Commands.Converters;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Lavalink;
+using DSharpPlus.Net;
 using kuvuBot.Lang;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Commands.Music;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Sockets;
+using System.Net.Http;
+using System.Net.WebSockets;
 
 namespace kuvuBot
 {
@@ -32,6 +39,7 @@ namespace kuvuBot
         public static DiscordClient Client { get; set; }
         public static Config Config { get; set; }
         public static CommandsNextExtension Commands { get; set; }
+        public static LavalinkExtension Lavalink { get; set; }
         private static bool Kill { get; set; } = false;
 
         public static Config LoadConfig()
@@ -96,6 +104,8 @@ namespace kuvuBot
 
             Client = new DiscordClient(conf);
 
+            Lavalink = Client.UseLavalink();
+
             Commands = Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 EnableDefaultHelp = true,
@@ -134,11 +144,32 @@ namespace kuvuBot
 
             await Client.ConnectAsync(GetDiscordActivity(), Config.Status.UserStatus);
 
+            try
+            {
+                var endpoint = new ConnectionEndpoint { Hostname = Config.Lavalink.Ip, Port = Config.Lavalink.Port };
+                MusicCommand.Lavalink = await Lavalink.ConnectAsync(new LavalinkConfiguration
+                {
+                    Password = Config.Lavalink.Password,
+                    RestEndpoint = endpoint,
+                    SocketEndpoint = endpoint
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex is SocketException || ex is HttpRequestException || ex is WebSocketException)
+                {
+                    Console.WriteLine("Can't connect to lavalink! (music commands are disabled)", Color.Red);
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             // prevent app from quit
             await Task.Run(() =>
             {
-                while (!Kill) {}
+                while (!Kill) { }
             });
         }
 
@@ -155,16 +186,21 @@ namespace kuvuBot
             }
             if (e.Exception is ChecksFailedException ex)
             {
-                if ((ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute)))
+                if (ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute))
                 {
                     var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
                     var dm = await e.Context.Member.CreateDmChannelAsync();
                     await dm.SendMessageAsync((await e.Context.Lang("global.noBotPermissions")).Replace("{permissions}", req.Permissions.ToPermissionString()));
                     return;
                 }
-                if ((ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute)))
+                else if (ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute))
                 {
                     await e.Context.RespondAsync(await e.Context.Lang("global.noPermissions"));
+                    return;
+                }
+                else if (ex.FailedChecks.Any(x => x is MusicCommand.RequireLavalinkAttribute))
+                {
+                    await e.Context.RespondAsync("Bot is not connected to lavalink!");
                     return;
                 }
             }

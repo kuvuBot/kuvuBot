@@ -29,11 +29,8 @@ namespace kuvuBot.Commands.General
             KuvuGuild = ctx.Guild.GetKuvuGuild().GetAwaiter().GetResult();
             EmbedBuilder = new ModernEmbedBuilder()
             {
-                Title = "Command list",
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = (ctx.Lang("global.footer").Result.Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-            };
+                Title = "Command list"
+            }.AddGeneratedForFooter(ctx);
         }
 
         public override BaseHelpFormatter WithCommand(Command command)

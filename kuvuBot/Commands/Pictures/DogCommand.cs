@@ -34,10 +34,7 @@ namespace kuvuBot.Commands.Pictures
             var embed = new ModernEmbedBuilder
             {
                 Title = breed == null ? await ctx.Lang("dog.random") : (await ctx.Lang("dog.randomBreed")).Replace("{breed}", breed),
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ((await ctx.Lang("global.footer")).Replace("{user}", ctx.User.Name()), ctx.User.AvatarUrl),
-            };
+            }.AddGeneratedForFooter(ctx);
             var url = breed == null ? "https://dog.ceo/api/breeds/image/random" : $"https://dog.ceo/api/breed/{breed}/images/random";
 
             WebResponse response = null;

@@ -28,14 +28,11 @@ namespace kuvuBot.Commands.Moderation
             var embed = new ModernEmbedBuilder
             {
                 Title = "Modules",
-                Color = Program.Config.EmbedColor,
-                Timestamp = DuckTimestamp.Now,
-                Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                 Fields = new List<DuckField>
                 {
                     ("kuvuBot", $"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}")
                 }
-            };
+            }.AddGeneratedForFooter(ctx);
 
             foreach (var module in ModuleManager.Modules)
             {
@@ -49,7 +46,12 @@ namespace kuvuBot.Commands.Moderation
         {
             public class EvalContext
             {
-                public CommandContext Ctx;
+                public CommandContext ctx;
+
+                public EvalContext(CommandContext ctx)
+                {
+                    this.ctx = ctx;
+                }
             }
         }
 
@@ -62,20 +64,17 @@ namespace kuvuBot.Commands.Moderation
                 var state = await CSharpScript.RunAsync(Regex.Replace(code, "```(csharp)?", "").Trim(),
                     ScriptOptions.Default.WithReferences(typeof(int).Assembly, typeof(CommandContext).Assembly, typeof(Globals.EvalContext).Assembly)
                         .WithImports("DSharpPlus", "DSharpPlus.Entities", "DSharpPlus.CommandsNext"),
-                    new Globals.EvalContext {Ctx=ctx}, typeof(Globals.EvalContext));
+                    new Globals.EvalContext(ctx), typeof(Globals.EvalContext));
                 if (state.Exception == null)
                 {
                     var embed = new ModernEmbedBuilder
                     {
                         Title = "Evaluation success",
-                        Color = DiscordColor.Green,
-                        Timestamp = DuckTimestamp.Now,
-                        Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                         Fields = new List<DuckField>
                         {
                             ("Result", state.ReturnValue?.ToString() ?? "*null*")
                         }
-                    };
+                    }.AddGeneratedForFooter(ctx);
 
                     if (state.Variables.Any())
                         embed.AddField("Variables", string.Join("\n", state.Variables.Select(variable => $"*{variable.Type}* **{variable.Name}** = `{variable.Value}`")));
@@ -92,11 +91,8 @@ namespace kuvuBot.Commands.Moderation
                 await new ModernEmbedBuilder
                 {
                     Title = "Evaluation failed",
-                    Color = DiscordColor.Red,
-                    Timestamp = DuckTimestamp.Now,
-                    Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
                     Description = e.ToString().Replace("`", @"\`").Replace("*", @"\*").Replace("~", @"\~").Replace("_", @"\_")
-                }.Send(ctx.Message.Channel);
+                }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
             }
         }
     }

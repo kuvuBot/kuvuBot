@@ -60,19 +60,16 @@ namespace kuvuBot.Commands.Fun
                     result = results["lost"];
                 }
 
-                var message = await new ModernEmbedBuilder
+                await new ModernEmbedBuilder
                 {
                     Title = "Rock, paper and scissors",
-                    Color = Program.Config.EmbedColor,
-                    Timestamp = DuckTimestamp.Now,
                     Fields =
                     {
                         ("You", thing, true),
                         ("Bot", botthing, true),
                         ("Result", result, true)
                     },
-                    Footer = ($"Generated for {ctx.User.Username}#{ctx.User.Discriminator}", ctx.User.AvatarUrl),
-                }.Send(ctx.Message.Channel);
+                }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
             }
             else
             {
