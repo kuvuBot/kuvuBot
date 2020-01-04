@@ -4,11 +4,11 @@
     "description": "Tworzy głosowanie"
   },
   "global": {
-    "noPermissions": "You don't have sufficient permissions to execute this command!",
+    "noPermissions": "Nie masz wystarczających uprawnień, aby wykonać tę komendę!",
     "badArguments": "Nieprawidłowy argument.",
     "footer": "Wygenerowano dla {user}",
-    "error": "An error occurred",
-    "noBotPermissions": "I don't have `{permissions}` permissions, so I can't do it! Please contact guild administrator."
+    "error": "Wystąpił błąd",
+    "noBotPermissions": "Nie mam uprawnień `{permissions}`, więc nie mogę tego zrobić! Skontaktuj się z administratorem serwera."
   },
   "lang": {
     "flag": "🇵🇱",
@@ -180,6 +180,6 @@
     "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
   },
   "reverse": {
-    "description": "Reverses the given text"
+    "description": "Odwraca podany tekst"
   }
 }
