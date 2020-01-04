@@ -4,10 +4,11 @@
     "description": "Tworzy głosowanie"
   },
   "global": {
-    "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
+    "noPermissions": "Nie masz wystarczających uprawnień, aby wykonać tę komendę!",
     "badArguments": "Nieprawidłowy argument.",
     "footer": "Wygenerowano dla {user}",
-    "error": "Wystąpił błąd"
+    "error": "Wystąpił błąd",
+    "noBotPermissions": "Nie mam uprawnień `{permissions}`, więc nie mogę tego zrobić! Skontaktuj się z administratorem serwera."
   },
   "lang": {
     "flag": "🇵🇱",
@@ -177,5 +178,8 @@
   },
   "level": {
     "promotion": "🆙 | {mention} ma teraz {level} poziom! Gratulacje 🎉"
+  },
+  "reverse": {
+    "description": "Odwraca podany tekst"
   }
 }
