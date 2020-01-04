@@ -4,10 +4,11 @@
     "description": "Tworzy głosowanie"
   },
   "global": {
-    "nopermission": "Nie masz wystarczających uprawnień aby wykonać tą komende!",
+    "noPermissions": "You don't have sufficient permissions to execute this command!",
     "badArguments": "Nieprawidłowy argument.",
     "footer": "Wygenerowano dla {user}",
-    "error": "Wystąpił błąd"
+    "error": "An error occurred",
+    "noBotPermissions": "I don't have `{permissions}` permissions, so I can't do it! Please contact guild administrator."
   },
   "lang": {
     "flag": "🇵🇱",
