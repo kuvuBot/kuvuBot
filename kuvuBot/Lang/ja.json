@@ -124,7 +124,8 @@
   },
   "clear": {
     "description": "Removes specified amount of messages",
-    "success": ":ok_hand:, deleted {count} messages!"
+    "success": ":ok_hand:, deleted {count} messages!",
+    "failed": "Couldn't delete {count} messages! (they were probably older than 2 weeks)"
   },
   "mute": {
     "description": "Mutes user",
