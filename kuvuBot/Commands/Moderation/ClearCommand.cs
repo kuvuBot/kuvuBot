@@ -15,7 +15,7 @@ namespace kuvuBot.Commands.Moderation
     public class ClearCommand : BaseCommandModule
     {
         [Command("clear"), LocalizedDescription("clear.description")]
-        [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
+        [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages | Permissions.ManageMessages)]
         public async Task Clear(CommandContext ctx, [Description("Messages count")] int messageCount)
         {
             await ctx.Channel.TriggerTypingAsync();
