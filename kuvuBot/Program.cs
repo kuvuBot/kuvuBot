@@ -25,7 +25,6 @@ using DSharpPlus.Net;
 using kuvuBot.Lang;
 using kuvuBot.Commands.Attributes;
 using kuvuBot.Commands.Music;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net.Sockets;
 using System.Net.Http;
 using System.Net.WebSockets;
@@ -132,6 +131,7 @@ namespace kuvuBot
             Client.GuildDeleted += Client_GuildEvents;
             Client.GuildDownloadCompleted += Client_GuildEvents;
             Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
+            Client.SocketErrored += Client_SocketErrored;
 
             IFeatureManager[] managers = { new StatisticManager(), new LogManager(), new LevelManager(), new ModuleManager() };
             foreach (var manager in managers)
@@ -173,39 +173,42 @@ namespace kuvuBot
             });
         }
 
+        private static Task Client_SocketErrored(SocketErrorEventArgs e)
+        {
+            throw e.Exception;
+        }
+
         private static async Task Commands_CommandErrored(CommandErrorEventArgs e)
         {
-            if (e.Exception is CommandNotFoundException)
-                return;
-            if (e.Exception is ArgumentException || (e.Exception is InvalidOperationException && e.Exception.Message == "No matching subcommands were found, and this group is not executable."))
+            switch (e.Exception)
             {
-                var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
-                var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
-                await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
-                return;
-            }
-            if (e.Exception is ChecksFailedException ex)
-            {
-                if (ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute))
+                case CommandNotFoundException _:
+                    return;
+                case ArgumentException _ when e.Exception.StackTrace.Trim().StartsWith("at DSharpPlus.CommandsNext.Command.ExecuteAsync"):
+                case InvalidOperationException _ when e.Exception.Message == "No matching subcommands were found, and this group is not executable.":
+                {
+                    var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
+                    var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
+                    await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
+                    return;
+                }
+                case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute):
                 {
                     var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
                     var dm = await e.Context.Member.CreateDmChannelAsync();
                     await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
                     return;
                 }
-                else if (ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute))
-                {
+                case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute):
                     await e.Context.RespondAsync(await e.Context.Lang("global.nopermission"));
                     return;
-                }
-                else if (ex.FailedChecks.Any(x => x is MusicCommand.RequireLavalinkAttribute))
-                {
+                case ChecksFailedException ex when ex.FailedChecks.Any(x => x is MusicCommand.RequireLavalinkAttribute):
                     await e.Context.RespondAsync("Bot is not connected to lavalink!");
                     return;
-                }
+                default:
+                    Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
+                    break;
             }
-
-            Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
         }
 
         private static Task Commands_CommandExecuted(CommandExecutionEventArgs e)

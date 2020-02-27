@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using DSharpPlus.Interactivity;
 using DSharpPlus.Lavalink;
 
 namespace kuvuBot.Commands.Music
@@ -36,11 +32,11 @@ namespace kuvuBot.Commands.Music
             }
 
             await chn.ConnectAsync(Lavalink);
-            var loadResult = await Lavalink.GetTracksAsync(query);
+            var loadResult = await Lavalink.Rest.GetTracksAsync(query);
             LavalinkTrack track = loadResult.Tracks.First();
 
             var connection = Lavalink.GetConnection(ctx.Guild);
-            connection.Play(track);
+            await connection.PlayAsync(track);
             await ctx.RespondAsync($"👌, playing {track.Uri}");
         }
 
@@ -50,7 +46,7 @@ namespace kuvuBot.Commands.Music
             volume = Math.Clamp(volume, 0, 1000);
 
             var connection = Lavalink.GetConnection(ctx.Guild);
-            connection.SetVolume(volume);
+            await connection.SetVolumeAsync(volume);
             await ctx.RespondAsync($"👌, set volume to {volume}");
         }
 
@@ -58,7 +54,7 @@ namespace kuvuBot.Commands.Music
         public async Task Stop(CommandContext ctx)
         {
             var connection = Lavalink.GetConnection(ctx.Guild);
-            connection.Stop();
+            await connection.StopAsync();
             await ctx.RespondAsync($"👌");
         }
 

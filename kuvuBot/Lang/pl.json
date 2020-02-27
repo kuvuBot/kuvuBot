@@ -123,7 +123,8 @@
   },
   "clear": {
     "description": "Usuwa podaną ilość wiadomości",
-    "success": ":ok_hand:, usunięto {count} wiadomości!"
+    "success": ":ok_hand:, usunięto {count} wiadomości!",
+    "failed": "Nie można było usunąć {count} wiadomości! (prawdopodobnie były starsze niż 2 tygodnie)"
   },
   "mute": {
     "description": "Wycisza użytkownika",
