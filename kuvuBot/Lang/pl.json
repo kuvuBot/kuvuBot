@@ -125,7 +125,7 @@
   "clear": {
     "description": "Usuwa podaną ilość wiadomości",
     "success": ":ok_hand:, usunięto {count} wiadomości!",
-    "failed": "Couldn't delete {count} messages! (they were probably older than 2 weeks)"
+    "failed": "Nie udało się usunąć {count} wiadomości! (Prawdopodobnie były one starsze niż dwa tygodnie)"
   },
   "mute": {
     "description": "Wycisza użytkownika",
