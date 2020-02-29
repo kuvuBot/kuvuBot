@@ -92,7 +92,7 @@ namespace BadoszApiModule.Commands.Pictures
         }
     }
 
-U    public class ExcusemeCommand : BaseCommandModule
+    public class ExcusemeCommand : BaseCommandModule
     {
         [Command("excuseme"), Description("Excuse me wtf?")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
