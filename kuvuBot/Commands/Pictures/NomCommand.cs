@@ -4,18 +4,17 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
-using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
-    public class HugCommand : BaseCommandModule
+    public class NomCommand : BaseCommandModule
     {
-        [Command("hug"), LocalizedDescription("hug.description")]
+        [Command("nom"), LocalizedDescription("nom.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Hug(CommandContext ctx, [Description("User to hug")] DiscordUser target)
+        public async Task Nom(CommandContext ctx, [Description("User to nom")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await RemUtils.SendRemEmbed(ctx, RemUtils.ImageType.Hug, target);
+            await RemUtils.SendRemEmbed(ctx, RemUtils.ImageType.Nom, target);
         }
     }
 }

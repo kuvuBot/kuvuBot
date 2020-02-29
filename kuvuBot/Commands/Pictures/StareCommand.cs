@@ -4,18 +4,17 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
-using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {
-    public class HugCommand : BaseCommandModule
+    public class StareCommand : BaseCommandModule
     {
-        [Command("hug"), LocalizedDescription("hug.description")]
+        [Command("stare"), LocalizedDescription("stare.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Hug(CommandContext ctx, [Description("User to hug")] DiscordUser target)
+        public async Task Stare(CommandContext ctx, [Description("User to stare at")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await RemUtils.SendRemEmbed(ctx, RemUtils.ImageType.Hug, target);
+            await RemUtils.SendRemEmbed(ctx, RemUtils.ImageType.Stare, target);
         }
     }
 }
