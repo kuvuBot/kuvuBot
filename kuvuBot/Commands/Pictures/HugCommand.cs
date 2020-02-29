@@ -24,16 +24,7 @@ namespace kuvuBot.Commands.Pictures
         public async Task Hug(CommandContext ctx, [Description("User to hug")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            using (WebClient wc = new WebClient())
-            {
-                var response = JsonConvert.DeserializeObject<RemResponse>(wc.DownloadString("https://rra.ram.moe/i/r?type=hug"));
-                var embed = new ModernEmbedBuilder
-                {
-                    Title = (await ctx.Lang("hug.title")).Replace("{user}", ctx.User.Username).Replace("{target}", target.Username),
-                    ImageUrl = "https://rra.ram.moe" + response.Path
-                }.AddGeneratedForFooter(ctx);
-                await embed.Send(ctx.Channel);
-            }
+            await RemUtils.SendRemEmbed(ctx, RemUtils.ImageType.Hug, target);
         }
     }
 }
