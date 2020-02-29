@@ -7,7 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using kuvuBot.Lang;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands.Attributes;
 using kuvuBot.Data;
 
 namespace kuvuBot.Commands
@@ -54,9 +57,23 @@ namespace kuvuBot.Commands
             return v1[target.Length];
         }
 
+        public static string GetEnumMemberValue<T>(this T value) where T : struct, IConvertible
+        {
+            return typeof(T)
+                .GetTypeInfo()
+                .DeclaredMembers
+                .SingleOrDefault(x => x.Name == value.ToString())
+                ?.GetCustomAttribute<EnumMemberAttribute>(false)
+                ?.Value;
+        }
+
         public static string Category(this Command command)
         {
-            return command.Module.ModuleType.Namespace.Split('.').Last();
+            var categoryAttribute = (CategoryAttribute) command.CustomAttributes.FirstOrDefault(x => x is CategoryAttribute);
+            if (categoryAttribute != null)
+                return categoryAttribute.Category;
+
+            return command.Module.ModuleType.Namespace?.Split('.').Last();
         }
 
         public static string Name(this DiscordUser user, bool displayBot = false)

@@ -31,17 +31,17 @@ namespace kuvuBot.Features.Modular
                     }
 
                     var constructor = moduleType.GetConstructors().FirstOrDefault();
-                    object[] parameters = new object[constructor.GetParameters().Length];
+                    var parameters = new object[constructor.GetParameters().Length];
 
                     foreach (var parameter in constructor.GetParameters())
                     {
                         if (parameter.ParameterType == typeof(Data.Config))
                         {
-                            parameters[parameters.Length - 1] = Program.Config;
+                            parameters[^1] = Program.Config;
                         }
                         else
                         {
-                            parameters[parameters.Length - 1] = null;
+                            parameters[^1] = null;
                         }
                     }
 
@@ -57,12 +57,12 @@ namespace kuvuBot.Features.Modular
                     }
 
 
-                    client.DebugLogger.LogMessage(LogLevel.Info, name, $"Loaded ({moduleAttribute.Version})", DateTime.Now);
+                    client.DebugLogger.LogMessage(LogLevel.Info, name, $"Loaded ({moduleAttribute.DisplayVersion})", DateTime.Now);
                     Modules.Add(moduleAttribute);
                 }
                 catch (Exception e)
                 {
-                    client.DebugLogger.LogMessage(LogLevel.Error, name, $"Error\n{e.ToString()}", DateTime.Now);
+                    client.DebugLogger.LogMessage(LogLevel.Error, name, $"Error\n{e}", DateTime.Now);
                 }
             }
         }

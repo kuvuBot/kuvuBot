@@ -6,7 +6,7 @@
     <LangVersion>8</LangVersion>
     <Authors>kuvuś, js6pak</Authors>
     <Company>kuvuBot</Company>
-    <Version>5.0.5</Version>
+    <Version>5.0.6</Version>
     <Description>Simple discord bot written in c#</Description>
     <PackageProjectUrl>https://kuvubot.xyz/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kuvuBot/kuvuBot</RepositoryUrl>

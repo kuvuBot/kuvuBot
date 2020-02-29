@@ -3,9 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8</LangVersion>
+    <Version>1.2.0</Version>
+    <Authors>js6pak, Badosz</Authors>
+
+    <OutDir>$(SolutionDir)kuvuBot\bin\$(Configuration)\$(TargetFramework)\modules</OutDir>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\kuvuBot\kuvuBot.csproj" />
+    <ProjectReference Include="..\kuvuBot\kuvuBot.csproj">
+      <Private>false</Private>
+    </ProjectReference>
   </ItemGroup>
 </Project>

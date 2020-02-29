@@ -36,7 +36,7 @@ namespace kuvuBot.Commands.Moderation
 
             foreach (var module in ModuleManager.Modules)
             {
-                embed.AddField(module.Name, $"Version: {module.Version}, Author: {module.Author}, Description: `{module.Description}`");
+                embed.AddField(module.Name, $"Version: {module.DisplayVersion}, Author: {module.Author}, Description: `{module.Description}`");
             }
 
             await embed.Send(ctx.Message.Channel);
