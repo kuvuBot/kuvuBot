@@ -92,23 +92,7 @@ namespace BadoszApiModule.Commands.Pictures
         }
     }
 
-    public class CuddleCommand : BaseCommandModule
-    {
-        [Command("cuddle"), Description("Cuddles someone")]
-        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Cuddle(CommandContext ctx, DiscordMember target = null)
-        {
-            await ctx.Channel.TriggerTypingAsync();
-            target ??= ctx.Member;
-            var title = ctx.Member == target 
-                ? $"Take a cuddle, {ctx.Member.DisplayName}!" 
-                : $"{ctx.Member.DisplayName} cuddled {target.DisplayName}";
-
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Cuddle, title);
-        }
-    }
-
-    public class ExcusemeCommand : BaseCommandModule
+U    public class ExcusemeCommand : BaseCommandModule
     {
         [Command("excuseme"), Description("Excuse me wtf?")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
@@ -144,22 +128,6 @@ namespace BadoszApiModule.Commands.Pictures
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
             await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Invert, $"Inverted {target.DisplayName}", query);
-        }
-    }
-
-    public class KissCommand : BaseCommandModule
-    {
-        [Command("kiss"), Description("Kiss someone")]
-        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Kiss(CommandContext ctx, DiscordMember target = null)
-        {
-            await ctx.Channel.TriggerTypingAsync();
-            target ??= ctx.Member;
-            var title = ctx.Member == target
-                ? $"Take a kiss, {ctx.Member.DisplayName}!"
-                : $"{ctx.Member.DisplayName} kissed {target.DisplayName}";
-
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Kiss, title);
         }
     }
 
