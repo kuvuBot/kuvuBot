@@ -13,7 +13,7 @@
 **Crowdin:** https://crowdin.kuvubot.xyz/
 
 ## Requirements to run kuvuBot
-* .NET Core (min. version 3.0)
+* .NET Core (min. version 3.1)
 * MySQL server 
 
 ## Running
@@ -21,8 +21,8 @@ There are two ways to run kuvuBot:
 1. **With website:**
     * Start kuvuBot from kuvuBot.Panel project  
     There are two modes of webserver and you have to specify mode in start command.
-        * Production (which runs on port 80 and has debug enabled)
-        * Dev (runs on port 5000)  
+        * Dev (which runs on port 80 and has debug enabled)
+        * Production (runs on port 5000)  
 2. **Without website:**
     * Start kuvuBot from kuvuBot project
     
