@@ -1,5 +1,6 @@
 ﻿@page
 @model kuvuBot.Panel.Pages.StatisticsModel
+@using System.Diagnostics
 @using MoreLinq;
 @{
     ViewData["Title"] = "Statistics";
@@ -7,9 +8,14 @@
     var stats = botContext.Statistics.DistinctBy(x => x.Date.Date).OrderBy(x => x.Date);
     var statsStrings = stats.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
 }
-<div class="container">
+<section id="statistics">
+    <div class="container text-center d-flex flex-column align-items-center pb-3">
+        <h2 class="text-center mb-5 pt-2">Statistics</h2>
+    </div>
     <h1>Statistics</h1>
-
+    <p>Uptime @((DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"hh\:mm\:ss"))</p>
+    <p>CPU @(Model.CpuUsage)%</p>
+    <p>Memory @((Process.GetCurrentProcess().WorkingSet64 / 1000000d).ToString("F1")) MB</p>
     <div style="width:75%;">
         <canvas id="Guilds"></canvas>
     </div>
@@ -17,7 +23,7 @@
     <div style="width:75%;">
         <canvas id="ChannelsUsers"></canvas>
     </div>
-</div>
+</section>
 <script>
     var configChannelsUsers = {
         type: 'line',

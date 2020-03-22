@@ -6,99 +6,80 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    var commands = kuvuBot.Program.Commands.RegisteredCommands.Values.Where(x=>!x.IsHidden).DistinctBy(x => x.Name).ToList();
+    ViewData["BigHeader"] = true;
+    var commands = kuvuBot.Program.Commands.RegisteredCommands.Values.Where(x => !x.IsHidden).DistinctBy(x => x.Name).ToList();
     var categories = commands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x).ToList();
 }
 
-    <section id="commands" class="container">
-        <h1>Commands</h1>
-        <div data-aos="fade-left" class="container section-content">
-            <nav>
-                <div class="nav nav-tabs cmds-tabs" id="nav-tab" role="tablist">
+<section id="commands">
+    <div class="container">
+        <h2 class="text-center mb-5 pt-2">Commands</h2>
+        <div class="row pb-5">
+            <div class="col-md-3">
+                <ul class="commands-categories">
                     @foreach (var category in categories)
                     {
-                        <a class="nav-item nav-link cmds-tabs not @(category == categories[0] ? "active" : "")" id="cmd-@category-tab" data-toggle="tab" href="#cmd-@category" role="tab" aria-controls="cmd-@category" aria-selected="true">@category</a>
+                        <li class="commands-category @(category == categories[0] ? "active" : "")" data-category="@category">
+                            <span>@category</span>
+                        </li>
                     }
-                    <select class="custom-select ml-auto language-select">
-                        <option value="en" selected="@("en" == Model.Lang)">English</option>
-                        <option value="pl" selected="@("pl" == Model.Lang)">Polish</option>
-                    </select>
-                </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                @foreach (var category in categories)
-                {
-                    <div class="tab-pane fade @(category == categories[0] ? "show active" : "")" id="cmd-@category" role="tabpanel" aria-labelledby="cmd-@category-tab">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="commands-list-box">
+                    @foreach (var category in categories)
+                    {
+                        <div class="commands-list-category @(category == categories[0] ? "list-last" : "d-none")" data-list="@category">
+                            <ul class="commands-list">
                                 @foreach (var command in commands.Where(c => c.Category() == category))
                                 {
-                                    <tr>
-                                        <td>kb!@command.Name</td>
-                                        <td>@command.LocalizedDescription(Model.Lang ?? "en")</td>
-                                    </tr>
+                                    <li class="command">@command.Name - @command.LocalizedDescription("en")</li>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-            </div>
-        </div>
-    </section>
-
-    <section id="stats" class="container pb-3">
-        <h1>Stats</h1>
-        <div class="container info-content">
-            <div class="row">
-                <div class="col-md-4 col-12">
-                    <div class="card text-white bg-success mb-3 text-center">
-                        <div class="card-header">Guilds</div>
-                        <div class="card-body">
-                            <h3 class="card-title">@Features.StatisticManager.Guilds</h3>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="card text-white bg-warning mb-3 text-center">
-                        <div class="card-header">Channels</div>
-                        <div class="card-body">
-                            <h3 class="card-title">@Features.StatisticManager.Channels</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="card text-white bg-primary mb-3 text-center">
-                        <div class="card-header">Users</div>
-                        <div class="card-body">
-                            <h3 class="card-title odometer">@Features.StatisticManager.Users</h3>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
-    </section>
-
-    <section id="info">
-        <div class="container section-content">
-            <h1 data-aos="fade-right">Useful links</h1>
-            <div data-aos="fade-up" class="container info-content">
-                <div class="row">
-                    <div class="col-md-4 col-sm-12">
-                        <a href="https://github.com/kuvuBot/kuvuBot" class="btn btn-outline-light btn-lg btn-block btn-sq-lg">View on Github</a>
+    </div>
+</section>
+<section id="stats" class="pt-5">
+    <div class="container">
+        <h2 class="text-center mb-5 pt-2">Stats</h2>
+        <div class="row pb-5">
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @Features.StatisticManager.Guilds
                     </div>
-                    <div class="col-md-4 col-sm-12">
-                        <a href="https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8" class="btn btn-outline-light btn-lg btn-block btn-sq-lg">Add kuvuBot</a>
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <a href="https://discord.gg/KbUdeKe" class="btn btn-outline-light btn-lg btn-block btn-sq-lg">kuvuBot Discord Server</a>
+                    <div class="stats-footer">
+                        <p>Servers</p>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @Features.StatisticManager.Channels
+                    </div>
+                    <div class="stats-footer">
+                        <p>Channels</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @Features.StatisticManager.Users
+                    </div>
+                    <div class="stats-footer">
+                        <p>Users</p>
+                    </div>
+                </div>
+                <a asp-page="Statistics" class="float-right see-charts">
+                    See statistics charts <i class="far fa-arrow-circle-right"></i>
+                </a>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
