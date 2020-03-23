@@ -9,19 +9,49 @@
     var statsStrings = stats.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
 }
 <section id="statistics">
-    <div class="container text-center d-flex flex-column align-items-center pb-3">
+    <div class="container pb-2">
         <h2 class="text-center mb-5 pt-2">Statistics</h2>
+        <div class="row pb-5">
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @((DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"hh\:mm\:ss"))
+                    </div>
+                    <div class="stats-footer">
+                        <p>Uptime</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @((Process.GetCurrentProcess().WorkingSet64 / 1000000d).ToString("F1")) MB
+                    </div>
+                    <div class="stats-footer">
+                        <p>Memory usage</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @(Model.CpuUsage)%
+                    </div>
+                    <div class="stats-footer">
+                        <p>CPU usage</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <h1>Statistics</h1>
-    <p>Uptime @((DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"hh\:mm\:ss"))</p>
-    <p>CPU @(Model.CpuUsage)%</p>
-    <p>Memory @((Process.GetCurrentProcess().WorkingSet64 / 1000000d).ToString("F1")) MB</p>
-    <div style="width:75%;">
-        <canvas id="Guilds"></canvas>
-    </div>
+    <div class="container text-center d-flex flex-column justify-content-center align-items-center pb-3">
+        <div class="w-75">
+            <canvas id="Guilds"></canvas>
+        </div>
 
-    <div style="width:75%;">
-        <canvas id="ChannelsUsers"></canvas>
+        <div class="w-75">
+            <canvas id="ChannelsUsers"></canvas>
+        </div>
     </div>
 </section>
 <script>
