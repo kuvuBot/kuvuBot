@@ -16,32 +16,35 @@
     @if (Model.Guild != null)
     {
         <div class="container">
-            <img class="float-left rounded-circle p-1" src="@(Model.DGuild.IconUrl)" width="60" height="60" />
-            <h1>@Model.DGuild.Name leaderboard</h1>
+            <div class="section-head d-flex flex-row justify-content-center">
+                <img class="rounded-circle p-1 text-center mr-3" src="@(Model.DGuild.IconUrl ?? "https://discordapp.com/assets/28174a34e77bb5e5310ced9f95cb480b.png")" width="60" height="60" />
+                <h2 class="text-center mb-5 pt-2">@Model.DGuild.Name leaderboard</h2>
+            </div>
             <section id="leaderboard">
-                <div class="container">
+                <div class="container d-flex flex-column align-items-center pb-3">
+                    <a href="/leaderboard"><i class="far fa-arrow-circle-left"></i> Go back</a>
                     <table class="table table-dark mx-auto text-left">
                         <thead>
-                            <tr>
-                                <th scope="col">Rank</th>
-                                <th scope="col">Nickname</th>
-                                <th scope="col">Level</th>
-                                <th scope="col">EXP</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Nickname</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">EXP</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @{ var rank = 1; }
-                            @foreach (var player in Model._BotContext.Users.Where(x => x.Guild == Model.Guild).OrderByDescending(x => x.Exp).Take(10))
-                            {
-                                var discordUser = await kuvuBot.Program.Client.GetUserAsync(player.DiscordUser);
-                                <tr>
-                                    <th scope="row">@rank</th>
-                                    <th><img src="@(discordUser.AvatarUrl)" class="rounded-circle" height="40" width="40" /> @discordUser.Username#@discordUser.Discriminator</th>
-                                    <td>@player.GetLevel()</td>
-                                    <td>@player.Exp/@KuvuUser.ConvertLevelToExp(player.GetLevel() + 1)</td>
-                                </tr>
-                                rank++;
-                            }
+                        @{ var rank = 1; }
+                        @foreach (var player in Model._BotContext.Users.Where(x => x.Guild == Model.Guild).OrderByDescending(x => x.Exp).Take(10))
+                        {
+                            var discordUser = await kuvuBot.Program.Client.GetUserAsync(player.DiscordUser);
+                            <tr>
+                                <td scope="row">@rank</td>
+                                <td><img src="@(discordUser.AvatarUrl)" class="rounded-circle" height="40" width="40"/> @discordUser.Username#@discordUser.Discriminator</td>
+                                <td>@player.GetLevel()</td>
+                                <td>@player.Exp/@KuvuUser.ConvertLevelToExp(player.GetLevel() + 1)</td>
+                            </tr>
+                            rank++;
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -50,7 +53,7 @@
     }
     else
     {
-        <div class="container text-center d-flex flex-column align-items-center pb-3">
+        <div class="container text-center d-flex flex-column align-items-center">
             <h2 class="text-center mb-5 pt-2">Leaderboard</h2>
             <p>To see leaderboard, search server by its name or ID</p>
             <div class="input-group mb-3 leaderboard-search">
@@ -64,27 +67,31 @@
                     </button>
                 </div>
             </div>
+        </div>
+        <div class="container pb-3 text-center">
             @if (!User.Identity.IsAuthenticated)
             {
                 <p>or, login with discord to see guilds are you in.</p>
             }
             else
             {
-                <div class="row mx-auto">
+                <div class="row justify-content-center pt-4">
                     @foreach (var guild in Model.Client.Guilds.Select(x => x.Value).Where(x => Model._BotContext.Guilds.Any(k => k.GuildId == x.Id)))
                     {
-                        <div class="card m-2 mx-auto" style="width: 8rem;">
-                            <img src="@(guild.IconUrl ?? "https://discordapp.com/assets/e05ead6e6ebc08df9291738d0aa6986d.png")" class="card-img-top guild-icon" alt="Guild icon">
-                            <div class="card-body">
-                                <h5 class="card-title">@guild.Name</h5>
-
-                                @{
-                                    var routeData = new Dictionary<string, string>()
-                                    {
-                                        ["search"] = guild.Id.ToString(),
-                                    };
-                                }
-                                <a asp-page="/Leaderboard" asp-all-route-data="routeData" class="btn btn-primary">Go</a>
+                        <div class="col-lg-2">
+                            <div class="card card-dark">
+                                <img src="@(guild.IconUrl ?? "https://discordapp.com/assets/28174a34e77bb5e5310ced9f95cb480b.png")" class="card-img-top guild-icon pt-sm-2 rounded-circle" alt="Guild icon">
+                                <div class="card-body">
+                                    <h5 class="card-title">@guild.Name</h5>
+    
+                                    @{
+                                        var routeData = new Dictionary<string, string>()
+                                        {
+                                            ["search"] = guild.Id.ToString(),
+                                        };
+                                    }
+                                    <a asp-page="/Leaderboard" asp-all-route-data="routeData" class="btn btn-outline-light">Go</a>
+                                </div>
                             </div>
                         </div>
                     }

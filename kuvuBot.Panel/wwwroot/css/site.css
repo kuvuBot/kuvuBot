@@ -95,13 +95,13 @@ header.sub {
     background-position: center;
 }
 
-    header.sub .container {
-        min-height: 40vh;
-    }
+header.sub .container {
+    min-height: 40vh;
+}
 
-    header.sub .bg-darker {
-        min-height: 40vh;
-    }
+header.sub .bg-darker {
+    min-height: 40vh;
+}
 
 .bg-darker {
     background: linear-gradient(0deg, rgba(10, 10, 30, 1) 0%, rgba(10, 10, 30, 0.98) 10%, rgba(30, 30, 30, 0.1) 100%);
@@ -247,22 +247,32 @@ li.command {
     width: 100%;
 }
 
-    .table-dark td {
-        border-top: none;
-        line-height: 2.3em;
-    }
+.table-dark td {
+    border-top: none;
+    line-height: 2.3em;
+}
 
-    .table-dark tr:nth-child(odd) {
-        background: #14142E;
-    }
+.table-dark tr:nth-child(odd) {
+    background: #14142E;
+}
 
-    .table-dark thead th {
-        border: none;
-    }
+.table-dark thead th {
+    border: none;
+}
 
-    .table-dark thead tr {
-        background: #0A0A1E !important;
-    }
+.table-dark thead tr {
+    background: #0A0A1E !important;
+}
+
+.card-dark {
+    background: #14142E;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card img {
+    width: 128px;
+}
 
 /* Responsiveness */
 
