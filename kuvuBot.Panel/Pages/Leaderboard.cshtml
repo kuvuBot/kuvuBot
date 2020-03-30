@@ -62,7 +62,7 @@
                        aria-describedby="leaderboardSearchButton">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="leaderboardSearchButton"
-                            onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.assign('leaderboard?search=' + $('#leaderboardSearchInput').val())">
+                            onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.assign('leaderboard?search=' + document.getElementById('leaderboardSearchInput').value)">
                         Search
                     </button>
                 </div>
