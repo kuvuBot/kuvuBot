@@ -172,28 +172,38 @@ namespace kuvuBot
                 }
             }
 
-            Console.CancelKeyPress += (s, e) =>
+            Console.CancelKeyPress += async (s, e) =>
             {
                 e.Cancel = true;
-                Kill = true;
+                await OnStop();
             };
 
-            AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+            AppDomain.CurrentDomain.ProcessExit += async (s, e) =>
             {
-                Kill = true;
+                await OnStop();
             };
 
-            AssemblyLoadContext.Default.Unloading += ctx => { Kill = true; };
+            AssemblyLoadContext.Default.Unloading += async ctx =>
+            {
+                await OnStop();
+            };
 
             // prevent app from quit
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 while (!Kill) { }
-
-                Client.DebugLogger.LogMessage(LogLevel.Info, "kuvuBot", $"Stopping...", DateTime.Now);
-                Loaded = false;
-                await Client_GuildEvents(null);
             });
+        }
+
+        public static async Task OnStop()
+        {
+            if (Kill)
+                return;
+
+            Kill = true;
+            Console.WriteLine("Stopping...");
+            Loaded = false;
+            await Client_GuildEvents(null);
         }
 
         private static Task Client_SocketErrored(SocketErrorEventArgs e)
