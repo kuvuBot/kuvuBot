@@ -24,7 +24,7 @@
   "status": {
     "activityType": "ListeningTo",
     "userStatus": "Online",
-    "activity": "%defualtprefix%help | %guilds% guilds"
+    "activity": "%defualtprefix%help | %guilds% servers"
   },
   "customBot": false,
   "embedColor": "33,150,243"

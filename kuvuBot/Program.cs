@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Drawing;
 using System.IO;
@@ -28,6 +29,7 @@ using kuvuBot.Commands.Music;
 using System.Net.Sockets;
 using System.Net.Http;
 using System.Net.WebSockets;
+using System.Runtime.Loader;
 
 namespace kuvuBot
 {
@@ -40,6 +42,7 @@ namespace kuvuBot
         public static CommandsNextExtension Commands { get; set; }
         public static LavalinkExtension Lavalink { get; set; }
         private static bool Kill { get; set; } = false;
+        private static bool Loaded { get; set; } = false;
 
         public static Config LoadConfig()
         {
@@ -55,26 +58,24 @@ namespace kuvuBot
             Console.WriteLine("Checking database connection...");
             try
             {
-                using (var botContext = new BotContext())
+                using var botContext = new BotContext();
+                if (botContext.Database.CanConnect())
                 {
-                    if (botContext.Database.CanConnect())
+                    Console.WriteLine("Database connection is OK");
+                    Console.WriteLine("Migrating database...");
+                    try
                     {
-                        Console.WriteLine("Database connection is OK");
-                        Console.WriteLine("Migrating database...");
-                        try
-                        {
-                            botContext.Database.Migrate();
-                            Console.WriteLine("Database migration SUCCESS");
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Database migration error\n {e.ToString()}");
-                        }
+                        botContext.Database.Migrate();
+                        Console.WriteLine("Database migration SUCCESS");
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Console.WriteLine($"Database error");
+                        Console.WriteLine($"Database migration error\n {e.ToString()}");
                     }
+                }
+                else
+                {
+                    Console.WriteLine($"Database error");
                 }
             }
             catch (Exception e)
@@ -129,7 +130,12 @@ namespace kuvuBot
             Client.Ready += Client_Ready;
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
-            Client.GuildDownloadCompleted += Client_GuildEvents;
+            Client.GuildDownloadCompleted += (e) =>
+            {
+                Client.DebugLogger.LogMessage(LogLevel.Info, "kuvuBot", $"Guild download completed {e.Guilds.Count}", DateTime.Now);
+                Loaded = true;
+                return Client_GuildEvents(e);
+            };
             Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
             Client.SocketErrored += Client_SocketErrored;
 
@@ -166,10 +172,27 @@ namespace kuvuBot
                 }
             }
 
+            Console.CancelKeyPress += (s, e) =>
+            {
+                e.Cancel = true;
+                Kill = true;
+            };
+
+            AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+            {
+                Kill = true;
+            };
+
+            AssemblyLoadContext.Default.Unloading += ctx => { Kill = true; };
+
             // prevent app from quit
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 while (!Kill) { }
+
+                Client.DebugLogger.LogMessage(LogLevel.Info, "kuvuBot", $"Stopping...", DateTime.Now);
+                Loaded = false;
+                await Client_GuildEvents(null);
             });
         }
 
@@ -186,19 +209,19 @@ namespace kuvuBot
                     return;
                 case ArgumentException _ when e.Exception.StackTrace.Trim().StartsWith("at DSharpPlus.CommandsNext.Command.ExecuteAsync"):
                 case InvalidOperationException _ when e.Exception.Message == "No matching subcommands were found, and this group is not executable.":
-                {
-                    var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
-                    var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
-                    await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
-                    return;
-                }
+                    {
+                        var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
+                        var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
+                        await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
+                        return;
+                    }
                 case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute):
-                {
-                    var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
-                    var dm = await e.Context.Member.CreateDmChannelAsync();
-                    await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
-                    return;
-                }
+                    {
+                        var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
+                        var dm = await e.Context.Member.CreateDmChannelAsync();
+                        await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
+                        return;
+                    }
                 case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute):
                     await e.Context.RespondAsync(await e.Context.Lang("global.nopermission"));
                     return;
@@ -219,6 +242,11 @@ namespace kuvuBot
 
         private static void UpdateStatus()
         {
+            if (!Loaded)
+            {
+                Client.UpdateStatusAsync(new DiscordActivity("Rebooting..."), UserStatus.Idle, Process.GetCurrentProcess().StartTime);
+                return;
+            }
             Client.UpdateStatusAsync(GetDiscordActivity(), Config.Status.UserStatus);
         }
 
