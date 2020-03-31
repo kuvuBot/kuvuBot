@@ -6,7 +6,8 @@
     "cat": "TheCatApi.com KEY (https://thecatapi.com/signup)",
     "openweather": "openweathermap KEY (https://openweathermap.org/api)",
     "scoutsdk": "scoutsdk KEY",
-    "steamwebapi": "Steam Web API Key (https://steamcommunity.com/dev/registerkey)"
+    "steamwebapi": "Steam Web API Key (https://steamcommunity.com/dev/registerkey)",
+    "topgg": "top.gg token (https://top.gg/api/docs)"
   },
   "defualtPrefix": "DEFUALT COMMAND PREFIX",
   "mySql": {

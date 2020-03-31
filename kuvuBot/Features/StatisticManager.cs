@@ -5,11 +5,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using DiscordBotsList.Api;
 
 namespace kuvuBot.Features
 {
     public class StatisticManager : IFeatureManager
     {
+        private AuthDiscordBotListApi DiscordBotListApi { get; set; }
+
         public void Initialize(DiscordClient client)
         {
             client.GuildDownloadCompleted += Client_GuildDownloadCompleted;
@@ -17,8 +20,17 @@ namespace kuvuBot.Features
             client.GuildCreated += Client_GuildCreated;
             client.GuildDeleted += Client_GuildDeleted;
 
+            if (!string.IsNullOrEmpty(Program.Config.Apis.TopGg))
+            {
+                client.Ready += e =>
+                {
+                    DiscordBotListApi = new AuthDiscordBotListApi(client.CurrentUser.Id, Program.Config.Apis.TopGg);
+                    return Task.CompletedTask;
+                };
+            }
+
             var aTimer = new Timer(TimeSpan.FromMinutes(1).TotalMilliseconds); // elapse every 1 min
-            int lastHour = DateTime.Now.Hour;
+            var lastHour = DateTime.Now.Hour;
             aTimer.Elapsed += async (source, e) =>
             {
                 if (lastHour < DateTime.Now.Hour || (lastHour == 23 && DateTime.Now.Hour == 0))
@@ -34,9 +46,9 @@ namespace kuvuBot.Features
         public static int Guilds => Program.Client.Guilds.Count;
         public static int Channels => Program.Client.Guilds.Values.SelectMany(g => g.Channels).Count();
         public static int Users => Program.Client.Guilds.Values.SelectMany(g => g.Members).Count();
-        static async Task Update()
-        {
 
+        private async Task Update()
+        {
             var botContext = new BotContext();
 
             var last = botContext.Statistics.ToList().LastOrDefault();
@@ -54,22 +66,31 @@ namespace kuvuBot.Features
                     Users = Users
                 };
                 botContext.Statistics.Add(stat);
+
+                if (DiscordBotListApi != null)
+                {
+                    var selfBot = await DiscordBotListApi.GetMeAsync();
+                    if (selfBot != null)
+                    {
+                        await selfBot.UpdateStatsAsync(stat.Guilds);
+                    }
+                }
             }
             await botContext.SaveChangesAsync();
         }
 
 
-        private static async Task Client_GuildDownloadCompleted(GuildDownloadCompletedEventArgs e)
+        private async Task Client_GuildDownloadCompleted(GuildDownloadCompletedEventArgs e)
         {
             await Update();
         }
 
-        private static async Task Client_GuildDeleted(GuildDeleteEventArgs e)
+        private async Task Client_GuildDeleted(GuildDeleteEventArgs e)
         {
             await Update();
         }
 
-        private static async Task Client_GuildCreated(GuildCreateEventArgs e)
+        private async Task Client_GuildCreated(GuildCreateEventArgs e)
         {
             await Update();
         }
