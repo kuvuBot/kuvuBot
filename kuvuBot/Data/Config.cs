@@ -29,6 +29,7 @@ namespace kuvuBot.Data
         public string OpenWeatherApi => this["openweather"];
         public string ScoutSdk => this["scoutsdk"];
         public string SteamWebApi => this["steamwebapi"];
+        public string TopGg => this["topgg"];
     }
 
     public partial class Status
