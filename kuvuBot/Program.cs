@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.IO;
@@ -37,10 +38,10 @@ namespace kuvuBot
     {
         private const string ConfigFilename = "config.json";
 
-        public static DiscordClient Client { get; set; }
+        public static DiscordShardedClient Client { get; set; }
         public static Config Config { get; set; }
-        public static CommandsNextExtension Commands { get; set; }
-        public static LavalinkExtension Lavalink { get; set; }
+        public static IReadOnlyDictionary<int, CommandsNextExtension> Commands { get; set; }
+        public static IReadOnlyDictionary<int, LavalinkExtension> Lavalink { get; set; }
         private static bool Kill { get; set; } = false;
         private static bool Loaded { get; set; } = false;
 
@@ -102,11 +103,11 @@ namespace kuvuBot
                 HttpTimeout = TimeSpan.FromSeconds(60)
             };
 
-            Client = new DiscordClient(conf);
+            Client = new DiscordShardedClient(conf);
 
-            Lavalink = Client.UseLavalink();
+            Lavalink = await Client.UseLavalinkAsync();
 
-            Commands = Client.UseCommandsNext(new CommandsNextConfiguration
+            Commands = await Client.UseCommandsNextAsync(new CommandsNextConfiguration
             {
                 EnableDefaultHelp = true,
                 PrefixResolver = async (msg) =>
@@ -115,17 +116,21 @@ namespace kuvuBot
                     return msg.GetStringPrefixLength(kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
                 },
             });
-            Commands.SetHelpFormatter<HelpFormatter>();
-            Commands.RegisterConverter(new FriendlyDiscordUserConverter());
-            Commands.RegisterConverter(new FriendlyDiscordMemberConverter());
-            Commands.RegisterConverter(new FriendlyDiscordChannelConverter());
-            Commands.RegisterConverter(new FriendlyDiscordMessageConverter());
-            Commands.RegisterConverter(new FriendlyBoolConverter());
 
-            Commands.CommandExecuted += Commands_CommandExecuted;
-            Commands.CommandErrored += Commands_CommandErrored;
+            foreach (var extension in Commands.Values)
+            {
+                extension.SetHelpFormatter<HelpFormatter>();
+                extension.RegisterConverter(new FriendlyDiscordUserConverter());
+                extension.RegisterConverter(new FriendlyDiscordMemberConverter());
+                extension.RegisterConverter(new FriendlyDiscordChannelConverter());
+                extension.RegisterConverter(new FriendlyDiscordMessageConverter());
+                extension.RegisterConverter(new FriendlyBoolConverter());
 
-            Commands.RegisterCommands(Assembly.GetExecutingAssembly());
+                extension.CommandExecuted += Commands_CommandExecuted;
+                extension.CommandErrored += Commands_CommandErrored;
+
+                extension.RegisterCommands(Assembly.GetExecutingAssembly());
+            }
 
             Client.Ready += Client_Ready;
             Client.GuildCreated += Client_GuildEvents;
@@ -147,18 +152,21 @@ namespace kuvuBot
 
             UpdateDatabase();
 
-
-            await Client.ConnectAsync(GetDiscordActivity(), Config.Status.UserStatus);
+            await Client.StartAsync();
+            Client.Ready += e => e.Client.UpdateStatusAsync(GetDiscordActivity(), Config.Status.UserStatus);
 
             try
             {
                 var endpoint = new ConnectionEndpoint { Hostname = Config.Lavalink.Ip, Port = Config.Lavalink.Port };
-                MusicCommand.Lavalink = await Lavalink.ConnectAsync(new LavalinkConfiguration
+                foreach (var extension in Lavalink.Values)
                 {
-                    Password = Config.Lavalink.Password,
-                    RestEndpoint = endpoint,
-                    SocketEndpoint = endpoint
-                });
+                    MusicCommand.Lavalink = await extension.ConnectAsync(new LavalinkConfiguration
+                    {
+                        Password = Config.Lavalink.Password,
+                        RestEndpoint = endpoint,
+                        SocketEndpoint = endpoint
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -233,7 +241,7 @@ namespace kuvuBot
                         return;
                     }
                 case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute):
-                    await e.Context.RespondAsync(await e.Context.Lang("global.nopermission"));
+                    await e.Context.RespondAsync(await e.Context.Lang("global.noPermissions"));
                     return;
                 case ChecksFailedException ex when ex.FailedChecks.Any(x => x is MusicCommand.RequireLavalinkAttribute):
                     await e.Context.RespondAsync("Bot is not connected to lavalink!");
@@ -264,7 +272,7 @@ namespace kuvuBot
         {
             return new DiscordActivity(Config.Status.Activity
                 .Replace("%defualtprefix%", Config.DefualtPrefix)
-                .Replace("%guilds%", Client.Guilds.Count.ToString()), Config.Status.ActivityType);
+                .Replace("%guilds%", Client.ShardClients.Values.Sum(client => client.Guilds.Count).ToString()), Config.Status.ActivityType);
         }
 
         private static Task Client_GuildEvents(EventArgs e)

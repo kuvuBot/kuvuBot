@@ -12,7 +12,7 @@ namespace kuvuBot.Features.Modular
     public class ModuleManager : IFeatureManager
     {
         public static List<ModuleAttribute> Modules = new List<ModuleAttribute>();
-        public void Initialize(DiscordClient client)
+        public void Initialize(DiscordShardedClient client)
         {
             if (!Directory.Exists("modules"))
                 Directory.CreateDirectory("modules");
@@ -49,7 +49,10 @@ namespace kuvuBot.Features.Modular
                     var module = constructor.Invoke(parameters);
                     var moduleAttribute = module.GetType().GetCustomAttribute<ModuleAttribute>();
 
-                    Program.Commands.RegisterCommands(moduleAssembly);
+                    foreach (var extension in Program.Commands.Values)
+                    {
+                        extension.RegisterCommands(moduleAssembly);
+                    }
 
                     foreach(var featureManagerType in moduleAssembly.GetTypes().Where(t=>t.GetInterfaces().Any(x => x == typeof(IFeatureManager))))
                     {

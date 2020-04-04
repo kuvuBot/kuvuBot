@@ -106,5 +106,31 @@ namespace kuvuBot.Commands
         {
             return channels.Where(x => x.IsCategory == canBeCategory && x.Type == type);
         }
+
+        public static async Task<DiscordGuild> GetGuildAsync(this DiscordShardedClient shardedClient, ulong id)
+        {
+            foreach (var client in shardedClient.ShardClients.Values)
+            {
+                var guild = await client.GetGuildAsync(id);
+                if (guild != null)
+                {
+                    return guild;
+                }
+            }
+            return null;
+        }
+
+        public static async Task<DiscordUser> GetUserAsync(this DiscordShardedClient shardedClient, ulong id)
+        {
+            foreach (var client in shardedClient.ShardClients.Values)
+            {
+                var user = await client.GetUserAsync(id);
+                if (user != null)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
     }
 }

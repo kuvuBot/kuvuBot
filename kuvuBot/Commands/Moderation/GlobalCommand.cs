@@ -13,6 +13,7 @@ using kuvuBot.Features.Modular;
 using kuvuBot.Commands.Attributes;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using MoreLinq.Extensions;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -38,6 +39,24 @@ namespace kuvuBot.Commands.Moderation
             {
                 embed.AddField(module.Name, $"Version: {module.DisplayVersion}, Author: {module.Author}, Description: `{module.Description}`");
             }
+
+            await embed.Send(ctx.Message.Channel);
+        }
+
+        [Command("shards"), Description("Print shards")]
+        [RequireGlobalRank(KuvuGlobalRank.Helper)]
+        public async Task Shards(CommandContext ctx)
+        {
+            var embed = new ModernEmbedBuilder
+            {
+                Title = "Shards",
+                Fields = new List<DuckField>
+                {
+                    ("ShardId", ctx.Client.ShardId.ToString(), true),
+                    ("ShardCount", ctx.Client.ShardCount.ToString(), true),
+                    ("Shards", $"[{Program.Client.ShardClients.Values.Select(x=>x.Guilds.Count.ToString()).ToDelimitedString(", ")}]"),
+                }
+            }.AddGeneratedForFooter(ctx);
 
             await embed.Send(ctx.Message.Channel);
         }

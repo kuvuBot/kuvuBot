@@ -13,7 +13,7 @@ namespace kuvuBot.Features
     {
         private AuthDiscordBotListApi DiscordBotListApi { get; set; }
 
-        public void Initialize(DiscordClient client)
+        public void Initialize(DiscordShardedClient client)
         {
             client.GuildDownloadCompleted += Client_GuildDownloadCompleted;
 
@@ -43,9 +43,9 @@ namespace kuvuBot.Features
             aTimer.Start();
         }
 
-        public static int Guilds => Program.Client.Guilds.Count;
-        public static int Channels => Program.Client.Guilds.Values.SelectMany(g => g.Channels).Count();
-        public static int Users => Program.Client.Guilds.Values.SelectMany(g => g.Members).Count();
+        public static int Guilds => Program.Client.ShardClients.Values.Sum(client => client.Guilds.Count);
+        public static int Channels => Program.Client.ShardClients.Values.Sum(client => client.Guilds.Values.SelectMany(g => g.Channels).Count());
+        public static int Users => Program.Client.ShardClients.Values.Sum(client => client.Guilds.Values.SelectMany(g => g.Members).Count());
 
         private async Task Update()
         {

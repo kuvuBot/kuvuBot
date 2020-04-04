@@ -1,6 +1,7 @@
 ﻿@page "{search?}"
 
 
+@using kuvuBot.Commands
 @model LeaderboardModel
 @{
     ViewData["Title"] = "Leaderboard";
@@ -55,14 +56,14 @@
     {
         <div class="container text-center d-flex flex-column align-items-center">
             <h2 class="text-center mb-5 pt-2">Leaderboard</h2>
-            <p>To see leaderboard, search server by its name or ID</p>
+            <p>To see leaderboard, enter server id</p>
             <div class="input-group mb-3 leaderboard-search">
                 <input type="text" class="form-control" id="leaderboardSearchInput"
-                       placeholder="Discord server name or ID" aria-label="Discord server name or ID"
+                       placeholder="Discord server id (e.g. 257599205693063168)" aria-label="Discord server id"
                        aria-describedby="leaderboardSearchButton">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="leaderboardSearchButton"
-                            onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.assign('leaderboard?search=' + document.getElementById('leaderboardSearchInput').value)">
+                            onclick="window.location.assign('leaderboard?id=' + document.getElementById('leaderboardSearchInput').value);">
                         Search
                     </button>
                 </div>

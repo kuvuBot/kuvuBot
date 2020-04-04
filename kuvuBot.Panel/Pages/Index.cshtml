@@ -7,7 +7,7 @@
 @{
     ViewData["Title"] = "Home page";
     ViewData["BigHeader"] = true;
-    var commands = kuvuBot.Program.Commands.RegisteredCommands.Values.Where(x => !x.IsHidden).DistinctBy(x => x.Name).ToList();
+    var commands = kuvuBot.Program.Commands.Values.First().RegisteredCommands.Values.Where(x => !x.IsHidden).DistinctBy(x => x.Name).ToList();
     var categories = commands.Where(x => x.Name != "help").Select(c => c.Category()).DistinctBy(x => x).ToList();
 }
 

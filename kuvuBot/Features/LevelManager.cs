@@ -9,40 +9,37 @@ using kuvuBot.Data;
 
 namespace kuvuBot.Features
 {
-    class LevelManager : IFeatureManager
+    public class LevelManager : IFeatureManager
     {
-        public void Initialize(DiscordClient client)
+        public void Initialize(DiscordShardedClient client)
         {
             client.MessageCreated += Client_MessageCreated;
         }
 
         private static async Task Client_MessageCreated(MessageCreateEventArgs e)
         {
-            if(e.Author.IsBot) return;
-            using (var botContext = new BotContext())
+            if (e.Author.IsBot) return;
+            await using var botContext = new BotContext();
+            var kuvuGuild = await e.Guild.GetKuvuGuild(botContext);
+            if (!e.Message.Content.StartsWith(kuvuGuild.Prefix))
             {
-                var kuvuGuild = await e.Guild.GetKuvuGuild(botContext);
-                if (!e.Message.Content.StartsWith(kuvuGuild.Prefix))
+                var kuvuUser = await e.Author.GetKuvuUser(kuvuGuild, botContext);
+
+                if (!kuvuUser.LastExpMessage.HasValue || (DateTime.Now - kuvuUser.LastExpMessage.Value).Minutes >= 1)
                 {
-                    var kuvuUser = await e.Author.GetKuvuUser(kuvuGuild, botContext);
-
-                    if (!kuvuUser.LastExpMessage.HasValue || (DateTime.Now - kuvuUser.LastExpMessage.Value).Minutes >= 1)
+                    if (kuvuGuild.ShowLevelUp)
                     {
-                        if (kuvuGuild.ShowLevelUp)
-                        {
-                            await kuvuUser.AddExp(new Random().Next(1, 5), e.Channel, e.Author.Mention);
-                        }
-                        else
-                        {
-                            await kuvuUser.AddExp(new Random().Next(1, 5));
-                        }
-
-                        kuvuUser.LastExpMessage = DateTime.Now;
-
-                        await botContext.SaveChangesAsync();
+                        await kuvuUser.AddExp(new Random().Next(1, 5), e.Channel, e.Author.Mention);
                     }
-                }
+                    else
+                    {
+                        await kuvuUser.AddExp(new Random().Next(1, 5));
+                    }
 
+                    kuvuUser.LastExpMessage = DateTime.Now;
+
+                    await botContext.SaveChangesAsync();
+                }
             }
         }
     }

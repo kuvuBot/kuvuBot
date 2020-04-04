@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using kuvuBot.Commands;
 using kuvuBot.Lang;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -20,7 +22,7 @@ namespace kuvuBot.Data
     {
         public static async Task<KuvuGuild> GetKuvuGuild(this DiscordGuild guild, BotContext botContext = null)
         {
-            botContext = botContext ?? new BotContext();
+            botContext ??= new BotContext();
 
             var kuvuGuild = await botContext.Guilds.FirstOrDefaultAsync(g => g.GuildId == guild.Id);
             if (kuvuGuild == null)
@@ -40,7 +42,7 @@ namespace kuvuBot.Data
         public static async Task<GlobalUser> GetGlobalUser(this DiscordUser user, BotContext botContext = null)
         {
             if (user.IsBot) throw new Exception("Can't get bot GlobalUser");
-            botContext = botContext ?? new BotContext();
+            botContext ??= new BotContext();
 
             var globalUser = await botContext.GlobalUsers.FirstOrDefaultAsync(g => g.DiscordUser == user.Id);
             if (globalUser == null)
@@ -61,7 +63,7 @@ namespace kuvuBot.Data
         public static async Task<KuvuUser> GetKuvuUser(this DiscordUser user, KuvuGuild guild, BotContext botContext = null)
         {
             if (user.IsBot) throw new Exception("Can't get bot kuvuUser");
-            botContext = botContext ?? new BotContext();
+            botContext ??= new BotContext();
 
             var kuvuUser = await botContext.Users.FirstOrDefaultAsync(g => g.DiscordUser == user.Id && g.Guild == guild);
             if (kuvuUser == null)
@@ -96,13 +98,7 @@ namespace kuvuBot.Data
         [NotMapped]
         public DiscordChannel GreetingChannel
         {
-            get
-            {
-                if (!GreetingChannelId.HasValue)
-                    return null;
-
-                return Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GreetingChannelId.Value);
-            }
+            get => !GreetingChannelId.HasValue ? null : Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GreetingChannelId.Value);
             set => GreetingChannelId = value?.Id;
         }
         public string GreetingMessage { get; set; }
@@ -112,13 +108,7 @@ namespace kuvuBot.Data
         [NotMapped]
         public DiscordChannel GoodbyeChannel
         {
-            get
-            {
-                if (!GoodbyeChannelId.HasValue)
-                    return null;
-
-                return Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GoodbyeChannelId.Value);
-            }
+            get => !GoodbyeChannelId.HasValue ? null : Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GoodbyeChannelId.Value);
             set => GoodbyeChannelId = value?.Id;
         }
         public string GoodbyeMessage { get; set; }
@@ -241,8 +231,8 @@ namespace kuvuBot.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
-            var mysqlconfig = Program.LoadConfig().MySQL;
-            string connectionString = $"SERVER={mysqlconfig.Ip};DATABASE={mysqlconfig.Database};UID={mysqlconfig.User};PASSWORD={mysqlconfig.Password};PORT={mysqlconfig.Port}";
+            var config = Program.LoadConfig().MySQL;
+            var connectionString = $"SERVER={config.Ip};DATABASE={config.Database};UID={config.User};PASSWORD={config.Password};PORT={config.Port}";
 
             optionsBuilder.UseMySql(connectionString);
         }

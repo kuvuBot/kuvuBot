@@ -4,6 +4,6 @@ namespace kuvuBot.Features
 {
     public interface IFeatureManager
     {
-        void Initialize(DiscordClient client);
+        void Initialize(DiscordShardedClient client);
     }
 }
