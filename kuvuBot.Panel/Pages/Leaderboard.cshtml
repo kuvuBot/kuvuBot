@@ -1,4 +1,4 @@
-﻿@page "{search?}"
+﻿@page "{id?}"
 
 
 @using kuvuBot.Commands
@@ -63,7 +63,7 @@
                        aria-describedby="leaderboardSearchButton">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="leaderboardSearchButton"
-                            onclick="window.location.assign('leaderboard?id=' + document.getElementById('leaderboardSearchInput').value);">
+                            onclick="window.location.assign('leaderboard/' + document.getElementById('leaderboardSearchInput').value);">
                         Search
                     </button>
                 </div>
@@ -88,7 +88,7 @@
                                     @{
                                         var routeData = new Dictionary<string, string>()
                                         {
-                                            ["search"] = guild.Id.ToString(),
+                                            ["id"] = guild.Id.ToString(),
                                         };
                                     }
                                     <a asp-page="/Leaderboard" asp-all-route-data="routeData" class="btn btn-outline-light">Go</a>
