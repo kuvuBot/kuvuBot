@@ -3,7 +3,7 @@
     "Production": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "https://kuvubot.xyz:5000",
+      "applicationUrl": "http://kuvubot.xyz:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
