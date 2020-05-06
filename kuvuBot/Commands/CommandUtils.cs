@@ -137,5 +137,10 @@ namespace kuvuBot.Commands
         {
             return await Task.WhenAll(source.Select(async s => await method(s)));
         }
+
+        public static string EscapeDiscord(this string text)
+        {
+            return text.Replace("`", @"\`").Replace("*", @"\*").Replace("~", @"\~").Replace("_", @"\_");
+        }
     }
 }

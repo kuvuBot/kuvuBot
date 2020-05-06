@@ -61,6 +61,13 @@ namespace kuvuBot.Commands.Moderation
             await embed.Send(ctx.Message.Channel);
         }
 
+        [Command("throw"), Description("Throw error, for testing purposes")]
+        [RequireGlobalRank(KuvuGlobalRank.Root)]
+        public Task Throw(CommandContext ctx, [RemainingText] string message = "invoked by throw command")
+        {
+            throw new Exception(message);
+        }
+
         public static class Globals
         {
             public class EvalContext
@@ -94,7 +101,6 @@ namespace kuvuBot.Commands.Moderation
                             ("Result", state.ReturnValue?.ToString() ?? "*null*")
                         }
                     }.AddGeneratedForFooter(ctx);
-
                     if (state.Variables.Any())
                         embed.AddField("Variables", string.Join("\n", state.Variables.Select(variable => $"*{variable.Type}* **{variable.Name}** = `{variable.Value}`")));
 
@@ -110,7 +116,7 @@ namespace kuvuBot.Commands.Moderation
                 await new ModernEmbedBuilder
                 {
                     Title = "Evaluation failed",
-                    Description = e.ToString().Replace("`", @"\`").Replace("*", @"\*").Replace("~", @"\~").Replace("_", @"\_")
+                    Description = e.ToString().EscapeDiscord()
                 }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
             }
         }

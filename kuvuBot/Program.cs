@@ -31,6 +31,8 @@ using System.Net.Sockets;
 using System.Net.Http;
 using System.Net.WebSockets;
 using System.Runtime.Loader;
+using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands;
 
 namespace kuvuBot
 {
@@ -132,6 +134,11 @@ namespace kuvuBot
                 extension.RegisterCommands(Assembly.GetExecutingAssembly());
             }
 
+            Client.ClientErrored += (e) =>
+            {
+                Console.WriteLine(e.Exception);
+                return Task.CompletedTask;
+            };
             Client.Ready += Client_Ready;
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
@@ -248,6 +255,40 @@ namespace kuvuBot
                     return;
                 default:
                     Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
+                    var globalUser = await e.Context.Member.GetGlobalUser();
+                    if (globalUser.GlobalRank >= KuvuGlobalRank.Admin)
+                    {
+                        await new ModernEmbedBuilder
+                        {
+                            Title = "Command failed",
+                            ColorRGB = (231, 76, 60),
+                            Description = $"```{e.Exception}```"
+                        }.Send(e.Context.Message.Channel);
+                    }
+                    else
+                    {
+                        var errorId = Convert.ToBase64String(Guid.NewGuid().ToByteArray())[..^2];
+
+                        await new ModernEmbedBuilder
+                        {
+                            Title = "Internal error",
+                            ColorRGB = (231, 76, 60),
+                            Description = $"Error id #{errorId}"
+                        }.AddGeneratedForFooter(e.Context, false).Send(e.Context.Message.Channel);
+
+                        var errorsChannel = (await Client.GetGuildAsync(257599205693063168)).GetChannel(697574699063967784);
+                        await new ModernEmbedBuilder
+                        {
+                            Title = $"Error in command {errorId}",
+                            ColorRGB = (231, 76, 60),
+                            Description = $"```{e.Exception}```",
+                            Fields =
+                            {
+                                ("Message", $"[Jump]({e.Context.Message.JumpLink}) `{e.Context.Message.Content}`", true),
+                                ("User", $"`{e.Context.User.Id}`", true)
+                            }
+                        }.AddGeneratedForFooter(e.Context, false).Send(errorsChannel);
+                    }
                     break;
             }
         }
