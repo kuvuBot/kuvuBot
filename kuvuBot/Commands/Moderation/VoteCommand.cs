@@ -16,8 +16,9 @@ namespace kuvuBot.Commands.Moderation
     {
         [Command("vote"), LocalizedDescription("vote.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Vote(CommandContext ctx, [RemainingText,Description("Question")] string question)
-        {            
+        public async Task Vote(CommandContext ctx, [RemainingText, Description("Question")] string question)
+        {
+            question.RequireRemainingText();
             var message = await new ModernEmbedBuilder
             {
                 Title = await ctx.Lang("vote.voting"),

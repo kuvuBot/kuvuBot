@@ -66,6 +66,7 @@ namespace BadoszApiModule.Commands.Pictures
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Morse(CommandContext ctx, [RemainingText] string text)
         {
+            text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
@@ -85,6 +86,7 @@ namespace BadoszApiModule.Commands.Pictures
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task ChangeMyMind(CommandContext ctx, [RemainingText] string text)
         {
+            text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
@@ -98,6 +100,7 @@ namespace BadoszApiModule.Commands.Pictures
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Excuseme(CommandContext ctx, [RemainingText] string text)
         {
+            text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
@@ -153,6 +156,7 @@ namespace BadoszApiModule.Commands.Pictures
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Trump(CommandContext ctx, [RemainingText] string text)
         {
+            text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;

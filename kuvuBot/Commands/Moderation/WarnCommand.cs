@@ -21,8 +21,9 @@ namespace kuvuBot.Commands.Moderation
     {
         [GroupCommand, LocalizedDescription("warn.description")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Warn(CommandContext ctx, [Description("User to warn")] DiscordUser target, [Description("Weight of warn")] int weight, [Description("Reason")] [RemainingText] string reason)
+        public async Task Warn(CommandContext ctx, [Description("User to warn")] DiscordUser target, [Description("Weight of warn")] int weight, [Description("Reason")][RemainingText] string reason)
         {
+            reason.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
 
             var botContext = new BotContext();

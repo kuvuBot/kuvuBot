@@ -14,6 +14,7 @@ namespace kuvuBot.Commands.Fun
         [Command("reverse"), LocalizedDescription("reverse.description"), Aliases("odwróć")]
         public async Task ReverseText(CommandContext ctx, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             await ctx.RespondAsync(new string(message.Reverse().ToArray()));
         }
     }

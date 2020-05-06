@@ -3,15 +3,13 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using kuvuBot.Lang;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using DSharpPlus.CommandsNext.Exceptions;
 using kuvuBot.Commands.Attributes;
-using kuvuBot.Data;
 
 namespace kuvuBot.Commands
 {
@@ -65,6 +63,14 @@ namespace kuvuBot.Commands
                 .SingleOrDefault(x => x.Name == value.ToString())
                 ?.GetCustomAttribute<EnumMemberAttribute>(false)
                 ?.Value;
+        }
+
+        public static void RequireRemainingText(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                throw new ArgumentException("Required text can't be null!");
+            }
         }
 
         public static string Category(this Command command)

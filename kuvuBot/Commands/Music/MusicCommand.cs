@@ -24,6 +24,7 @@ namespace kuvuBot.Commands.Music
         [Command("play")]
         public async Task Play(CommandContext ctx, [RemainingText] string query)
         {
+            query.RequireRemainingText();
             var chn = ctx.Member?.VoiceState?.Channel;
             if (chn == null)
             {

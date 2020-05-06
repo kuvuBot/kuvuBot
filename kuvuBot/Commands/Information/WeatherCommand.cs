@@ -19,6 +19,7 @@ namespace kuvuBot.Commands.Information
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Weather(CommandContext ctx, [RemainingText] string cityName)
         {
+            cityName.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var api = new OpenWeatherApi.OpenWeatherApi(Program.Config.Apis.OpenWeatherApi, await ctx.Lang("weather.lang"));
             var city = await api.GetWeatherByCityName(cityName);

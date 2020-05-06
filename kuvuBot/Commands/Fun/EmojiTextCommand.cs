@@ -23,6 +23,7 @@ namespace kuvuBot.Commands.Fun
         [Command("emojitext"), LocalizedDescription("emojitext.description"), Aliases("emtext")]
         public async Task EmojiText(CommandContext ctx, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             string formatted = "";
             foreach (var c in message)
             {
@@ -56,6 +57,7 @@ namespace kuvuBot.Commands.Fun
         [Command("emojireaction"), LocalizedDescription("emojireaction.description"), Aliases("react", "emreaction", "emreact")]
         public async Task EmojiReaction(CommandContext ctx, DiscordMessage dMessage, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             if (dMessage != ctx.Message) await ctx.Message.DeleteAsync();
             foreach (var c in message)
             {

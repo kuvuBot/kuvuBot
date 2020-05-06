@@ -20,6 +20,7 @@ namespace kuvuBot.Commands.Moderation
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages | Permissions.ManageRoles)]
         public async Task Mute(CommandContext ctx, [Description("User to mute")] DiscordMember target, [RemainingText] string reason = null)
         {
+            reason.RequireRemainingText();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild();
             if (kuvuGuild.MuteRole.HasValue)
             {

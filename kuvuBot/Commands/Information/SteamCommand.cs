@@ -29,6 +29,7 @@ namespace kuvuBot.Commands.Information
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Steam(CommandContext ctx, [RemainingText] string gameName)
         {
+            gameName.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var factory = new SteamWebInterfaceFactory(Program.Config.Apis.SteamWebApi);
             using var httpClient = new HttpClient();

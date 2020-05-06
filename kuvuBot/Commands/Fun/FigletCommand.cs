@@ -20,6 +20,7 @@ namespace kuvuBot.Commands.Fun
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Figlet(CommandContext ctx, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             // load figlet font from assembly (.exe)
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "kuvuBot.big.flf";

@@ -233,6 +233,7 @@ namespace kuvuBot
                 case CommandNotFoundException _:
                     return;
                 case ArgumentException _ when e.Exception.StackTrace.Trim().StartsWith("at DSharpPlus.CommandsNext.Command.ExecuteAsync"):
+                case ArgumentException _ when e.Exception.Message == "Required text can't be null!":
                 case InvalidOperationException _ when e.Exception.Message == "No matching subcommands were found, and this group is not executable.":
                     {
                         var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
