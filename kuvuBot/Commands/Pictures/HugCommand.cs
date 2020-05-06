@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
-using kuvuBot.Lang;
 
 namespace kuvuBot.Commands.Pictures
 {

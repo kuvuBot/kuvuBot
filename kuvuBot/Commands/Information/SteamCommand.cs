@@ -1,11 +1,8 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using SteamWebAPI2.Interfaces;
@@ -13,6 +10,7 @@ using System.Text.RegularExpressions;
 using kuvuBot.Data;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using SteamWebAPI2.Utilities;
 
 namespace kuvuBot.Commands.Information
@@ -45,15 +43,15 @@ namespace kuvuBot.Commands.Information
                 await botContext.SteamAppsCache.AddRangeAsync(apps.Data);
 
                 cacheInfo = new CacheInfo() { Type = CacheType.Steam, RefreshedTime = DateTime.Now };
-                if(!botContext.CacheInfos.Contains(cacheInfo))
+                if (!botContext.CacheInfos.Contains(cacheInfo))
                 {
                     await botContext.CacheInfos.AddAsync(cacheInfo);
                 }
                 await botContext.SaveChangesAsync();
                 await ctx.Channel.TriggerTypingAsync();
             }
-            var appModel = botContext.SteamAppsCache.ToList().OrderBy(x=>CommandUtils.LevenshteinDistance(x.Name, gameName)).FirstOrDefault();
-            if(appModel == null)
+            var appModel = botContext.SteamAppsCache.ToList().OrderBy(x => Fastenshtein.Levenshtein.Distance(x.Name, gameName)).FirstOrDefault();
+            if (appModel == null)
             {
                 await ctx.RespondAsync($"Nie znaleziono gry `{gameName}`");
                 return;
@@ -61,9 +59,9 @@ namespace kuvuBot.Commands.Information
 
             var game = await steamStore.GetStoreAppDetailsAsync(appModel.AppId);
             var desc = ClearHtml(game.DetailedDescription);
-            if(desc.Length >= 2000)
+            if (desc.Length >= 2000)
             {
-                desc = desc.Substring(0, Math.Min(desc.Length, 2000-3));
+                desc = desc.Substring(0, Math.Min(desc.Length, 2000 - 3));
                 desc += "...";
             }
             else

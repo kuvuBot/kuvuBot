@@ -1,9 +1,7 @@
 ﻿using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace kuvuBot.Data
 {

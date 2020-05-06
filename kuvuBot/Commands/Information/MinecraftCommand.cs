@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
-using System.Globalization;
 using Newtonsoft.Json;
 using System.Net;
 using DSharpPlus;

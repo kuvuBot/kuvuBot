@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Lavalink;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Music
 {

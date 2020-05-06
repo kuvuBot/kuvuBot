@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -7,7 +6,8 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands;
-using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
+using kuvuBot.Core.Commands.Attributes;
 using Newtonsoft.Json.Linq;
 
 namespace BadoszApiModule.Commands.Pictures

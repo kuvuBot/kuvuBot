@@ -5,6 +5,7 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Moderation
 {

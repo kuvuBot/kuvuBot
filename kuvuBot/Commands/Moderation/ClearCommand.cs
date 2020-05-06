@@ -1,13 +1,12 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using kuvuBot.Lang;
 using DSharpPlus;
-using DSharpPlus.Entities;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using kuvuBot.Data;
 
 namespace kuvuBot.Commands.Moderation

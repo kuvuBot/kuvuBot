@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 using Console = Colorful.Console;
 using kuvuBot.Features.Modular;
 using DSharpPlus.CommandsNext.Exceptions;
-using kuvuBot.Commands.Converters;
+using kuvuBot.Core.Commands;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Lavalink;
 using DSharpPlus.Net;
@@ -33,6 +33,7 @@ using System.Net.WebSockets;
 using System.Runtime.Loader;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands;
+using kuvuBot.Core.Commands.Converters;
 
 namespace kuvuBot
 {

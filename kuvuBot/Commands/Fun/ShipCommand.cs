@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SkiaSharp;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Fun
 {

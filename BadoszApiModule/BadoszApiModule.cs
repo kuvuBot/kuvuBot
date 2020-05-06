@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using DSharpPlus.CommandsNext;
-using kuvuBot.Data;
+﻿using kuvuBot.Data;
 using kuvuBot.Features.Modular;
 
 namespace BadoszApiModule

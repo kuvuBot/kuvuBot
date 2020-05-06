@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace kuvuBot.Commands.Attributes
+namespace kuvuBot.Core.Commands.Attributes
 {
     /// <summary>
     /// Gives this command or group a category, which is used when listing help.
@@ -11,17 +9,17 @@ namespace kuvuBot.Commands.Attributes
     public sealed class CategoryAttribute : Attribute
     {
         /// <summary>
-        /// Gets the category for this command or group.
-        /// </summary>
-        public string Category { get; }
-
-        /// <summary>
         /// Gives this command or group a category, which is used when listing help.
         /// </summary>
         /// <param name="category"></param>
         public CategoryAttribute(string category)
         {
-            this.Category = category;
+            Category = category;
         }
+
+        /// <summary>
+        /// Gets the category for this command or group.
+        /// </summary>
+        public string Category { get; }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using DSharpPlus;
 using System.Reflection;
-using System.Linq.Expressions;
 
 namespace kuvuBot.Features.Modular
 {

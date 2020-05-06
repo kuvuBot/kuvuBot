@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
-using kuvuBot.Commands;
+using kuvuBot.Core.Commands;
 using kuvuBot.Lang;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Newtonsoft.Json;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Steam.Models;
 
 namespace kuvuBot.Data

@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using kuvuBot.Commands;
 using System.Runtime.Serialization;
+using kuvuBot.Core.Commands;
 
 namespace BadoszApiModule
 {

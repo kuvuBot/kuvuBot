@@ -8,6 +8,7 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Text.RegularExpressions;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using kuvuBot.Lang;
 using kuvuBot.OpenWeatherApi;
 

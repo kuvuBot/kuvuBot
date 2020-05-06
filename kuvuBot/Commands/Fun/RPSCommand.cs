@@ -4,7 +4,6 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;

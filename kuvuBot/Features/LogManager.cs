@@ -1,14 +1,11 @@
 ﻿using DSharpPlus;
 using DSharpPlus.EventArgs;
 using kuvuBot.Data;
-using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
-using kuvuBot.Commands;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Features
 {

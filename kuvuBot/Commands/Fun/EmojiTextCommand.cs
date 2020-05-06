@@ -1,17 +1,10 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.Threading.Tasks;
-using Colorful;
 using DSharpPlus.Entities;
-using System.Reflection;
-using System.IO;
-using System.Text.RegularExpressions;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Fun
 {
