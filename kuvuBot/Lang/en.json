@@ -186,9 +186,6 @@
   "reverse": {
     "description": "Reverses the given text"
   },
-  "cry": {
-    "description": ""
-  },
   "cuddle": {
     "description": "Cuddles marked user",
     "target": "User to cuddle"
@@ -197,24 +194,12 @@
     "description": "Kisses the marked user",
     "target": "User to kiss"
   },
-  "lick": {
-    "description": ""
-  },
-  "nom": {
-    "description": ""
-  },
-  "stare": {
-    "description": ""
-  },
   "tickle": {
     "description": "Tickles marked user",
     "target": "User to tickle"
   },
   "poke": {
-    "description": "Pokes marged user",
+    "description": "Pokes marked user",
     "target": "User to poke"
-  },
-  "feed": {
-    "description": "Feeds the marked user"
   }
 }
