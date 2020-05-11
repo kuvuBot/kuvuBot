@@ -193,4 +193,70 @@ namespace BadoszApiModule.Commands.Pictures
             await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Wasted, $"{target.DisplayName} died", query);
         }
     }
+    
+    public class KissCommand : BaseCommandModule
+    {
+        [Command("kiss"), LocalizedDescription("kiss.description")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
+        public async Task Kiss(CommandContext ctx, [LocalizedDescription("kiss.target")] DiscordMember target)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Kiss, $"{ctx.Member.DisplayName} kissed {target.DisplayName}");
+        }
+    }
+    
+    public class PatCommand : BaseCommandModule
+    {
+        [Command("pat"), LocalizedDescription("pat.description")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
+        public async Task Kiss(CommandContext ctx, [LocalizedDescription("pat.target")] DiscordMember target)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Pat, $"{ctx.Member.DisplayName} patted {target.DisplayName}");
+        }
+    }
+    
+    public class PokeCommand : BaseCommandModule
+    {
+        [Command("poke"), LocalizedDescription("poke.description")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
+        public async Task Poke(CommandContext ctx, [LocalizedDescription("poke.target")] DiscordMember target)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Poke, $"{ctx.Member.DisplayName} poked {target.DisplayName}");
+        }
+    }
+    
+    public class TickleCommand : BaseCommandModule
+    {
+        [Command("tickle"), LocalizedDescription("tickle.description")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
+        public async Task Tickle(CommandContext ctx, [LocalizedDescription("tickle.target")] DiscordMember target)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Tickle, $"{ctx.Member.DisplayName} tickled {target.DisplayName}");
+        }
+    }
+    
+    public class CuddleCommand : BaseCommandModule
+    {
+        [Command("cuddle"), LocalizedDescription("cuddle.description")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
+        public async Task Cuddle(CommandContext ctx, [LocalizedDescription("cuddle.target")] DiscordMember target)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Cuddle, $"{ctx.Member.DisplayName} cuddled {target.DisplayName}");
+        }
+    }
+    
+    public class HugCommand : BaseCommandModule
+    {
+        [Command("hug"), LocalizedDescription("hug.description")]
+        [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
+        public async Task Hug(CommandContext ctx, [LocalizedDescription("hug.target")] DiscordMember target)
+        {
+            await ctx.Channel.TriggerTypingAsync();
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Hug, $"{ctx.Member.DisplayName} hugged {target.DisplayName}");
+        }
+    }
 }
