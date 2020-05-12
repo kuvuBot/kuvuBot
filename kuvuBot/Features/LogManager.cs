@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Core.Commands;
+using kuvuBot.Core.Features;
 
 namespace kuvuBot.Features
 {
-    public class LogManager : IFeatureManager
+    public class LogManager : IFeature
     {
-        public void Initialize(DiscordShardedClient client)
+        public LogManager(DiscordShardedClient client)
         {
             client.GuildMemberAdded += Client_GuildMemberAdded;
             client.GuildMemberRemoved += Client_GuildMemberRemoved;

@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
+using kuvuBot.Core.Features;
 using kuvuBot.Data;
 
 namespace kuvuBot.Features
 {
-    public class LevelManager : IFeatureManager
+    public class LevelManager : IFeature
     {
-        public void Initialize(DiscordShardedClient client)
+        public LevelManager(DiscordShardedClient client)
         {
             client.MessageCreated += Client_MessageCreated;
         }

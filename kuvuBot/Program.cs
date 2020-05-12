@@ -1,39 +1,39 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Net.WebSockets;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Colorful;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using kuvuBot.Commands.Fun;
-using kuvuBot.Commands.General;
-using kuvuBot.Data;
-using kuvuBot.Features;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Console = Colorful.Console;
-using kuvuBot.Features.Modular;
-using DSharpPlus.CommandsNext.Exceptions;
-using kuvuBot.Core.Commands;
-using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Lavalink;
 using DSharpPlus.Net;
-using kuvuBot.Lang;
-using kuvuBot.Commands.Attributes;
-using kuvuBot.Commands.Music;
-using System.Net.Sockets;
-using System.Net.Http;
-using System.Net.WebSockets;
-using System.Runtime.Loader;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands;
+using kuvuBot.Commands.Attributes;
+using kuvuBot.Commands.Fun;
+using kuvuBot.Commands.General;
+using kuvuBot.Commands.Music;
+using kuvuBot.Core.Commands;
 using kuvuBot.Core.Commands.Converters;
+using kuvuBot.Core.Features;
+using kuvuBot.Data;
+using kuvuBot.Lang;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Console = Colorful.Console;
 
 namespace kuvuBot
 {
@@ -45,8 +45,8 @@ namespace kuvuBot
         public static Config Config { get; set; }
         public static IReadOnlyDictionary<int, CommandsNextExtension> Commands { get; set; }
         public static IReadOnlyDictionary<int, LavalinkExtension> Lavalink { get; set; }
-        private static bool Kill { get; set; } = false;
-        private static bool Loaded { get; set; } = false;
+        private static bool Kill { get; set; }
+        private static bool Loaded { get; set; }
 
         public static Config LoadConfig()
         {
@@ -74,17 +74,17 @@ namespace kuvuBot
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"Database migration error\n {e.ToString()}");
+                        Console.WriteLine($"Database migration error\n {e}");
                     }
                 }
                 else
                 {
-                    Console.WriteLine($"Database error");
+                    Console.WriteLine("Database error");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Database error\n {e.ToString()}");
+                Console.WriteLine($"Database error\n {e}");
             }
         }
 
@@ -110,24 +110,26 @@ namespace kuvuBot
 
             Lavalink = await Client.UseLavalinkAsync();
 
+            var services = new ServiceCollection()
+                .AddSingleton(Config)
+                .AddSingleton(Client);
+            services.AddSingleton(services);
+
             Commands = await Client.UseCommandsNextAsync(new CommandsNextConfiguration
             {
                 EnableDefaultHelp = true,
-                PrefixResolver = async (msg) =>
+                PrefixResolver = async msg =>
                 {
                     var kuvuGuild = await msg.Channel.Guild.GetKuvuGuild();
                     return msg.GetStringPrefixLength(kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
                 },
+                Services = services.BuildServiceProvider()
             });
 
             foreach (var extension in Commands.Values)
             {
                 extension.SetHelpFormatter<HelpFormatter>();
-                extension.RegisterConverter(new FriendlyDiscordUserConverter());
-                extension.RegisterConverter(new FriendlyDiscordMemberConverter());
-                extension.RegisterConverter(new FriendlyDiscordChannelConverter());
-                extension.RegisterConverter(new FriendlyDiscordMessageConverter());
-                extension.RegisterConverter(new FriendlyBoolConverter());
+                extension.RegisterFriendlyConverters();
 
                 extension.CommandExecuted += Commands_CommandExecuted;
                 extension.CommandErrored += Commands_CommandErrored;
@@ -135,7 +137,7 @@ namespace kuvuBot
                 extension.RegisterCommands(Assembly.GetExecutingAssembly());
             }
 
-            Client.ClientErrored += (e) =>
+            Client.ClientErrored += e =>
             {
                 Console.WriteLine(e.Exception);
                 return Task.CompletedTask;
@@ -143,7 +145,7 @@ namespace kuvuBot
             Client.Ready += Client_Ready;
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
-            Client.GuildDownloadCompleted += (e) =>
+            Client.GuildDownloadCompleted += e =>
             {
                 Client.DebugLogger.LogMessage(LogLevel.Info, "kuvuBot", $"Guild download completed {e.Guilds.Count}", DateTime.Now);
                 Loaded = true;
@@ -152,11 +154,7 @@ namespace kuvuBot
             Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
             Client.SocketErrored += Client_SocketErrored;
 
-            IFeatureManager[] managers = { new StatisticManager(), new LogManager(), new LevelManager(), new ModuleManager() };
-            foreach (var manager in managers)
-            {
-                manager.Initialize(Client);
-            }
+            services.RegisterFeatures();
 
             UpdateDatabase();
 

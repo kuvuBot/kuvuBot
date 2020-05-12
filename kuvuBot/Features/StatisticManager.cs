@@ -6,10 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using DiscordBotsList.Api;
+using kuvuBot.Core.Features;
 
 namespace kuvuBot.Features
 {
-    public class StatisticManager : IFeatureManager
+    public class StatisticManager : IFeature
     {
         private AuthDiscordBotListApi DiscordBotListApi { get; set; }
 

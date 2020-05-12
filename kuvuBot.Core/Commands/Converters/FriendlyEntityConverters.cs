@@ -9,8 +9,16 @@ namespace kuvuBot.Core.Commands.Converters
 {
     public static class ConverterHelper
     {
-        public static Task<Optional<T>> ConvertAsync<T>(this IArgumentConverter<T> converter, string value,
-            CommandContext ctx)
+        public static void RegisterFriendlyConverters(this CommandsNextExtension commands)
+        {
+            commands.RegisterConverter(new FriendlyDiscordUserConverter());
+            commands.RegisterConverter(new FriendlyDiscordMemberConverter());
+            commands.RegisterConverter(new FriendlyDiscordChannelConverter());
+            commands.RegisterConverter(new FriendlyDiscordMessageConverter());
+            commands.RegisterConverter(new FriendlyBoolConverter());
+        }
+
+        public static Task<Optional<T>> ConvertAsync<T>(this IArgumentConverter<T> converter, string value, CommandContext ctx)
         {
             var method = converter.GetType().GetRuntimeMethods().FirstOrDefault(x => x.Name.EndsWith("ConvertAsync"));
             var task = method?.Invoke(converter, new object[] {value, ctx});
@@ -60,11 +68,6 @@ namespace kuvuBot.Core.Commands.Converters
         public Task<Optional<DiscordRole>> ConvertAsync(string value, CommandContext ctx)
         {
             return new DiscordRoleConverter().ConvertAsync(value, ctx);
-        }
-
-        public ulong ConvertToDatabaseFormat(DiscordRole value)
-        {
-            return value.Id;
         }
     }
 

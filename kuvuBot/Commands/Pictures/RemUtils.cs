@@ -59,7 +59,7 @@ namespace kuvuBot.Commands.Pictures
         {
             using (WebClient wc = new WebClient())
             {
-                var response = JsonConvert.DeserializeObject<RemResponse>(wc.DownloadString("https://rra.ram.moe/i/r?type=" + type.Name));
+                var response = JsonConvert.DeserializeObject<RemResponse>(wc.DownloadString("/i/r?type=" + type.Name));
                 var embed = new ModernEmbedBuilder
                 {
                     Title = target == null ? type.Name : $"{ctx.User.Username} {type.PastVerb} {target.Username}",
