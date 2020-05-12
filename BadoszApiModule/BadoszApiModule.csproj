@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\kuvuBot\kuvuBot.csproj">
       <Private>false</Private>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
     </ProjectReference>
   </ItemGroup>
 </Project>

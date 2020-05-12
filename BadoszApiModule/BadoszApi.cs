@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using kuvuBot.Commands;
 using System.Runtime.Serialization;
@@ -15,31 +16,29 @@ namespace BadoszApiModule
 {
     public class BadoszApi
     {
-        private WebClient WebClient { get; }
+        private HttpClient HttpClient { get; } = new HttpClient { BaseAddress = new Uri("https://api.badosz.com/") };
 
         public BadoszApi(string token)
         {
-            var wc = new WebClient();
-            wc.Headers.Add("Authorization", token);
-            WebClient = wc;
+            HttpClient.DefaultRequestHeaders.Add("Authorization", token);
         }
 
         public async Task<string> GetJson(BadoszEndpoint endpoint, NameValueCollection parameters = null)
         {
-            var uri = new UriBuilder("https" + $"://api.badosz.com/{endpoint.GetEnumMemberValue()}")
+            var uri = new UriBuilder(HttpClient.BaseAddress + endpoint.GetEnumMemberValue())
             {
                 Query = parameters?.ToString()
             };
-            return await WebClient.DownloadStringTaskAsync(uri.Uri);
+            return await HttpClient.GetStringAsync(uri.Uri);
         }
 
         public async Task<Stream> GetStream(BadoszEndpoint endpoint, NameValueCollection parameters = null)
         {
-            var uri = new UriBuilder("https" + $"://api.badosz.com/{endpoint.GetEnumMemberValue()}")
+            var uri = new UriBuilder(HttpClient.BaseAddress + endpoint.GetEnumMemberValue())
             {
                 Query = parameters?.ToString()
             };
-            return new MemoryStream(await WebClient.DownloadDataTaskAsync(uri.Uri));
+            return await HttpClient.GetStreamAsync(uri.Uri);
         }
 
         public async Task<DiscordMessage> SendEmbedImage(CommandContext ctx, BadoszEndpoint endpoint, string title = null, NameValueCollection parameters = null)
