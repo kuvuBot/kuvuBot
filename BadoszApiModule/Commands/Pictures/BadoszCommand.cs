@@ -6,6 +6,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Commands;
+using kuvuBot.Commands.Attributes;
 using kuvuBot.Core.Commands;
 using kuvuBot.Core.Commands.Attributes;
 using Newtonsoft.Json.Linq;
