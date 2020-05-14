@@ -32,7 +32,8 @@
     "description": "Generates a emoji text"
   },
   "figlet": {
-    "description": "Generates a figlet"
+    "description": "Generates a figlet",
+    "specialCharacters": "Figlet can't contain special characters!"
   },
   "minesweeper": {
     "description": "Start a minesweeper game"
