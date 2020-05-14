@@ -32,7 +32,8 @@
     "description": "Generuje tekst zrobiony z emoji"
   },
   "figlet": {
-    "description": "Generuje figlet (ascii art)"
+    "description": "Generuje figlet (ascii art)",
+    "specialCharacters": "Figlet can't contain special characters!"
   },
   "minesweeper": {
     "description": "Zacznij grę w sapera"
