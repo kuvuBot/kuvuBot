@@ -100,5 +100,10 @@ namespace kuvuBot.Core.Commands
         {
             return text.Replace("`", @"\`").Replace("*", @"\*").Replace("~", @"\~").Replace("_", @"\_");
         }
+
+        public static string Truncate(this string text, int maxLength, string ellipsis = null)
+        {
+            return text.Substring(0, Math.Min(text.Length, maxLength - (ellipsis?.Length ?? 0))) + (text.Length >= maxLength ? ellipsis : string.Empty);
+        }
     }
 }

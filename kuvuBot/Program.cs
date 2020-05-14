@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text;
 using System.Threading.Tasks;
 using Colorful;
 using DSharpPlus;
@@ -258,12 +259,14 @@ namespace kuvuBot
                     var globalUser = await e.Context.Member.GetGlobalUser();
                     if (globalUser.GlobalRank >= KuvuGlobalRank.Admin)
                     {
-                        await new ModernEmbedBuilder
-                        {
-                            Title = "Command failed",
-                            ColorRGB = (231, 76, 60),
-                            Description = $"```{e.Exception}```"
-                        }.Send(e.Context.Message.Channel);
+                        await e.Context.Message.RespondWithFileAsync("crash.txt",
+                            new MemoryStream(Encoding.ASCII.GetBytes(e.Exception.ToString())),
+                                embed: new ModernEmbedBuilder
+                                {
+                                    Title = "Command failed",
+                                    ColorRGB = (231, 76, 60),
+                                    Description = $"```{e.Exception.ToString().Truncate(2048 - 6, "...")}```"
+                                });
                     }
                     else
                     {
@@ -277,17 +280,19 @@ namespace kuvuBot
                         }.AddGeneratedForFooter(e.Context, false).Send(e.Context.Message.Channel);
 
                         var errorsChannel = (await Client.GetGuildAsync(257599205693063168)).GetChannel(697574699063967784);
-                        await new ModernEmbedBuilder
-                        {
-                            Title = $"Error in command {errorId}",
-                            ColorRGB = (231, 76, 60),
-                            Description = $"```{e.Exception}```",
-                            Fields =
+                        await errorsChannel.SendFileAsync("crash.txt",
+                            new MemoryStream(Encoding.ASCII.GetBytes(e.Exception.ToString())),
+                            embed: new ModernEmbedBuilder
                             {
-                                ("Message", $"[Jump]({e.Context.Message.JumpLink}) `{e.Context.Message.Content}`", true),
-                                ("User", $"`{e.Context.User.Id}`", true)
-                            }
-                        }.AddGeneratedForFooter(e.Context, false).Send(errorsChannel);
+                                Title = $"Error in command {errorId}",
+                                ColorRGB = (231, 76, 60),
+                                Description = $"```{e.Exception.ToString().Truncate(2048 - 6, "...")}```",
+                                Fields =
+                                {
+                                    ("Message", $"[Jump]({e.Context.Message.JumpLink}) `{e.Context.Message.Content}`", true),
+                                    ("User", $"`{e.Context.User.Id}`", true)
+                                }
+                            }.AddGeneratedForFooter(e.Context, false));
                     }
                     break;
             }
