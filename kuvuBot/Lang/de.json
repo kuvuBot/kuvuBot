@@ -167,11 +167,13 @@
   },
   "hug": {
     "description": "Hugs the marked user",
-    "target": "User to hug"
+    "target": "User to hug",
+    "verb": "hugged"
   },
   "pat": {
     "description": "Pats the marked user",
-    "target": "User to pat"
+    "target": "User to pat",
+    "verb": "patted"
   },
   "slap": {
     "description": "Slaps the marked user"
@@ -188,18 +190,76 @@
   },
   "cuddle": {
     "description": "Cuddles marked user",
-    "target": "User to cuddle"
+    "target": "User to cuddle",
+    "verb": "cuddled"
   },
   "kiss": {
     "description": "Kisses the marked user",
-    "target": "User to kiss"
+    "target": "User to kiss",
+    "verb": "kissed"
   },
   "tickle": {
     "description": "Tickles marked user",
-    "target": "User to tickle"
+    "target": "User to tickle",
+    "verb": "tickled"
   },
   "poke": {
     "description": "Pokes marked user",
-    "target": "User to poke"
+    "target": "User to poke",
+    "verb": "poked"
+  },
+  "bird": {
+    "description": "Sends a random picture of a bird"
+  },
+  "bee": {
+    "description": "Sends a random picture of a bee"
+  },
+  "rabbit": {
+    "description": "Sends a random picture of a rabbit"
+  },
+  "blurple": {
+    "description": "Blurples avatar of marked user",
+    "verb": "Blurpled avatar of",
+    "target": "User whose avatar will be blurpled"
+  },
+  "morse": {
+    "description": "Converts text to morse code",
+    "argument": "The text you want to convert"
+  },
+  "changemymind": {
+    "description": "Generates change my mind meme with your text",
+    "title": "Change my mind",
+    "argument": "The text you want to put on the meme."
+  },
+  "excuseme": {
+    "description": "Generates excuse me meme with your text",
+    "argument": "The text you want to put on the meme."
+  },
+  "fox": {
+    "description": "Sends a random image of a fox"
+  },
+  "invert": {
+    "description": "Inverts the avatar of marked user",
+    "verb": "Inverted avatar of",
+    "target": "User whose avatar will be inverted"
+  },
+  "orangly": {
+    "description": "Makes avatar of marked user orange",
+    "verb": "Orangled",
+    "target": "User whose avatar will be converted to shades of orange"
+  },
+  "trump": {
+    "description": "Generates fake Trump's tweet",
+    "argument": "The text you want to put in the tweet"
+  },
+  "wanted": {
+    "description": "Generates wanted poster with avatar of marked user",
+    "target": "User whose avatar you want to put on the poster",
+    "verb": "is wanted!"
+  },
+  "wasted": {
+    "description": "Kills somebody *in GTA of course*",
+    "target": "User on whose avatar the *Wasted* text will be put",
+    "verb": "died"
   }
 }
