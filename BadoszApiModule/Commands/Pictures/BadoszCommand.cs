@@ -9,13 +9,14 @@ using kuvuBot.Commands;
 using kuvuBot.Commands.Attributes;
 using kuvuBot.Core.Commands;
 using kuvuBot.Core.Commands.Attributes;
+using kuvuBot.Lang;
 using Newtonsoft.Json.Linq;
 
 namespace BadoszApiModule.Commands.Pictures
 {
     public class BirdCommand : BaseCommandModule
     {
-        [Command("bird"), Description("Send a random bird")]
+        [Command("bird"), LocalizedDescription("bird.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Bird(CommandContext ctx)
         {
@@ -26,7 +27,7 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class BeeCommand : BaseCommandModule
     {
-        [Command("bee"), Description("Send a random bee")]
+        [Command("bee"), LocalizedDescription("bee.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Bee(CommandContext ctx)
         {
@@ -37,7 +38,7 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class RabbitCommand : BaseCommandModule
     {
-        [Command("rabbit"), Description("Send a random rabbit")]
+        [Command("rabbit"), LocalizedDescription("rabbit.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Rabbit(CommandContext ctx)
         {
@@ -48,24 +49,24 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class BlurpleCommand : BaseCommandModule
     {
-        [Command("blurple"), Description("Blurple marked user")]
+        [Command("blurple"), LocalizedDescription("blurple.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Blurple(CommandContext ctx, DiscordMember target = null)
+        public async Task Blurple(CommandContext ctx, [LocalizedDescription("blurple.target")] DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
             target ??= ctx.Member;
             var avatar = target.GetAvatarUrl(ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Blurple, $"Blurpled {target.DisplayName}", query);
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Blurple, $"{await ctx.Lang("blurple.verb")} {target.DisplayName}", query);
         }
     }
 
     public class MorseCommand : BaseCommandModule
     {
-        [Command("morse"), Description("Morse text"), Category("Fun")]
+        [Command("morse"), LocalizedDescription("morse.description"), Category("Fun")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Morse(CommandContext ctx, [RemainingText] string text)
+        public async Task Morse(CommandContext ctx, [LocalizedDescription("morse.argument")] [RemainingText] string text)
         {
             text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
@@ -83,23 +84,23 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class ChangeMyMindCommand : BaseCommandModule
     {
-        [Command("changemymind"), Description("Change my mind gif")]
+        [Command("changemymind"), LocalizedDescription("changemymind.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task ChangeMyMind(CommandContext ctx, [RemainingText] string text)
+        public async Task ChangeMyMind(CommandContext ctx, [LocalizedDescription("changemymind.description")] [RemainingText] string text)
         {
             text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.ChangeMyMind, "Change my mind", query);
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.ChangeMyMind, await ctx.Lang("changemymind.title"), query);
         }
     }
 
     public class ExcusemeCommand : BaseCommandModule
     {
-        [Command("excuseme"), Description("Excuse me wtf?")]
+        [Command("excuseme"), LocalizedDescription("excuseme.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Excuseme(CommandContext ctx, [RemainingText] string text)
+        public async Task Excuseme(CommandContext ctx, [LocalizedDescription("excuseme.argument")] [RemainingText] string text)
         {
             text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
@@ -111,7 +112,7 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class FoxCommand : BaseCommandModule
     {
-        [Command("fox"), Description("Send a fox image")]
+        [Command("fox"), LocalizedDescription("fox.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
         public async Task Fox(CommandContext ctx)
         {
@@ -122,24 +123,24 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class InvertCommand : BaseCommandModule
     {
-        [Command("invert"), Description("Inverts user avatar colors")]
+        [Command("invert"), LocalizedDescription("invert.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Invert(CommandContext ctx, DiscordMember target = null)
+        public async Task Invert(CommandContext ctx, [LocalizedDescription("invert.target")] DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
             target ??= ctx.Member;
             var avatar = target.GetAvatarUrl(ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Invert, $"Inverted {target.DisplayName}", query);
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Invert, $"{await ctx.Lang("invert.verb")} {target.DisplayName}", query);
         }
     }
 
     public class OranglyCommand : BaseCommandModule
     {
-        [Command("orangly"), Description("Orangly someone")]
+        [Command("orangly"), LocalizedDescription("orangly.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Orangly(CommandContext ctx, DiscordMember target = null)
+        public async Task Orangly(CommandContext ctx, [LocalizedDescription("orangly.target")] DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
             target ??= ctx.Member;
@@ -147,15 +148,15 @@ namespace BadoszApiModule.Commands.Pictures
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
             query["hex"] = "#ffa500";
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Colorify, $"Orangled {target.DisplayName}", query);
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Colorify, $"{await ctx.Lang("orangly.verb")} {target.DisplayName}", query);
         }
     }
 
     public class TrumpCommand : BaseCommandModule
     {
-        [Command("trump"), Description("Shows 100% scam, no legit Trump's tweet")]
+        [Command("trump"), LocalizedDescription("trump.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Trump(CommandContext ctx, [RemainingText] string text)
+        public async Task Trump(CommandContext ctx, [LocalizedDescription("trump.argument")] [RemainingText] string text)
         {
             text.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
@@ -167,31 +168,31 @@ namespace BadoszApiModule.Commands.Pictures
 
     public class WantedCommand : BaseCommandModule
     {
-        [Command("wanted"), Description("Wants someone")]
+        [Command("wanted"), LocalizedDescription("wanted.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Wanted(CommandContext ctx, DiscordMember target = null)
+        public async Task Wanted(CommandContext ctx, [LocalizedDescription("wanted.target")] DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
             target ??= ctx.Member;
             var avatar = target.GetAvatarUrl(ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Wanted, $"{target.DisplayName} is wanted!", query);
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Wanted, $"{target.DisplayName} {await ctx.Lang("wanted.verb")}", query);
         }
     }
 
     public class WastedCommand : BaseCommandModule
     {
-        [Command("wasted"), Description("Kills somebody *in gta of course*")]
+        [Command("wasted"), LocalizedDescription("wasted.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Wasted(CommandContext ctx, DiscordMember target = null)
+        public async Task Wasted(CommandContext ctx, [LocalizedDescription("wasted.target")] DiscordMember target = null)
         {
             await ctx.Channel.TriggerTypingAsync();
             target ??= ctx.Member;
             var avatar = target.GetAvatarUrl(ImageFormat.Png) ?? target.DefaultAvatarUrl;
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["url"] = avatar;
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Wasted, $"{target.DisplayName} died", query);
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Wasted, $"{target.DisplayName} {await ctx.Lang("wasted.verb")}", query);
         }
     }
     
@@ -202,7 +203,7 @@ namespace BadoszApiModule.Commands.Pictures
         public async Task Kiss(CommandContext ctx, [LocalizedDescription("kiss.target")] DiscordMember target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Kiss, $"{ctx.Member.DisplayName} kissed {target.DisplayName}");
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Kiss, $"{ctx.Member.DisplayName} {await ctx.Lang("kiss.verb")} {target.DisplayName}");
         }
     }
     
@@ -213,7 +214,7 @@ namespace BadoszApiModule.Commands.Pictures
         public async Task Kiss(CommandContext ctx, [LocalizedDescription("pat.target")] DiscordMember target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Pat, $"{ctx.Member.DisplayName} patted {target.DisplayName}");
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Pat, $"{ctx.Member.DisplayName} {await ctx.Lang("pat.verb")} {target.DisplayName}");
         }
     }
     
@@ -224,7 +225,7 @@ namespace BadoszApiModule.Commands.Pictures
         public async Task Poke(CommandContext ctx, [LocalizedDescription("poke.target")] DiscordMember target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Poke, $"{ctx.Member.DisplayName} poked {target.DisplayName}");
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Poke, $"{ctx.Member.DisplayName} {await ctx.Lang("poke.verb")} {target.DisplayName}");
         }
     }
     
@@ -235,7 +236,7 @@ namespace BadoszApiModule.Commands.Pictures
         public async Task Tickle(CommandContext ctx, [LocalizedDescription("tickle.target")] DiscordMember target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Tickle, $"{ctx.Member.DisplayName} tickled {target.DisplayName}");
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Tickle, $"{ctx.Member.DisplayName} {await ctx.Lang("tickle.verb")} {target.DisplayName}");
         }
     }
     
@@ -246,7 +247,7 @@ namespace BadoszApiModule.Commands.Pictures
         public async Task Cuddle(CommandContext ctx, [LocalizedDescription("cuddle.target")] DiscordMember target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Cuddle, $"{ctx.Member.DisplayName} cuddled {target.DisplayName}");
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Cuddle, $"{ctx.Member.DisplayName} {await ctx.Lang("cuddle.verb")} {target.DisplayName}");
         }
     }
     
@@ -257,7 +258,7 @@ namespace BadoszApiModule.Commands.Pictures
         public async Task Hug(CommandContext ctx, [LocalizedDescription("hug.target")] DiscordMember target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Hug, $"{ctx.Member.DisplayName} hugged {target.DisplayName}");
+            await BadoszApiModule.BadoszApi.SendEmbedImage(ctx, BadoszApi.BadoszEndpoint.Hug, $"{ctx.Member.DisplayName} {await ctx.Lang("hug.verb")} {target.DisplayName}");
         }
     }
 }
