@@ -33,7 +33,7 @@
   },
   "figlet": {
     "description": "Generuje figlet (ascii art)",
-    "specialCharacters": "Figlet can't contain special characters!"
+    "specialCharacters": "Figlet nie może zawierać znaków specjalnych (w tym polskich liter)!"
   },
   "minesweeper": {
     "description": "Zacznij grę w sapera"
@@ -168,12 +168,12 @@
   "hug": {
     "description": "Przytula wskazanego użytkownika",
     "target": "Użytkownik do przytulenia",
-    "verb": "hugged"
+    "verb": "uściskał"
   },
   "pat": {
     "description": "Głaszcze wskazanego użytkownika",
-    "target": "User to pat",
-    "verb": "patted"
+    "target": "Użytkownik, którego chcesz pogłaskać",
+    "verb": "pogłaskał"
   },
   "slap": {
     "description": "Policzkujesz wskazanego użytkownika"
