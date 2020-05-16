@@ -1,10 +1,10 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -14,6 +14,7 @@ namespace kuvuBot.Commands.Fun
         [Command("reverse"), LocalizedDescription("reverse.description"), Aliases("odwróć")]
         public async Task ReverseText(CommandContext ctx, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             await ctx.RespondAsync(new string(message.Reverse().ToArray()));
         }
     }

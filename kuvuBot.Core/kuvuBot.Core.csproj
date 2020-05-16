@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00682" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00682" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00682" />
+    <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00682" />
+    <PackageReference Include="Fastenshtein" Version="1.0.0.5" />
+    <PackageReference Include="Humanizer.Core.pl" Version="2.8.11" />
+  </ItemGroup>
+</Project>

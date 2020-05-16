@@ -1,88 +1,341 @@
-﻿body {
-    background: #eee;
+﻿/* Colors */
+
+/* 
+#eee    Font
+#0A0A1E Primary
+#23233F 
+#14142E Hover, active
+#030311 
+#010106 
+*/
+
+/* General styling */
+
+* {
+    font-family: 'Lato', sans-serif;
 }
 
-/* Header */
+body {
+    color: #eee;
+}
 
-header {
-    background: url("../img/bg.png");
-    background-size: cover;
-    min-height: 50vh;
-    text-align: center;
-    background-attachment: fixed;
+/* Scrollbar styling */
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #2e2e2e #1e1e1e;
 }
-.header-content {
-    position: absolute;
-    color: #eee !important;
-    top: 14%;
-    left: 50%;
-    transform: translate(-50%);
-    text-shadow: 2px 2px 4px #000000;
+
+body::-webkit-scrollbar {
+    width: 8px;
 }
-header h1 {
-    font-size: 6em; 
+
+body::-webkit-scrollbar-thumb {
+    background-color: #2e2e2e;
+    border-radius: 3px;
+    border: 1px solid #1e1e1e;
+}
+
+body::-webkit-scrollbar-track {
+    background: #1e1e1e;
 }
 
 /* Sections */
-#info {
-    color: #eee;
-    min-height: 50vh;
-    background: url("../img/info.png") center;
+
+header {
+    background: url('../img/bg.png');
     background-size: cover;
-    background-attachment: fixed;
-}
-.info-content {
-    text-align: center;
-    padding-top: 10vh !important;
-    padding-bottom: 10vh !important;
-}
-.section-content {
-    padding-top: 3vh;
-    padding-bottom: 3vh;
+    min-height: 100vh;
 }
 
-/* Footer */
-footer.footer-dark {
-    background: #1e1e1e;
-    color: #eee;
-    line-height: 75px;
-    height: 75px;
-    /* margin-top: -75px; */
+#commands {
+    min-height: 25vh;
+    background: #0a0a1e;
 }
-footer a {
+
+#stats {
+    min-height: 25vh;
+    background: #0a0a1e;
+}
+
+#leaderboard {
+    min-height: 60vh;
+    background: #0a0a1e;
+}
+
+#statistics {
+    min-height: 60vh;
+    background: #0a0a1e;
+}
+
+footer {
+    background: #0a0a1e !important;
+}
+
+/* Additional sections styling */
+
+header .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column
+}
+
+header img.logo {
+    width: 200px;
+}
+
+header.sub img.logo {
+    width: 120px;
+}
+
+header.sub {
+    min-height: 25vh;
+    background-position: center;
+}
+
+header.sub .container {
+    min-height: 40vh;
+}
+
+header.sub .bg-darker {
+    min-height: 40vh;
+}
+
+.bg-darker {
+    background: linear-gradient(0deg, rgba(10, 10, 30, 1) 0%, rgba(10, 10, 30, 0.98) 10%, rgba(30, 30, 30, 0.1) 100%);
+    min-height: 100vh;
+}
+
+/* Buttons */
+
+.btn-discord {
+    background: #7289DA;
     color: #eee;
 }
-footer a:hover {
+
+.btn-commands {
+    background: #dabb72;
     color: #eee;
-    text-decoration: none;
+}
+
+.btn-discord:hover {
+    background: #657bc7;
+    color: #eee;
+}
+
+.buttons .btn i {
+    margin-right: 10px;
+}
+
+.buttons .btn {
+    margin: 10px;
+}
+
+.buttons .btn {
+    margin-top: 20px;
 }
 
 /* Navs */
-.navbar {
+
+nav {
+    transition: 500ms ease;
+}
+
+    nav.scrolled {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    nav.expanded {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+/* Stats */
+
+.stats-box {
+    background: #14142E;
+    text-align: center;
+    min-height: 5vh;
+    border-radius: 10px;
+}
+
+.stats-body {
+    font-size: 30pt;
+    line-height: 2em;
+    border-bottom: 1px #23233F solid;
+}
+
+.stats-footer {
+    font-size: 15pt;
+    line-height: 3em;
+    margin-bottom: 5px;
+}
+
+.see-charts {
+    font-size: 14pt;
+}
+
+/* Commands categories list */
+
+ul.commands-categories {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.commands-category {
+    display: block;
+    font-size: 15pt;
+    line-height: 2.3em;
+    transition: 0.15s ease;
+    border-radius: 5px;
+    margin: 5px 0 5px 0;
+    cursor: pointer;
+}
+
+    li.commands-category.active {
+        background: #14142E;
+    }
+
+    li.commands-category:hover {
+        transition: 0.15s ease;
+        background: #14142E;
+        color: white;
+    }
+
+    li.commands-category span {
+        margin-left: 10px;
+    }
+
+ul.commands-list li:last-child {
+    border-bottom: none;
+}
+
+/* Commands list */
+
+.commands-list-box {
+    margin-top: 5px;
+    background: #14142E;
+    border-radius: 5px;
+}
+
+ul.commands-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.command {
+    margin-left: 15px;
+    display: block;
+    font-size: 14pt;
+    line-height: 2.3em;
+    border-bottom: 1px #23233F solid;
+}
+
+/* Leaderboard search */
+
+.leaderboard-search {
+    width: 50%;
+}
+
+/* Tables */
+
+.table-dark {
     background: none;
+    width: 100%;
 }
 
-.nav-tabs {
-    border-bottom: 0 !important;
+.table-dark td {
+    border-top: none;
+    line-height: 2.3em;
 }
 
-/* Styling */
-.language-select {
-    max-width: 100px;
+.table-dark tr:nth-child(odd) {
+    background: #14142E;
 }
-.content {
-    min-height: calc(100vh - 75px);
+
+.table-dark thead th {
+    border: none;
 }
-.container.section-content {
-    padding-top: 6vh;
-    padding-bottom: 6vh;
+
+.table-dark thead tr {
+    background: #0A0A1E !important;
 }
-.btn-sq-lg {
-    height: 150px !important;
-    line-height: 130px !important;
-    margin: 5px;
-    word-wrap: break-word !important;
+
+.card-dark {
+    background: #14142E;
+    align-items: center;
+    margin-bottom: 10px;
 }
-.text-blurpe {
-    color: rgb(114, 137, 218);
+
+.card img {
+    width: 128px;
+}
+
+/* Responsiveness */
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    /* Tables */
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+        thead tr {
+            display: none;
+        }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+
+        td:before {
+            position: absolute;
+            left: 6px;
+            width: 45%;
+            white-space: nowrap;
+        }
+
+        td:nth-of-type(1):before {
+            content: "Rank";
+            text-align: left;
+        }
+
+        td:nth-of-type(2):before {
+            content: "Nickname";
+            text-align: left;
+            line-height: 2.3em;
+        }
+
+        td:nth-of-type(3):before {
+            content: "LVL";
+            text-align: left;
+        }
+
+        td:nth-of-type(4):before {
+            content: "EXP";
+            text-align: left;
+        }
+
+    /* Leaderboard */
+
+    .leaderboard-search {
+        width: 100%;
+    }
+
+    /* Header */
+    .buttons .btn {
+        margin: 3px;
+    }
 }

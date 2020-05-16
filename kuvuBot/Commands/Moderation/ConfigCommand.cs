@@ -5,15 +5,13 @@ using kuvuBot.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Reflection;
 using DSharpPlus.CommandsNext.Converters;
+using kuvuBot.Core.Commands.Converters;
 using kuvuBot.Lang;
-using kuvuBot.Commands.Converters;
 
 namespace kuvuBot.Commands.Moderation
 {

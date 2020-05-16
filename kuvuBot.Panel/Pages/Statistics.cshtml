@@ -1,5 +1,6 @@
 ﻿@page
 @model kuvuBot.Panel.Pages.StatisticsModel
+@using System.Diagnostics
 @using MoreLinq;
 @{
     ViewData["Title"] = "Statistics";
@@ -7,17 +8,52 @@
     var stats = botContext.Statistics.DistinctBy(x => x.Date.Date).OrderBy(x => x.Date);
     var statsStrings = stats.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
 }
-<div class="container">
-    <h1>Statistics</h1>
-
-    <div style="width:75%;">
-        <canvas id="Guilds"></canvas>
+<section id="statistics">
+    <div class="container pb-2">
+        <h2 class="text-center mb-5 pt-2">Statistics</h2>
+        <div class="row pb-5">
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @((DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"hh\:mm\:ss"))
+                    </div>
+                    <div class="stats-footer">
+                        <p>Uptime</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @((Process.GetCurrentProcess().WorkingSet64 / 1000000d).ToString("F1")) MB
+                    </div>
+                    <div class="stats-footer">
+                        <p>Memory usage</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-box">
+                    <div class="stats-body">
+                        @(Model.CpuUsage)%
+                    </div>
+                    <div class="stats-footer">
+                        <p>CPU usage</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="container text-center d-flex flex-column justify-content-center align-items-center pb-3">
+        <div class="w-75">
+            <canvas id="Guilds"></canvas>
+        </div>
 
-    <div style="width:75%;">
-        <canvas id="ChannelsUsers"></canvas>
+        <div class="w-75">
+            <canvas id="ChannelsUsers"></canvas>
+        </div>
     </div>
-</div>
+</section>
 <script>
     var configChannelsUsers = {
         type: 'line',

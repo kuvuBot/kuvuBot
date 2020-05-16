@@ -2,10 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using SkiaSharp;
 using kuvuBot.Data;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;

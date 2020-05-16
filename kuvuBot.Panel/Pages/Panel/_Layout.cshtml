@@ -1,7 +1,6 @@
-﻿@using kuvuBot.Commands
-@using System.Linq;
+﻿@using System.Linq;
+@using kuvuBot.Core.Commands
 @using kuvuBot.Panel.Pages.Panel;
-@using Microsoft.AspNetCore.Routing
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     var discord = await HttpContextAccessor.HttpContext.GetRestClient();

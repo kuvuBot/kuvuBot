@@ -2,12 +2,13 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
-using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using SkiaSharp;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -19,56 +20,44 @@ namespace kuvuBot.Commands.Fun
         public async Task Ship(CommandContext ctx, [Description("User to ship")] DiscordUser target)
         {
             await ctx.Channel.TriggerTypingAsync();
-            
-            var target2 = ctx.Guild.Members.Values.ToList()[new Random().Next(ctx.Guild.Members.Count)];
-            
-            var httpClient = new System.Net.Http.HttpClient();
 
-            var bytesTarget = await httpClient.GetByteArrayAsync(target.AvatarUrl);
-            var bytesTarget2 = await httpClient.GetByteArrayAsync(target2.AvatarUrl);
-            var bytesEmoji = await httpClient.GetByteArrayAsync("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/180/heavy-black-heart_2764.png");
+            var randomMember = ctx.Guild.Members.Values.ToList()[new Random().Next(ctx.Guild.Members.Count)];
 
-            // wrap the bytes in a stream
-            var stream = new MemoryStream(bytesTarget);
-            var streamTarget2 = new MemoryStream(bytesTarget2);
-            var streamEmoji = new MemoryStream(bytesEmoji);
+            var httpClient = new HttpClient();
 
-            // decode the bitmap stream
-            var bitmap = SKBitmap.Decode(stream);
-            var bitmapTarget2 = SKBitmap.Decode(streamTarget2);
-            var bitmapEmoji = SKBitmap.Decode(streamEmoji);
+            var targetAvatar = SKBitmap.Decode(await httpClient.GetStreamAsync(target.AvatarUrl));
+            var randomAvatar = SKBitmap.Decode(await httpClient.GetByteArrayAsync(randomMember.AvatarUrl));
+            var emoji = SKBitmap.Decode(await httpClient.GetByteArrayAsync("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/180/heavy-black-heart_2764.png"));
 
-            var dimensions = new SKImageInfo(250, 90);
-            using (var surface = SKSurface.Create(dimensions))
+            var dimensions = new SKImageInfo(375, 135);
+            using var surface = SKSurface.Create(dimensions);
+            var canvas = surface.Canvas;
+            canvas.Clear(SKColors.Transparent);
+
+            // Text styling
+            var paint = new SKPaint
             {
-                var canvas = surface.Canvas;
-                canvas.Clear(SKColors.Transparent);
+                Color = SKColors.White,
+                IsAntialias = true,
+                Style = SKPaintStyle.Fill,
+                TextSize = 22,
+                TextAlign = SKTextAlign.Center,
+                Typeface = SKTypeface.FromFamilyName("Roboto")
+            };
 
-                // Text styling
-                var paint = new SKPaint
-                {
-                    Color = SKColors.SlateGray,
-                    IsAntialias = true,
-                    Style = SKPaintStyle.Fill,
-                    TextSize = 16,
-                    TextAlign = SKTextAlign.Center,
-                    Typeface = SKTypeface.FromFamilyName("Roboto")
-                };
+            // Draw text and images
+            canvas.DrawBitmap(targetAvatar, SKRect.Create(37.5f, 0, 96, 96));
+            canvas.DrawText($"{target.Name()}", 96f / 2f + 37.5f, 96 + 24, paint);
 
-                // Draw text and images
-                canvas.DrawText($"{target.Name()}", 57, 80, paint);
-                canvas.DrawText($"{target2.Name()}", 193, 80, paint);
-                canvas.DrawBitmap(bitmap, SKRect.Create(25,0,64,64));
-                canvas.DrawBitmap(bitmapEmoji, SKRect.Create(109,18,32,32));
-                canvas.DrawBitmap(bitmapTarget2, SKRect.Create(160,0,64,64));
+            canvas.DrawBitmap(emoji, SKRect.Create(37.5f + 96f + 30f, 27F, 48f, 48f));
 
-                // Generate and send the image
-                using (var image = surface.Snapshot())
-                using (var data = image.Encode(SKEncodedImageFormat.Png, 50))
-                {
-                    await ctx.RespondWithFileAsync(fileData: data.AsStream(), fileName: $"ship.png");
-                }
-            }
+            canvas.DrawBitmap(randomAvatar, SKRect.Create(37.5f + 96f + 30 + 48 + 28.5f, 0, 96, 96));
+            canvas.DrawText($"{randomMember.Name()}", 96f / 2f + 37.5f + 96f + 30 + 48 + 28.5f, 96 + 24, paint);
+
+            // Generate and send the image
+            using var image = surface.Snapshot();
+            using var data = image.Encode(SKEncodedImageFormat.Webp, 100);
+            await ctx.RespondWithFileAsync(fileData: data.AsStream(), fileName: "ship.webp");
         }
     }
 }

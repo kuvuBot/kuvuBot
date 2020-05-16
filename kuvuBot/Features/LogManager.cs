@@ -1,20 +1,18 @@
 ﻿using DSharpPlus;
 using DSharpPlus.EventArgs;
 using kuvuBot.Data;
-using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
-using kuvuBot.Commands;
+using kuvuBot.Core.Commands;
+using kuvuBot.Core.Features;
 
 namespace kuvuBot.Features
 {
-    public class LogManager : IFeatureManager
+    public class LogManager : IFeature
     {
-        public void Initialize(DiscordClient client)
+        public LogManager(DiscordShardedClient client)
         {
             client.GuildMemberAdded += Client_GuildMemberAdded;
             client.GuildMemberRemoved += Client_GuildMemberRemoved;
@@ -23,9 +21,8 @@ namespace kuvuBot.Features
             client.MessageDeleted += Client_MessageDeleted;
         }
 
-        private async static Task Client_MessageDeleted(MessageDeleteEventArgs e)
+        private static async Task Client_MessageDeleted(MessageDeleteEventArgs e)
         {
-
             var kuvuGuild = await e.Guild.GetKuvuGuild();
             if (kuvuGuild.LogChannel.HasValue)
             {
@@ -35,7 +32,7 @@ namespace kuvuBot.Features
             }
         }
 
-        private async static Task Client_MessageUpdated(MessageUpdateEventArgs e)
+        private static async Task Client_MessageUpdated(MessageUpdateEventArgs e)
         {
             var kuvuGuild = await e.Guild.GetKuvuGuild();
             if (kuvuGuild.LogChannel.HasValue && e.Message != null && !string.IsNullOrEmpty(e.Message.Content))
@@ -47,7 +44,7 @@ namespace kuvuBot.Features
             }
         }
 
-        private async static Task Log(string emoji, string message, KuvuGuild kuvuGuild, DiscordChannel discordChannel, DiscordUser user, List<DuckField> fields = null, string url = null)
+        private static async Task Log(string emoji, string message, KuvuGuild kuvuGuild, DiscordChannel discordChannel, DiscordUser user, List<DuckField> fields = null, string url = null)
         {
             var embed = new ModernEmbedBuilder
             {
@@ -62,7 +59,7 @@ namespace kuvuBot.Features
             await embed.Send(discordChannel);
         }
 
-        private async static Task Client_GuildMemberRemoved(GuildMemberRemoveEventArgs e)
+        private static async Task Client_GuildMemberRemoved(GuildMemberRemoveEventArgs e)
         {
             var kuvuGuild = await e.Guild.GetKuvuGuild();
             if (kuvuGuild.LogChannel.HasValue)
@@ -80,7 +77,7 @@ namespace kuvuBot.Features
             }
         }
 
-        private async static Task Client_GuildMemberAdded(GuildMemberAddEventArgs e)
+        private static async Task Client_GuildMemberAdded(GuildMemberAddEventArgs e)
         {
             var kuvuGuild = await e.Guild.GetKuvuGuild();
             if (kuvuGuild.LogChannel.HasValue)

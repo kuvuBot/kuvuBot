@@ -2,13 +2,11 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using kuvuBot.Lang;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using kuvuBot.Data;
 
 namespace kuvuBot.Commands.Moderation
@@ -20,6 +18,7 @@ namespace kuvuBot.Commands.Moderation
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages | Permissions.ManageRoles)]
         public async Task Mute(CommandContext ctx, [Description("User to mute")] DiscordMember target, [RemainingText] string reason = null)
         {
+            reason.RequireRemainingText();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild();
             if (kuvuGuild.MuteRole.HasValue)
             {

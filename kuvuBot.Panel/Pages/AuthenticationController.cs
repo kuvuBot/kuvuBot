@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using AspNet.Security.OAuth.Discord;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace kuvuBot.Panel.Pages
         [HttpGet("~/login"), HttpPost("~/login")]
         public IActionResult Login()
         {
-            return Challenge(new AuthenticationProperties {RedirectUri = "/"}, "Discord");
+            return Challenge(new AuthenticationProperties {RedirectUri = "/"}, DiscordAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpGet("~/logout"), HttpPost("~/logout")]

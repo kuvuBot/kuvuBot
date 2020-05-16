@@ -8,11 +8,12 @@ using kuvuBot.Data;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using DSharpPlus.Entities;
 using kuvuBot.Features.Modular;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using MoreLinq.Extensions;
 
 namespace kuvuBot.Commands.Moderation
 {
@@ -36,10 +37,35 @@ namespace kuvuBot.Commands.Moderation
 
             foreach (var module in ModuleManager.Modules)
             {
-                embed.AddField(module.Name, $"Version: {module.Version}, Author: {module.Author}, Description: `{module.Description}`");
+                embed.AddField(module.Name, $"Version: {module.DisplayVersion}, Author: {module.Author}, Description: `{module.Description}`");
             }
 
             await embed.Send(ctx.Message.Channel);
+        }
+
+        [Command("shards"), Description("Print shards")]
+        [RequireGlobalRank(KuvuGlobalRank.Helper)]
+        public async Task Shards(CommandContext ctx)
+        {
+            var embed = new ModernEmbedBuilder
+            {
+                Title = "Shards",
+                Fields = new List<DuckField>
+                {
+                    ("ShardId", ctx.Client.ShardId.ToString(), true),
+                    ("ShardCount", ctx.Client.ShardCount.ToString(), true),
+                    ("Shards", $"[{Program.Client.ShardClients.Values.Select(x=>x.Guilds.Count.ToString()).ToDelimitedString(", ")}]"),
+                }
+            }.AddGeneratedForFooter(ctx);
+
+            await embed.Send(ctx.Message.Channel);
+        }
+
+        [Command("throw"), Description("Throw error, for testing purposes")]
+        [RequireGlobalRank(KuvuGlobalRank.Root)]
+        public Task Throw(CommandContext ctx, [RemainingText] string message = "invoked by throw command")
+        {
+            throw new Exception(message);
         }
 
         public static class Globals
@@ -75,7 +101,6 @@ namespace kuvuBot.Commands.Moderation
                             ("Result", state.ReturnValue?.ToString() ?? "*null*")
                         }
                     }.AddGeneratedForFooter(ctx);
-
                     if (state.Variables.Any())
                         embed.AddField("Variables", string.Join("\n", state.Variables.Select(variable => $"*{variable.Type}* **{variable.Name}** = `{variable.Value}`")));
 
@@ -91,7 +116,7 @@ namespace kuvuBot.Commands.Moderation
                 await new ModernEmbedBuilder
                 {
                     Title = "Evaluation failed",
-                    Description = e.ToString().Replace("`", @"\`").Replace("*", @"\*").Replace("~", @"\~").Replace("_", @"\_")
+                    Description = e.ToString().EscapeDiscord()
                 }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
             }
         }

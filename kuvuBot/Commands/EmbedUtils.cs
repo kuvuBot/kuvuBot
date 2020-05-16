@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Core.Commands;
 using kuvuBot.Lang;
 
 namespace kuvuBot.Commands

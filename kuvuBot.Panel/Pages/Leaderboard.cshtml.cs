@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using DSharpPlus;
-using DSharpPlus.Net;
 using kuvuBot.Data;
 using DSharpPlus.Entities;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Panel.Pages
 {
@@ -21,33 +17,30 @@ namespace kuvuBot.Panel.Pages
         public DiscordRestClient Client { get; set; }
         public BotContext _BotContext { get; set; }
 
-        public async Task<ActionResult> OnGetAsync(string search)
+        public async Task<ActionResult> OnGetAsync(ulong? id)
         {
             _BotContext = new BotContext();
-            if (!string.IsNullOrWhiteSpace(search))
+            if (id.HasValue)
             {
-                if (ulong.TryParse(search, out var guildId))
-                {
-                    Guild = _BotContext.Guilds.FirstOrDefault(x => x.GuildId == guildId);
-                }
-                else
-                {
-                    Guild = _BotContext.Guilds.OrderBy(x => Commands.CommandUtils.LevenshteinDistance(kuvuBot.Program.Client.GetGuildAsync(x.GuildId).Result.Name, search)).FirstOrDefault();
-                }
+                Guild = _BotContext.Guilds.FirstOrDefault(x => x.GuildId == id);
+
                 if (Guild != null)
+                {
                     try
                     {
                         DGuild = await kuvuBot.Program.Client.GetGuildAsync(Guild.GuildId);
                     }
                     catch (Exception)
                     {
-                        TempData["message"] = $"Error: {search} cannot be retrieved, ensure bot is still there";
+                        TempData["message"] = $"Error: {id} cannot be retrieved, ensure bot is still there";
                         return Redirect("~/Leaderboard");
                         throw;
                     }
+                }
+
                 if (Guild == null || DGuild == null)
                 {
-                    TempData["message"] = $"Error: {search} was not found";
+                    TempData["message"] = $"Error: {id} was not found";
                     return Redirect("~/Leaderboard");
                 }
             }
@@ -55,6 +48,7 @@ namespace kuvuBot.Panel.Pages
             {
                 Client = await HttpContext.GetRestClient();
             }
+
             return Page();
         }
     }

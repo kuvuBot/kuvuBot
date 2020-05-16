@@ -5,12 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
-using kuvuBot.Lang;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using kuvuBot.Data;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -21,8 +20,9 @@ namespace kuvuBot.Commands.Moderation
     {
         [GroupCommand, LocalizedDescription("warn.description")]
         [RequireUserPermissions(Permissions.ManageMessages), RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Warn(CommandContext ctx, [Description("User to warn")] DiscordUser target, [Description("Weight of warn")] int weight, [Description("Reason")] [RemainingText] string reason)
+        public async Task Warn(CommandContext ctx, [Description("User to warn")] DiscordUser target, [Description("Weight of warn")] int weight, [Description("Reason")][RemainingText] string reason)
         {
+            reason.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
 
             var botContext = new BotContext();

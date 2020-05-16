@@ -1,34 +1,40 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Net.WebSockets;
 using System.Reflection;
+using System.Runtime.Loader;
+using System.Text;
 using System.Threading.Tasks;
 using Colorful;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using kuvuBot.Commands.Fun;
-using kuvuBot.Commands.General;
-using kuvuBot.Data;
-using kuvuBot.Features;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Console = Colorful.Console;
-using kuvuBot.Features.Modular;
-using DSharpPlus.CommandsNext.Exceptions;
-using kuvuBot.Commands.Converters;
-using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Lavalink;
 using DSharpPlus.Net;
-using kuvuBot.Lang;
+using HSNXT.DSharpPlus.ModernEmbedBuilder;
+using kuvuBot.Commands;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Commands.Fun;
+using kuvuBot.Commands.General;
 using kuvuBot.Commands.Music;
+using kuvuBot.Core.Commands;
+using kuvuBot.Core.Commands.Converters;
+using kuvuBot.Core.Features;
+using kuvuBot.Data;
+using kuvuBot.Lang;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Sockets;
-using System.Net.Http;
-using System.Net.WebSockets;
+using Newtonsoft.Json;
+using Console = Colorful.Console;
 
 namespace kuvuBot
 {
@@ -36,11 +42,12 @@ namespace kuvuBot
     {
         private const string ConfigFilename = "config.json";
 
-        public static DiscordClient Client { get; set; }
+        public static DiscordShardedClient Client { get; set; }
         public static Config Config { get; set; }
-        public static CommandsNextExtension Commands { get; set; }
-        public static LavalinkExtension Lavalink { get; set; }
-        private static bool Kill { get; set; } = false;
+        public static IReadOnlyDictionary<int, CommandsNextExtension> Commands { get; set; }
+        public static IReadOnlyDictionary<int, LavalinkExtension> Lavalink { get; set; }
+        private static bool Kill { get; set; }
+        private static bool Loaded { get; set; }
 
         public static Config LoadConfig()
         {
@@ -56,31 +63,29 @@ namespace kuvuBot
             Console.WriteLine("Checking database connection...");
             try
             {
-                using (var botContext = new BotContext())
+                using var botContext = new BotContext();
+                if (botContext.Database.CanConnect())
                 {
-                    if (botContext.Database.CanConnect())
+                    Console.WriteLine("Database connection is OK");
+                    Console.WriteLine("Migrating database...");
+                    try
                     {
-                        Console.WriteLine("Database connection is OK");
-                        Console.WriteLine("Migrating database...");
-                        try
-                        {
-                            botContext.Database.Migrate();
-                            Console.WriteLine("Database migration SUCCESS");
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Database migration error\n {e.ToString()}");
-                        }
+                        botContext.Database.Migrate();
+                        Console.WriteLine("Database migration SUCCESS");
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Console.WriteLine($"Database error");
+                        Console.WriteLine($"Database migration error\n {e}");
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Database error");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Database error\n {e.ToString()}");
+                Console.WriteLine($"Database error\n {e}");
             }
         }
 
@@ -102,57 +107,73 @@ namespace kuvuBot
                 HttpTimeout = TimeSpan.FromSeconds(60)
             };
 
-            Client = new DiscordClient(conf);
+            Client = new DiscordShardedClient(conf);
 
-            Lavalink = Client.UseLavalink();
+            Lavalink = await Client.UseLavalinkAsync();
 
-            Commands = Client.UseCommandsNext(new CommandsNextConfiguration
+            var services = new ServiceCollection()
+                .AddSingleton(Config)
+                .AddSingleton(Client);
+            services.AddSingleton(services);
+
+            Commands = await Client.UseCommandsNextAsync(new CommandsNextConfiguration
             {
                 EnableDefaultHelp = true,
-                PrefixResolver = async (msg) =>
+                PrefixResolver = async msg =>
                 {
                     var kuvuGuild = await msg.Channel.Guild.GetKuvuGuild();
                     return msg.GetStringPrefixLength(kuvuGuild.Prefix, StringComparison.CurrentCultureIgnoreCase);
                 },
+                Services = services.BuildServiceProvider()
             });
-            Commands.SetHelpFormatter<HelpFormatter>();
-            Commands.RegisterConverter(new FriendlyDiscordUserConverter());
-            Commands.RegisterConverter(new FriendlyDiscordMemberConverter());
-            Commands.RegisterConverter(new FriendlyDiscordChannelConverter());
-            Commands.RegisterConverter(new FriendlyDiscordMessageConverter());
-            Commands.RegisterConverter(new FriendlyBoolConverter());
 
-            Commands.CommandExecuted += Commands_CommandExecuted;
-            Commands.CommandErrored += Commands_CommandErrored;
+            foreach (var extension in Commands.Values)
+            {
+                extension.SetHelpFormatter<HelpFormatter>();
+                extension.RegisterFriendlyConverters();
 
-            Commands.RegisterCommands(Assembly.GetExecutingAssembly());
+                extension.CommandExecuted += Commands_CommandExecuted;
+                extension.CommandErrored += Commands_CommandErrored;
 
+                extension.RegisterCommands(Assembly.GetExecutingAssembly());
+            }
+
+            Client.ClientErrored += e =>
+            {
+                Console.WriteLine(e.Exception);
+                return Task.CompletedTask;
+            };
             Client.Ready += Client_Ready;
             Client.GuildCreated += Client_GuildEvents;
             Client.GuildDeleted += Client_GuildEvents;
-            Client.GuildDownloadCompleted += Client_GuildEvents;
-            Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
-
-            IFeatureManager[] managers = { new StatisticManager(), new LogManager(), new LevelManager(), new ModuleManager() };
-            foreach (var manager in managers)
+            Client.GuildDownloadCompleted += e =>
             {
-                manager.Initialize(Client);
-            }
+                Client.DebugLogger.LogMessage(LogLevel.Info, "kuvuBot", $"Guild download completed {e.Guilds.Count}", DateTime.Now);
+                Loaded = true;
+                return Client_GuildEvents(e);
+            };
+            Client.MessageReactionAdded += MinesweeperCommand.Client_MessageReactionAdded;
+            Client.SocketErrored += Client_SocketErrored;
+
+            services.RegisterFeatures();
 
             UpdateDatabase();
 
-
-            await Client.ConnectAsync(GetDiscordActivity(), Config.Status.UserStatus);
+            await Client.StartAsync();
+            Client.Ready += e => e.Client.UpdateStatusAsync(GetDiscordActivity(), Config.Status.UserStatus);
 
             try
             {
                 var endpoint = new ConnectionEndpoint { Hostname = Config.Lavalink.Ip, Port = Config.Lavalink.Port };
-                MusicCommand.Lavalink = await Lavalink.ConnectAsync(new LavalinkConfiguration
+                foreach (var extension in Lavalink.Values)
                 {
-                    Password = Config.Lavalink.Password,
-                    RestEndpoint = endpoint,
-                    SocketEndpoint = endpoint
-                });
+                    MusicCommand.Lavalink = await extension.ConnectAsync(new LavalinkConfiguration
+                    {
+                        Password = Config.Lavalink.Password,
+                        RestEndpoint = endpoint,
+                        SocketEndpoint = endpoint
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -166,6 +187,22 @@ namespace kuvuBot
                 }
             }
 
+            Console.CancelKeyPress += async (s, e) =>
+            {
+                e.Cancel = true;
+                await OnStop();
+            };
+
+            AppDomain.CurrentDomain.ProcessExit += async (s, e) =>
+            {
+                await OnStop();
+            };
+
+            AssemblyLoadContext.Default.Unloading += async ctx =>
+            {
+                await OnStop();
+            };
+
             // prevent app from quit
             await Task.Run(() =>
             {
@@ -173,39 +210,92 @@ namespace kuvuBot
             });
         }
 
+        public static async Task OnStop()
+        {
+            if (Kill)
+                return;
+
+            Kill = true;
+            Console.WriteLine("Stopping...");
+            Loaded = false;
+            await Client_GuildEvents(null);
+        }
+
+        private static Task Client_SocketErrored(SocketErrorEventArgs e)
+        {
+            throw e.Exception;
+        }
+
         private static async Task Commands_CommandErrored(CommandErrorEventArgs e)
         {
-            if (e.Exception is CommandNotFoundException)
-                return;
-            if (e.Exception is ArgumentException || (e.Exception is InvalidOperationException && e.Exception.Message == "No matching subcommands were found, and this group is not executable."))
+            switch (e.Exception)
             {
-                var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
-                var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
-                await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
-                return;
-            }
-            if (e.Exception is ChecksFailedException ex)
-            {
-                if (ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute))
-                {
-                    var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
-                    var dm = await e.Context.Member.CreateDmChannelAsync();
-                    await dm.SendMessageAsync((await e.Context.Lang("global.noBotPermissions")).Replace("{permissions}", req.Permissions.ToPermissionString()));
+                case CommandNotFoundException _:
                     return;
-                }
-                else if (ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute))
-                {
+                case ArgumentException _ when e.Exception.StackTrace.Trim().StartsWith("at DSharpPlus.CommandsNext.Command.ExecuteAsync"):
+                case ArgumentException _ when e.Exception.Message == "Required text can't be null!":
+                case InvalidOperationException _ when e.Exception.Message == "No matching subcommands were found, and this group is not executable.":
+                    {
+                        var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
+                        var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
+                        await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
+                        return;
+                    }
+                case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute):
+                    {
+                        var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
+                        var dm = await e.Context.Member.CreateDmChannelAsync();
+                        await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
+                        return;
+                    }
+                case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute):
                     await e.Context.RespondAsync(await e.Context.Lang("global.noPermissions"));
                     return;
-                }
-                else if (ex.FailedChecks.Any(x => x is MusicCommand.RequireLavalinkAttribute))
-                {
+                case ChecksFailedException ex when ex.FailedChecks.Any(x => x is MusicCommand.RequireLavalinkAttribute):
                     await e.Context.RespondAsync("Bot is not connected to lavalink!");
                     return;
-                }
-            }
+                default:
+                    Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
+                    var globalUser = await e.Context.Member.GetGlobalUser();
+                    if (globalUser.GlobalRank >= KuvuGlobalRank.Admin)
+                    {
+                        await e.Context.Message.RespondWithFileAsync("crash.txt",
+                            new MemoryStream(Encoding.ASCII.GetBytes(e.Exception.ToString())),
+                                embed: new ModernEmbedBuilder
+                                {
+                                    Title = "Command failed",
+                                    ColorRGB = (231, 76, 60),
+                                    Description = $"```{e.Exception.ToString().Truncate(2048 - 6, "...")}```"
+                                });
+                    }
+                    else
+                    {
+                        var errorId = Convert.ToBase64String(Guid.NewGuid().ToByteArray())[..^2];
 
-            Client.DebugLogger.LogMessage(LogLevel.Error, "kuvuLogging", $"An exception occured during {e.Context.User.Username}'s invocation of '{e.Context.Command.QualifiedName}': {e.Exception.GetType()}", DateTime.Now.Date, e.Exception);
+                        await new ModernEmbedBuilder
+                        {
+                            Title = "Internal error",
+                            ColorRGB = (231, 76, 60),
+                            Description = $"Error id #{errorId}"
+                        }.AddGeneratedForFooter(e.Context, false).Send(e.Context.Message.Channel);
+
+                        var errorsChannel = (await Client.GetGuildAsync(257599205693063168)).GetChannel(697574699063967784);
+                        await errorsChannel.SendFileAsync("crash.txt",
+                            new MemoryStream(Encoding.ASCII.GetBytes(e.Exception.ToString())),
+                            embed: new ModernEmbedBuilder
+                            {
+                                Title = $"Error in command {errorId}",
+                                ColorRGB = (231, 76, 60),
+                                Description = $"```{e.Exception.ToString().Truncate(2048 - 6, "...")}```",
+                                Fields =
+                                {
+                                    ("Message", $"[Jump]({e.Context.Message.JumpLink}) `{e.Context.Message.Content}`", true),
+                                    ("User", $"`{e.Context.User.Id}`", true)
+                                }
+                            }.AddGeneratedForFooter(e.Context, false));
+                    }
+                    break;
+            }
         }
 
         private static Task Commands_CommandExecuted(CommandExecutionEventArgs e)
@@ -216,6 +306,11 @@ namespace kuvuBot
 
         private static void UpdateStatus()
         {
+            if (!Loaded)
+            {
+                Client.UpdateStatusAsync(new DiscordActivity("Rebooting..."), UserStatus.Idle, Process.GetCurrentProcess().StartTime);
+                return;
+            }
             Client.UpdateStatusAsync(GetDiscordActivity(), Config.Status.UserStatus);
         }
 
@@ -223,7 +318,7 @@ namespace kuvuBot
         {
             return new DiscordActivity(Config.Status.Activity
                 .Replace("%defualtprefix%", Config.DefualtPrefix)
-                .Replace("%guilds%", Client.Guilds.Count.ToString()), Config.Status.ActivityType);
+                .Replace("%guilds%", Client.ShardClients.Values.Sum(client => client.Guilds.Count).ToString()), Config.Status.ActivityType);
         }
 
         private static Task Client_GuildEvents(EventArgs e)

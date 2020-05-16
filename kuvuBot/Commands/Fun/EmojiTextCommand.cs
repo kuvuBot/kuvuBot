@@ -1,17 +1,10 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.Threading.Tasks;
-using Colorful;
 using DSharpPlus.Entities;
-using System.Reflection;
-using System.IO;
-using System.Text.RegularExpressions;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 
 namespace kuvuBot.Commands.Fun
 {
@@ -23,6 +16,7 @@ namespace kuvuBot.Commands.Fun
         [Command("emojitext"), LocalizedDescription("emojitext.description"), Aliases("emtext")]
         public async Task EmojiText(CommandContext ctx, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             string formatted = "";
             foreach (var c in message)
             {
@@ -56,6 +50,7 @@ namespace kuvuBot.Commands.Fun
         [Command("emojireaction"), LocalizedDescription("emojireaction.description"), Aliases("react", "emreaction", "emreact")]
         public async Task EmojiReaction(CommandContext ctx, DiscordMessage dMessage, [RemainingText] string message)
         {
+            message.RequireRemainingText();
             if (dMessage != ctx.Message) await ctx.Message.DeleteAsync();
             foreach (var c in message)
             {

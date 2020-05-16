@@ -2,59 +2,184 @@
 using DSharpPlus.Entities;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using kuvuBot.Commands;
-using SixLabors.ImageSharp.ColorSpaces;
+using System.Runtime.Serialization;
+using kuvuBot.Core.Commands;
 
 namespace BadoszApiModule
 {
-    public static class BadoszApi
+    public class BadoszApi
     {
-        public enum BadoszEndpoint { advice, bird, blurple, cat, changemymind, chucknorris, cuddle, dadjoke, dog, endpoints, excuseme, fact, fox, hug, invert, kiss, note, orangly, pat, shibe, triggered, trump, tweet, wanted, wasted, why, yomomma }
+        private HttpClient HttpClient { get; } = new HttpClient { BaseAddress = new Uri("https://api.badosz.com/") };
 
-        internal static WebClient GetWebClient()
+        public BadoszApi(string token)
         {
-            var wc = new WebClient();
-            wc.Headers.Add("Authorization", BadoszApiModule.KuvuConfig.Apis["badoszapi"]);
-            return wc;
+            HttpClient.DefaultRequestHeaders.Add("Authorization", token);
         }
 
-        public static async Task<string> GetJson(BadoszEndpoint endpoint, NameValueCollection parameters = null)
+        public async Task<string> GetJson(BadoszEndpoint endpoint, NameValueCollection parameters = null)
         {
-            using var wc = GetWebClient();
-            var uri = new UriBuilder("https" + $"://api.badosz.com/{Enum.GetName(typeof(BadoszEndpoint), endpoint)}")
+            var uri = new UriBuilder(HttpClient.BaseAddress + endpoint.GetEnumMemberValue())
             {
                 Query = parameters?.ToString()
             };
-            return await wc.DownloadStringTaskAsync(uri.Uri);
+            return await HttpClient.GetStringAsync(uri.Uri);
         }
 
-        public static async Task<Stream> GetStream(BadoszEndpoint endpoint, NameValueCollection parameters = null)
+        public async Task<Stream> GetStream(BadoszEndpoint endpoint, NameValueCollection parameters = null)
         {
-            using var wc = GetWebClient();
-            var uri = new UriBuilder("https" + $"://api.badosz.com/{Enum.GetName(typeof(BadoszEndpoint), endpoint)}")
+            var uri = new UriBuilder(HttpClient.BaseAddress + endpoint.GetEnumMemberValue())
             {
                 Query = parameters?.ToString()
             };
-            return new MemoryStream(await wc.DownloadDataTaskAsync(uri.Uri));
+            return await HttpClient.GetStreamAsync(uri.Uri);
         }
 
-        public static async Task<DiscordMessage> SendEmbedImage(CommandContext ctx, BadoszEndpoint endpoint, string title = null, NameValueCollection parameters = null)
+        public async Task<DiscordMessage> SendEmbedImage(CommandContext ctx, BadoszEndpoint endpoint, string title = null, NameValueCollection parameters = null)
         {
             await using var stream = await GetStream(endpoint, parameters);
-            var str = Enum.GetName(typeof(BadoszEndpoint), endpoint);
+            var name = endpoint.GetEnumMemberValue();
             var embed = new ModernEmbedBuilder
             {
-                Title = title ?? char.ToUpper(str[0]) + str.Substring(1),
+                Title = title ?? (name ?? throw new InvalidOperationException()).First().ToString().ToUpper() + name.Substring(1),
                 ImageUrl = "attachment://image.gif"
             }.AddGeneratedForFooter(ctx);
             return await ctx.RespondWithFileAsync(embed: embed.Build(), fileData: stream, fileName: $"image.gif");
+        }
+
+        public enum BadoszEndpoint
+        {
+            [EnumMember(Value = "ant")]
+            Ant,
+
+            [EnumMember(Value = "bird")]
+            Bird,
+
+            [EnumMember(Value = "bee")]
+            Bee,
+
+            [EnumMember(Value = "rabbit")]
+            Rabbit,
+
+            [EnumMember(Value = "catgirl")]
+            CatGirl,
+
+            [EnumMember(Value = "cuddle")]
+            Cuddle,
+
+            [EnumMember(Value = "dog")]
+            Dog,
+
+            [EnumMember(Value = "feed")]
+            Feed,
+
+            [EnumMember(Value = "fox")]
+            Fox,
+
+            [EnumMember(Value = "hug")]
+            Hug,
+
+            [EnumMember(Value = "jesus")]
+            Jesus,
+
+            [EnumMember(Value = "kiss")]
+            Kiss,
+
+            [EnumMember(Value = "pat")]
+            Pat,
+
+            [EnumMember(Value = "poke")]
+            Poke,
+
+            [EnumMember(Value = "shibe")]
+            Shibe,
+
+            [EnumMember(Value = "tickle")]
+            Tickle,
+
+            [EnumMember(Value = "advice")]
+            Advice,
+
+            [EnumMember(Value = "cat")]
+            Cat,
+
+            [EnumMember(Value = "chucknorris")]
+            ChuckNorris,
+
+            [EnumMember(Value = "dadjoke")]
+            DadJoke,
+
+            [EnumMember(Value = "fact")]
+            Fact,
+
+            [EnumMember(Value = "Why")]
+            Why,
+
+            [EnumMember(Value = "yomomma")]
+            YoMomma,
+
+            [EnumMember(Value = "base64")]
+            Base64,
+
+            [EnumMember(Value = "binary")]
+            Binary,
+
+            [EnumMember(Value = "blurple")]
+            Blurple,
+
+            [EnumMember(Value = "changemymind")]
+            ChangeMyMind,
+
+            [EnumMember(Value = "color")]
+            Color,
+
+            [EnumMember(Value = "colorify")]
+            Colorify,
+
+            [EnumMember(Value = "decode-base64")]
+            DecodeBase64,
+
+            [EnumMember(Value = "decode-hex")]
+            DecodeHex,
+
+            [EnumMember(Value = "endpoints")]
+            Endpoints,
+
+            [EnumMember(Value = "excuseme")]
+            ExcuseMe,
+
+            [EnumMember(Value = "flip")]
+            Flip,
+
+            [EnumMember(Value = "hex")]
+            Hex,
+
+            [EnumMember(Value = "invert")]
+            Invert,
+
+            [EnumMember(Value = "morse")]
+            Morse,
+
+            [EnumMember(Value = "reverse")]
+            Reverse,
+
+            [EnumMember(Value = "trump")]
+            Trump,
+
+            [EnumMember(Value = "vaporwave")]
+            VaporWave,
+
+            [EnumMember(Value = "wanted")]
+            Wanted,
+
+            [EnumMember(Value = "wasted")]
+            Wasted
         }
     }
 }

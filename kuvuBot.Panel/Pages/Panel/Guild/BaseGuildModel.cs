@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using kuvuBot.Core.Commands;
 using kuvuBot.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace kuvuBot.Panel.Pages.Panel.Guild
 {
@@ -17,7 +14,7 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
     public class BaseGuildModel : PageModel
     {
         public DiscordRestClient RestClient;
-        public DiscordClient BotClient;
+        public DiscordShardedClient BotClient;
         public BotContext BotContext;
 
         public bool Global = false;

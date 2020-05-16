@@ -8,6 +8,7 @@ using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Text.RegularExpressions;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
+using kuvuBot.Core.Commands;
 using kuvuBot.Lang;
 using kuvuBot.OpenWeatherApi;
 
@@ -19,6 +20,7 @@ namespace kuvuBot.Commands.Information
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Weather(CommandContext ctx, [RemainingText] string cityName)
         {
+            cityName.RequireRemainingText();
             await ctx.Channel.TriggerTypingAsync();
             var api = new OpenWeatherApi.OpenWeatherApi(Program.Config.Apis.OpenWeatherApi, await ctx.Lang("weather.lang"));
             var city = await api.GetWeatherByCityName(cityName);
