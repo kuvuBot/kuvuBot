@@ -32,7 +32,8 @@
     "description": "Generuje tekst zrobiony z emoji"
   },
   "figlet": {
-    "description": "Generuje figlet (ascii art)"
+    "description": "Generuje figlet (ascii art)",
+    "specialCharacters": "Figlet nie może zawierać znaków specjalnych (w tym polskich liter)!"
   },
   "minesweeper": {
     "description": "Zacznij grę w sapera"
@@ -125,7 +126,7 @@
   "clear": {
     "description": "Usuwa podaną ilość wiadomości",
     "success": ":ok_hand:, usunięto {count} wiadomości!",
-    "failed": "Nie można było usunąć {count} wiadomości! (prawdopodobnie były starsze niż 2 tygodnie)"
+    "failed": "Nie udało się usunąć {count} wiadomości! (Prawdopodobnie były one starsze niż dwa tygodnie)"
   },
   "mute": {
     "description": "Wycisza użytkownika",
@@ -165,10 +166,14 @@
     "randomBreed": "Losowy pies rasy {breed}"
   },
   "hug": {
-    "description": "Przytula wskazanego użytkownika"
+    "description": "Przytula wskazanego użytkownika",
+    "target": "Użytkownik do uściskania",
+    "verb": "uściskał/-a"
   },
   "pat": {
-    "description": "Głaszcze wskazanego użytkownika"
+    "description": "Głaszcze wskazanego użytkownika",
+    "target": "Użytkownik, którego chcesz pogłaskać",
+    "verb": "pogłaskał/-a"
   },
   "slap": {
     "description": "Policzkujesz wskazanego użytkownika"
@@ -182,5 +187,79 @@
   },
   "reverse": {
     "description": "Odwraca podany tekst"
+  },
+  "cuddle": {
+    "description": "Przytula oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz przytulić",
+    "verb": "przytulił/-a"
+  },
+  "kiss": {
+    "description": "Całuje oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz pocałować",
+    "verb": "pocałował/-a"
+  },
+  "tickle": {
+    "description": "Łaskocze oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz połaskotać",
+    "verb": "połaskotał/-a"
+  },
+  "poke": {
+    "description": "Szturcha oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz szturchnąć",
+    "verb": "szturchnął/-eła"
+  },
+  "bird": {
+    "description": "Wysyła losowe zdjęcie ptaka"
+  },
+  "bee": {
+    "description": "Wysyła losowe zdjęcie pszczoły"
+  },
+  "rabbit": {
+    "description": "Wysyła losowe zdjęcie królika"
+  },
+  "blurple": {
+    "description": "Przekształca awatar oznaczonego użytkownika w odcienie koloru blurple",
+    "verb": "Awatar użytkownika",
+    "target": "Użytkownik, którego awatar zostanie przekształcony w odcienie blurple"
+  },
+  "morse": {
+    "description": "Konwertuje tekst na kod Morse’a",
+    "argument": "Tekst, który chcesz przekonwertować"
+  },
+  "changemymind": {
+    "description": "Generuje mema \"change my mind\" z twoim tekstem",
+    "title": "Change my mind",
+    "argument": "Tekst, który chcesz umieścić na memie"
+  },
+  "excuseme": {
+    "description": "Generuje mema \"excuse me\" z twoim tekstem",
+    "argument": "Tekst, który chcesz umieścić na memie"
+  },
+  "fox": {
+    "description": "Wysyła losowe zdjęcie lisa"
+  },
+  "invert": {
+    "description": "Odwraca kolory na awatarze oznaczonego użytkownika",
+    "verb": "Awatar z odwróconymi kolorami użytkownika",
+    "target": "Użytkownik, na którego awatarze będą odwrócone kolory"
+  },
+  "orangly": {
+    "description": "Przekształca awatar oznaczonego użytkownika w odcienie pomarańczowego",
+    "verb": "Orangled",
+    "target": "Użytkownik, którego awatar zostanie przekształcony w odcienie pomarańczowego"
+  },
+  "trump": {
+    "description": "Generuje fałszywego tweeta Trumpa",
+    "argument": "Tekst, który chcesz umieścić w tweecie"
+  },
+  "wanted": {
+    "description": "Generuje plakat \"poszukiwany\" z awatarem oznaczonego użytkownika",
+    "target": "Użytkownik, którego awatar zostanie umieszczony na plakacie",
+    "verb": "jest poszukiwany!"
+  },
+  "wasted": {
+    "description": "Zabija kogoś *oczywiście w GTA*",
+    "target": "Użytkownik, na którego awatarze zostanie umieszczony napis \"Wasted\"",
+    "verb": "zmarł"
   }
 }
