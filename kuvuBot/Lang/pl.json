@@ -218,9 +218,9 @@
     "description": "Wysyła losowe zdjęcie królika"
   },
   "blurple": {
-    "description": "Blurples avatar of marked user",
-    "verb": "Blurpled avatar of",
-    "target": "User whose avatar will be blurpled"
+    "description": "Przekształca awatar oznaczonego użytkownika w odcienie koloru blurple",
+    "verb": "Awatar użytkownika",
+    "target": "Użytkownik, którego awatar zostanie przekształcony w odcienie blurple"
   },
   "morse": {
     "description": "Konwertuje tekst na kod Morse’a",
@@ -241,25 +241,25 @@
   "invert": {
     "description": "Odwraca kolory na awatarze oznaczonego użytkownika",
     "verb": "Awatar z odwróconymi kolorami użytkownika",
-    "target": "User whose avatar will be inverted"
+    "target": "Użytkownik, na którego awatarze będą odwrócone kolory"
   },
   "orangly": {
-    "description": "Makes avatar of marked user orange",
+    "description": "Przekształca awatar oznaczonego użytkownika w odcienie pomarańczowego",
     "verb": "Orangled",
-    "target": "User whose avatar will be converted to shades of orange"
+    "target": "Użytkownik, którego awatar zostanie przekształcony w odcienie pomarańczowego"
   },
   "trump": {
-    "description": "Generates fake Trump's tweet",
-    "argument": "The text you want to put in the tweet"
+    "description": "Generuje fałszywego tweeta Trumpa",
+    "argument": "Tekst, który chcesz umieścić w tweecie"
   },
   "wanted": {
-    "description": "Generates wanted poster with avatar of marked user",
-    "target": "User whose avatar you want to put on the poster",
-    "verb": "is wanted!"
+    "description": "Generuje plakat \"poszukiwany\" z awatarem oznaczonego użytkownika",
+    "target": "Użytkownik, którego awatar zostanie umieszczony na plakacie",
+    "verb": "jest poszukiwany!"
   },
   "wasted": {
-    "description": "Kills somebody *in GTA of course*",
-    "target": "User on whose avatar the *Wasted* text will be put",
+    "description": "Zabija kogoś *oczywiście w GTA*",
+    "target": "Użytkownik, na którego awatarze zostanie umieszczony napis \"Wasted\"",
     "verb": "zmarł"
   }
 }
