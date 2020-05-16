@@ -167,13 +167,13 @@
   },
   "hug": {
     "description": "Przytula wskazanego użytkownika",
-    "target": "Użytkownik do przytulenia",
-    "verb": "uściskał"
+    "target": "Użytkownik do uściskania",
+    "verb": "uściskał(a)"
   },
   "pat": {
     "description": "Głaszcze wskazanego użytkownika",
     "target": "Użytkownik, którego chcesz pogłaskać",
-    "verb": "pogłaskał"
+    "verb": "pogłaskał(a)"
   },
   "slap": {
     "description": "Policzkujesz wskazanego użytkownika"
@@ -189,33 +189,33 @@
     "description": "Odwraca podany tekst"
   },
   "cuddle": {
-    "description": "Cuddles marked user",
-    "target": "User to cuddle",
-    "verb": "cuddled"
+    "description": "Przytula oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz przytulić",
+    "verb": "przytulił(a)"
   },
   "kiss": {
-    "description": "Kisses the marked user",
-    "target": "User to kiss",
-    "verb": "kissed"
+    "description": "Całuje oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz pocałować",
+    "verb": "pocałował(a)"
   },
   "tickle": {
-    "description": "Tickles marked user",
-    "target": "User to tickle",
-    "verb": "tickled"
+    "description": "Łaskocze oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz połaskotać",
+    "verb": "połaskotał(a)"
   },
   "poke": {
-    "description": "Pokes marked user",
-    "target": "User to poke",
-    "verb": "poked"
+    "description": "Szturcha oznaczonego użytkownika",
+    "target": "Użytkownik, którego chcesz szturchnąć",
+    "verb": "szturchnął"
   },
   "bird": {
-    "description": "Sends a random picture of a bird"
+    "description": "Wysyła losowe zdjęcie ptaka"
   },
   "bee": {
-    "description": "Sends a random picture of a bee"
+    "description": "Wysyła losowe zdjęcie pszczoły"
   },
   "rabbit": {
-    "description": "Sends a random picture of a rabbit"
+    "description": "Wysyła losowe zdjęcie królika"
   },
   "blurple": {
     "description": "Blurples avatar of marked user",
@@ -260,6 +260,6 @@
   "wasted": {
     "description": "Kills somebody *in GTA of course*",
     "target": "User on whose avatar the *Wasted* text will be put",
-    "verb": "died"
+    "verb": "zmarł"
   }
 }
