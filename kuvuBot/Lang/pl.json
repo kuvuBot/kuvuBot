@@ -168,12 +168,12 @@
   "hug": {
     "description": "Przytula wskazanego użytkownika",
     "target": "Użytkownik do uściskania",
-    "verb": "uściskał(a)"
+    "verb": "uściskał/-a"
   },
   "pat": {
     "description": "Głaszcze wskazanego użytkownika",
     "target": "Użytkownik, którego chcesz pogłaskać",
-    "verb": "pogłaskał(a)"
+    "verb": "pogłaskał/-a"
   },
   "slap": {
     "description": "Policzkujesz wskazanego użytkownika"
@@ -191,22 +191,22 @@
   "cuddle": {
     "description": "Przytula oznaczonego użytkownika",
     "target": "Użytkownik, którego chcesz przytulić",
-    "verb": "przytulił(a)"
+    "verb": "przytulił/-a"
   },
   "kiss": {
     "description": "Całuje oznaczonego użytkownika",
     "target": "Użytkownik, którego chcesz pocałować",
-    "verb": "pocałował(a)"
+    "verb": "pocałował/-a"
   },
   "tickle": {
     "description": "Łaskocze oznaczonego użytkownika",
     "target": "Użytkownik, którego chcesz połaskotać",
-    "verb": "połaskotał(a)"
+    "verb": "połaskotał/-a"
   },
   "poke": {
     "description": "Szturcha oznaczonego użytkownika",
     "target": "Użytkownik, którego chcesz szturchnąć",
-    "verb": "szturchnął"
+    "verb": "szturchnął/-eła"
   },
   "bird": {
     "description": "Wysyła losowe zdjęcie ptaka"
@@ -223,24 +223,24 @@
     "target": "User whose avatar will be blurpled"
   },
   "morse": {
-    "description": "Converts text to morse code",
-    "argument": "The text you want to convert"
+    "description": "Konwertuje tekst na kod Morse’a",
+    "argument": "Tekst, który chcesz przekonwertować"
   },
   "changemymind": {
-    "description": "Generates change my mind meme with your text",
+    "description": "Generuje mema \"change my mind\" z twoim tekstem",
     "title": "Change my mind",
-    "argument": "The text you want to put on the meme."
+    "argument": "Tekst, który chcesz umieścić na memie"
   },
   "excuseme": {
-    "description": "Generates excuse me meme with your text",
-    "argument": "The text you want to put on the meme."
+    "description": "Generuje mema \"excuse me\" z twoim tekstem",
+    "argument": "Tekst, który chcesz umieścić na memie"
   },
   "fox": {
-    "description": "Sends a random image of a fox"
+    "description": "Wysyła losowe zdjęcie lisa"
   },
   "invert": {
-    "description": "Inverts the avatar of marked user",
-    "verb": "Inverted avatar of",
+    "description": "Odwraca kolory na awatarze oznaczonego użytkownika",
+    "verb": "Awatar z odwróconymi kolorami użytkownika",
     "target": "User whose avatar will be inverted"
   },
   "orangly": {
