@@ -5,163 +5,200 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using Newtonsoft.Json;
-using System.Net;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
 using kuvuBot.Lang;
+using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Web;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace kuvuBot.Commands.Information
 {
+    public class TopkaMcApiResponse
+    {
+        [JsonProperty("error")]
+        public ErrorType? Error { get; set; }
+
+        [JsonProperty("address")]
+        public Address Address { get; set; }
+
+        [JsonProperty("version")]
+        public Version Version { get; set; }
+
+        [JsonProperty("players")]
+        public Players Players { get; set; }
+
+        [JsonProperty("favicon")]
+        public string Favicon { get; set; }
+
+        [JsonProperty("motd")]
+        public Motd Motd { get; set; }
+
+        [JsonProperty("query")]
+        public Query Query { get; set; }
+
+        public enum ErrorType
+        {
+            [EnumMember(Value = "SERVER_UNREACHABLE")]
+            ServerUnreachable,
+
+            [EnumMember(Value = "INVALID_ADDRESS")]
+            InvalidAddress
+        }
+    }
+
+    public class Address
+    {
+        [JsonProperty("ip")]
+        public string Ip { get; set; }
+
+        [JsonProperty("port")]
+        public long Port { get; set; }
+    }
+
+    public class Motd
+    {
+        [JsonProperty("raw")]
+        public string Raw { get; set; }
+
+        [JsonProperty("text")]
+        public string Text { get; set; }
+
+        [JsonProperty("normalized")]
+        public string Normalized { get; set; }
+
+        [JsonProperty("html")]
+        public string Html { get; set; }
+    }
+
+    public class Players
+    {
+        [JsonProperty("list")]
+        public List<object> List { get; set; }
+
+        [JsonProperty("max")]
+        public long Max { get; set; }
+
+        [JsonProperty("online")]
+        public long Online { get; set; }
+    }
+
+    public class Query
+    {
+        [JsonProperty("hostname")]
+        public string Hostname { get; set; }
+
+        [JsonProperty("hostip")]
+        public string Hostip { get; set; }
+
+        [JsonProperty("plugins")]
+        public string Plugins { get; set; }
+
+        [JsonProperty("numplayers")]
+        public long Numplayers { get; set; }
+
+        [JsonProperty("gametype")]
+        public string Gametype { get; set; }
+
+        [JsonProperty("maxplayers")]
+        public long Maxplayers { get; set; }
+
+        [JsonProperty("hostport")]
+        public long Hostport { get; set; }
+
+        [JsonProperty("version")]
+        public string Version { get; set; }
+
+        [JsonProperty("map")]
+        public string Map { get; set; }
+
+        [JsonProperty("game_id")]
+        public string GameId { get; set; }
+    }
+
+    public class Version
+    {
+        [JsonProperty("raw")]
+        public Raw Raw { get; set; }
+
+        [JsonProperty("range")]
+        public Range Range { get; set; }
+    }
+
+    public class Range
+    {
+        [JsonProperty("minimal_version")]
+        public ImalVersion MinimalVersion { get; set; }
+
+        [JsonProperty("maximal_version")]
+        public ImalVersion MaximalVersion { get; set; }
+
+        [JsonProperty("display")]
+        public string Display { get; set; }
+    }
+
+    public class ImalVersion
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("full_name")]
+        public string FullName { get; set; }
+
+        [JsonProperty("protocol")]
+        public long Protocol { get; set; }
+    }
+
+    public class Raw
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("protocol")]
+        public long Protocol { get; set; }
+    }
+
     public class MinecraftCommand : BaseCommandModule
     {
-        public partial class McApiResponse
-        {
-            [JsonProperty("online")]
-            public bool Online { get; set; }
-
-            [JsonProperty("status")]
-            public bool Status { get; set; }
-
-            [JsonProperty("favicon_base64")]
-            public string FaviconBase64 { get; set; }
-
-            [JsonProperty("favicon")]
-            public Uri Favicon { get; set; }
-
-            [JsonProperty("source")]
-            public string Source { get; set; }
-
-            [JsonProperty("took")]
-            public double Took { get; set; }
-
-            [JsonProperty("cache")]
-            public Cache Cache { get; set; }
-
-            [JsonProperty("dns")]
-            public Dns Dns { get; set; }
-
-            [JsonProperty("version")]
-            public Version Version { get; set; }
-
-            [JsonProperty("players")]
-            public Players Players { get; set; }
-
-            [JsonProperty("description")]
-            public Description Description { get; set; }
-
-            [JsonProperty("modinfo")]
-            public Modinfo Modinfo { get; set; }
-
-            [JsonProperty("fetch")]
-            public DateTimeOffset Fetch { get; set; }
-        }
-
-        public partial class Cache
-        {
-            [JsonProperty("status")]
-            public string Status { get; set; }
-
-            [JsonProperty("ttl")]
-            public long Ttl { get; set; }
-
-            [JsonProperty("insertion_time")]
-            public DateTimeOffset InsertionTime { get; set; }
-        }
-
-        public partial class Description
-        {
-            [JsonProperty("text")]
-            public string Text { get; set; }
-        }
-
-        public partial class Dns
-        {
-            [JsonProperty("type")]
-            public string Type { get; set; }
-
-            [JsonProperty("port")]
-            public long Port { get; set; }
-
-            [JsonProperty("ip")]
-            public string Ip { get; set; }
-        }
-
-        public partial class Modinfo
-        {
-            [JsonProperty("type")]
-            public string Type { get; set; }
-
-            [JsonProperty("modList")]
-            public List<object> ModList { get; set; }
-        }
-
-        public partial class Players
-        {
-            [JsonProperty("online")]
-            public long Online { get; set; }
-
-            [JsonProperty("max")]
-            public long Max { get; set; }
-
-            [JsonProperty("sample")]
-            public List<Sample> Sample { get; set; }
-        }
-
-        public partial class Sample
-        {
-            [JsonProperty("name")]
-            public string Name { get; set; }
-
-            [JsonProperty("id")]
-            public Guid Id { get; set; }
-        }
-
-        public partial class Version
-        {
-            [JsonProperty("protocol")]
-            public long Protocol { get; set; }
-
-            [JsonProperty("name")]
-            public string Name { get; set; }
-        }
-
         [Command("minecraft"), LocalizedDescription("minecraft.description")]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Minecraft(CommandContext ctx, string ip, ulong? port = null)
+        public async Task Minecraft(CommandContext ctx, string ip)
         {
-            using (var wc = new WebClient())
-            {
-                var url = $"https://eu.mc-api.net/v3/server/ping/{ip}";
-                if (port.HasValue) url = url + $":{port}";
-                var json = await wc.DownloadStringTaskAsync(url);
-                var response = JsonConvert.DeserializeObject<McApiResponse>(json);
+            using var httpClient = new HttpClient();
+            var json = await httpClient.GetStringAsync($"https://www.topkamc.pl/api/info/{ip}");
+            var response = JsonConvert.DeserializeObject<TopkaMcApiResponse>(json);
 
-                if (response.Status)
+            if (response.Error == null)
+            {
+                var embed = new ModernEmbedBuilder
                 {
-                    await new ModernEmbedBuilder
-                    {
-                        Title = await ctx.Lang("minecraft.title"),
-                        Fields =
+                    Title = await ctx.Lang("minecraft.title"),
+                    Fields =
                         {
                             (await ctx.Lang("minecraft.status"), await ctx.Lang("minecraft.online"), inline: true),
                             (await ctx.Lang("minecraft.players"), $"{response.Players.Online}/{response.Players.Max}", inline: true),
-                            (await ctx.Lang("minecraft.version"), $"{response.Version.Name}", inline: true),
-                            (await ctx.Lang("minecraft.motd"), $"```{response.Description.Text}```", inline: false),
+                            (await ctx.Lang("minecraft.version"), $"{response.Version.Raw.Name}", inline: true),
+                            (await ctx.Lang("minecraft.motd"), $"```{HttpUtility.HtmlDecode(response.Motd.Text)}```", inline: false),
                         },
-                        ThumbnailUrl = response.Favicon.ToString(),
-                    }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
-                }
-                else
+                    ThumbnailUrl = "attachment://favicon.png"
+                }.AddGeneratedForFooter(ctx);
+
+                var favicon = Convert.FromBase64String(Regex.Replace(response.Favicon, @"data:image/.+,", ""));
+                await ctx.RespondWithFileAsync(embed: embed.Build(), fileData: new MemoryStream(favicon, 0, favicon.Length), fileName: "favicon.png");
+            }
+            else
+            {
+                await new ModernEmbedBuilder
                 {
-                    await new ModernEmbedBuilder
-                    {
-                        Title = "Minecraft server status",
-                        Fields =
+                    Title = "Minecraft server status",
+                    Fields =
                         {
                             (await ctx.Lang("minecraft.status"), await ctx.Lang("minecraft.offline"), inline: true),
+                            ("Error", Enum.GetName(typeof(TopkaMcApiResponse.ErrorType), response.Error.Value))
                         }
-                    }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
-                }
+                }.AddGeneratedForFooter(ctx).Send(ctx.Message.Channel);
             }
         }
     }
