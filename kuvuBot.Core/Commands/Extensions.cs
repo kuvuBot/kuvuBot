@@ -44,7 +44,7 @@ namespace kuvuBot.Core.Commands
             return name;
         }
 
-        public static string GetCurrentAvatarUrl(this DiscordUser user, ushort size)
+        public static string GetCurrentAvatarUrl(this DiscordUser user, ushort size = 1024)
         {
             return (user.AvatarHash?.StartsWith("a_") == true
                 ? user.GetAvatarUrl(ImageFormat.Gif, size)
