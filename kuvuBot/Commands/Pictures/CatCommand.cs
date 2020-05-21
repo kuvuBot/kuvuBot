@@ -13,12 +13,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using kuvuBot.Commands.Attributes;
 using kuvuBot.Lang;
+using System.Net.Http;
+using Castle.Core.Internal;
 
 namespace kuvuBot.Commands.Pictures
 {
     public class CatCommand : BaseCommandModule
     {
-        static List<Breed> BreedList { get; set; }
+        private static List<Breed> BreedCache { get; set; }
+
         private class CatApiImage
         {
             [JsonProperty("breeds")]
@@ -30,7 +33,8 @@ namespace kuvuBot.Commands.Pictures
             [JsonProperty("url")]
             public Uri Url { get; set; }
         }
-        public partial class Breed
+
+        public class Breed
         {
             [JsonProperty("adaptability")]
             public long Adaptability { get; set; }
@@ -96,35 +100,24 @@ namespace kuvuBot.Commands.Pictures
             public Uri WikipediaUrl { get; set; }
         }
 
-        string GetWithApi(string url)
+        private HttpClient HttpClient { get; } = new HttpClient()
         {
-            try
+            BaseAddress = new Uri("https://api.thecatapi.com/v1/"),
+            DefaultRequestHeaders =
             {
-
-                var request = WebRequest.Create(url);
-                request.Headers["x-api-key"] = Program.Config.Apis.Cat;
-                using (var response = request.GetResponse())
-                using (var responseStream = response.GetResponseStream())
-                using (var reader = new StreamReader(responseStream))
-                {
-                    return reader.ReadToEnd();
-                }
+                { "x-api-key", Program.Config.Apis.Cat }
             }
-            catch (WebException)
-            {
-                return null;
-            }
-        }
+        };
 
-        void RefreshList(string url)
+        private async Task RefreshCache(string url)
         {
-            BreedList = JsonConvert.DeserializeObject<List<Breed>>(GetWithApi(url));
+            BreedCache = JsonConvert.DeserializeObject<List<Breed>>(await HttpClient.GetStringAsync(url));
         }
 
         [Aliases("kot")]
         [Command("cat"), LocalizedDescription("cat.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
-        public async Task Cat(CommandContext ctx, [Description("Cat breed, if null random,\"list\" for breed list"), RemainingText] string breed = null)
+        public async Task Cat(CommandContext ctx, [Description("Cat breed, if null random, \"list\" for breed list"), RemainingText] string breed = null)
         {
             await ctx.Channel.TriggerTypingAsync();
             var embed = new ModernEmbedBuilder
@@ -137,46 +130,45 @@ namespace kuvuBot.Commands.Pictures
                 }
             }.AddGeneratedForFooter(ctx);
 
-            if (breed != null && BreedList == null) RefreshList("https://api.thecatapi.com/v1/breeds?limit=100");
-            if (BreedList != null)
-                foreach (var breedo in BreedList)
+            if (BreedCache.IsNullOrEmpty()) await RefreshCache("breeds?limit=100");
+            if (breed != null) 
+            {
+                foreach (var cachedBreed in BreedCache)
                 {
-                    breed = breed.Replace(breedo.Name, breedo.Id, StringComparison.CurrentCultureIgnoreCase);
+                    breed = breed.Replace(cachedBreed.Name, cachedBreed.Id, StringComparison.CurrentCultureIgnoreCase);
                 }
+            }
 
-            var url = $"https://api.thecatapi.com/v1/images/search?limit=1&breed_id={breed}";
-
+            var url = $"images/search?limit=1&breed_id={breed}";
 
             if (breed == "list")
             {
-                embed.AddField(await ctx.Lang("cat.list"), string.Join(", ", BreedList.Select(b => b.Name)));
+                embed.AddField(await ctx.Lang("cat.list"), string.Join(", ", BreedCache.Select(b => b.Name)));
                 embed.AddField((await ctx.Lang("cat.moreInfo")).Replace("{prefix}", ctx.Prefix), "*info from thecatapi*");
             }
             else
             {
-                var catresponse = JsonConvert.DeserializeObject<List<CatApiImage>>(GetWithApi(url)).FirstOrDefault();
+                var response = JsonConvert.DeserializeObject<List<CatApiImage>>(await HttpClient.GetStringAsync(url)).FirstOrDefault();
 
-                if (catresponse == null)
+                if (response == null)
                 {
                     embed.AddField(await ctx.Lang("global.error"), await ctx.Lang("cat.breed.unknown"));
                 }
-                else if (catresponse.Url != null)
+                else if (response.Url != null)
                 {
-                    embed.ImageUrl = catresponse.Url.ToString();
-                    var catbreed = catresponse.Breeds.FirstOrDefault();
-                    if (catbreed != null)
+                    embed.ImageUrl = response.Url.ToString();
+                    var catBreed = response.Breeds.FirstOrDefault();
+                    if (catBreed != null)
                     {
-                        embed.AddField(await ctx.Lang("cat.breed.breed"), catbreed.Name, true);
-                        embed.AddField(await ctx.Lang("cat.breed.origin"), catbreed.Origin, true);
-                        embed.AddField(await ctx.Lang("cat.breed.lifeSpan"), catbreed.LifeSpan, true);
-                        embed.AddField(await ctx.Lang("cat.breed.description"), catbreed.Description);
-                        embed.Url = catbreed.WikipediaUrl.ToString();
+                        embed.AddField(await ctx.Lang("cat.breed.breed"), catBreed.Name, true);
+                        embed.AddField(await ctx.Lang("cat.breed.origin"), catBreed.Origin, true);
+                        embed.AddField(await ctx.Lang("cat.breed.lifeSpan"), catBreed.LifeSpan, true);
+                        embed.AddField(await ctx.Lang("cat.breed.description"), catBreed.Description);
+                        embed.Url = catBreed.WikipediaUrl.ToString();
                     }
                 }
                 else
                 {
-                    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-                    TextInfo textInfo = cultureInfo.TextInfo;
                     embed.AddField(await ctx.Lang("global.error"), ".");
                 }
             }
