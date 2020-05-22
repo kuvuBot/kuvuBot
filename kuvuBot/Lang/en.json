@@ -14,6 +14,14 @@
     "flag": "🇬🇧",
     "aliases": "english"
   },
+  "config": {
+    "get": "Current {name} is `{value}`",
+    "unset": "👌, unset {name}",
+    "set": "👌, set {name} to `{value}`",
+    "notFound": "🚫, channel/role/message not found!",
+    "tooLong": "🚫, parameter is too long! (max 1.8k)",
+    "wrong": "🚫, wrong parameter type!"
+  },
   "rps": {
     "description": "Play rock, paper and scissors with bot"
   },
@@ -218,7 +226,7 @@
   "rabbit": {
     "description": "Sends a random picture of a rabbit"
   },
-  "blurple":{
+  "blurple": {
     "description": "Blurples avatar of marked user",
     "verb": "Blurpled avatar of",
     "target": "User whose avatar will be blurpled"

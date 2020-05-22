@@ -20,60 +20,84 @@ namespace kuvuBot.Core.Commands.Converters
 
         public static Task<Optional<T>> ConvertAsync<T>(this IArgumentConverter<T> converter, string value, CommandContext ctx)
         {
-            var method = converter.GetType().GetRuntimeMethods().FirstOrDefault(x => x.Name.EndsWith("ConvertAsync"));
-            var task = method?.Invoke(converter, new object[] {value, ctx});
-
-            return task is Task<Optional<T>> o ? o : null;
+            return converter.ConvertAsync(value, ctx);
         }
     }
 
-    public class FriendlyDiscordUserConverter : IArgumentConverter<DiscordUser>
+    public interface ITwoWayConverter : IArgumentConverter {  }
+
+    public interface ITwoWayConverter<T, TResult> : ITwoWayConverter, IArgumentConverter<T>
     {
-        public Task<Optional<DiscordUser>> ConvertAsync(string value, CommandContext ctx)
+        Task<TResult> ConvertAsync(T value);
+    }
+
+    public abstract class TwoWayConverter<T> : ITwoWayConverter<T, T>
+    {
+        public Task<T> ConvertAsync(T value)
+        {
+            return Task.FromResult(value);
+        }
+
+        public abstract Task<Optional<T>> ConvertAsync(string value, CommandContext ctx);
+    }
+
+    public abstract class SnowflakeObjectConverter<T> : ITwoWayConverter<T, ulong?> where T : SnowflakeObject
+    {
+        public Task<ulong?> ConvertAsync(T value)
+        {
+            return Task.FromResult(value?.Id);
+        }
+
+        public abstract Task<Optional<T>> ConvertAsync(string value, CommandContext ctx);
+    }
+
+    public class FriendlyDiscordUserConverter : SnowflakeObjectConverter<DiscordUser>
+    {
+        public override Task<Optional<DiscordUser>> ConvertAsync(string value, CommandContext ctx)
         {
             if (value == "me") return Task.FromResult<Optional<DiscordUser>>(ctx.User);
             return new DiscordUserConverter().ConvertAsync(value, ctx);
         }
     }
 
-    public class FriendlyDiscordMemberConverter : IArgumentConverter<DiscordMember>
+    public class FriendlyDiscordMemberConverter : SnowflakeObjectConverter<DiscordMember>
     {
-        public Task<Optional<DiscordMember>> ConvertAsync(string value, CommandContext ctx)
+        public override Task<Optional<DiscordMember>> ConvertAsync(string value, CommandContext ctx)
         {
             if (value == "me") return Task.FromResult<Optional<DiscordMember>>(ctx.Member);
             return new DiscordMemberConverter().ConvertAsync(value, ctx);
         }
     }
 
-    public class FriendlyDiscordChannelConverter : IArgumentConverter<DiscordChannel>
+    public class FriendlyDiscordChannelConverter : SnowflakeObjectConverter<DiscordChannel>
     {
-        public Task<Optional<DiscordChannel>> ConvertAsync(string value, CommandContext ctx)
+        public override Task<Optional<DiscordChannel>> ConvertAsync(string value, CommandContext ctx)
         {
             if (value == "here") return Task.FromResult<Optional<DiscordChannel>>(ctx.Channel);
             return new DiscordChannelConverter().ConvertAsync(value, ctx);
         }
     }
 
-    public class FriendlyDiscordMessageConverter : IArgumentConverter<DiscordMessage>
+    public class FriendlyDiscordMessageConverter : SnowflakeObjectConverter<DiscordMessage>
     {
-        public Task<Optional<DiscordMessage>> ConvertAsync(string value, CommandContext ctx)
+        public override Task<Optional<DiscordMessage>> ConvertAsync(string value, CommandContext ctx)
         {
             if (value == "this") return Task.FromResult<Optional<DiscordMessage>>(ctx.Message);
             return new DiscordMessageConverter().ConvertAsync(value, ctx);
         }
     }
 
-    public class FriendlyDiscordRoleConverter : IArgumentConverter<DiscordRole>
+    public class FriendlyDiscordRoleConverter : SnowflakeObjectConverter<DiscordRole>
     {
-        public Task<Optional<DiscordRole>> ConvertAsync(string value, CommandContext ctx)
+        public override Task<Optional<DiscordRole>> ConvertAsync(string value, CommandContext ctx)
         {
             return new DiscordRoleConverter().ConvertAsync(value, ctx);
         }
     }
 
-    public class FriendlyBoolConverter : IArgumentConverter<bool>
+    public class FriendlyBoolConverter : TwoWayConverter<bool>
     {
-        public Task<Optional<bool>> ConvertAsync(string value, CommandContext ctx)
+        public override Task<Optional<bool>> ConvertAsync(string value, CommandContext ctx)
         {
             if (value == "on" || value == "enable" || value == "show" || value == "1")
                 return Task.FromResult<Optional<bool>>(true);

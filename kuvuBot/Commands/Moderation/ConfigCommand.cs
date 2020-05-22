@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using System.Reflection;
-using DSharpPlus.CommandsNext.Converters;
+using DSharpPlus.Entities;
+using DSharpPlus.Exceptions;
+using kuvuBot.Core.Commands;
 using kuvuBot.Core.Commands.Converters;
 using kuvuBot.Lang;
 
@@ -21,13 +23,39 @@ namespace kuvuBot.Commands.Moderation
     public class ConfigCommandGroup : BaseCommandModule
     {
         public enum OptionType { Field }
+
+        public class Option<T> : Option<T, T>
+        {
+            public Option(string name, string description, OptionType type = OptionType.Field, params string[] aliases) : base(name, description, type, aliases) { }
+        }
+
+        public class Option<T, TResult> : Option
+        {
+            public ITwoWayConverter<T, TResult> Converter { get; set; }
+
+            public Option(string name, string description, OptionType type = OptionType.Field, params string[] aliases) : base(name, description, type, aliases) { }
+
+            public override async Task<object> SetValue(object instance, object value, bool useConverter = true, CommandContext ctx = null)
+            {
+                var optional = await Converter.ConvertAsync<T>(value.ToString(), ctx);
+
+                if (optional.HasValue)
+                {
+                    value = await Converter.ConvertAsync(optional.Value);
+                }
+
+                return await base.SetValue(instance, value, useConverter, ctx);
+            }
+        }
+
+        public class TooLongException : Exception { }
+
         public class Option
         {
             public string Name { get; set; }
             public string Description { get; set; }
             public string Field { get; set; }
             public Type FieldType { get; set; } = typeof(string);
-            public IArgumentConverter Converter { get; set; }
             public string[] Aliases { get; set; }
             public OptionType Type { get; set; }
 
@@ -50,50 +78,42 @@ namespace kuvuBot.Commands.Moderation
                 return GetProperty(instance).GetValue(instance);
             }
 
-            public async Task SetValue(object instance, object value, bool useConverter = true, CommandContext ctx = null)
+            public virtual Task<object> SetValue(object instance, object value, bool useConverter = true, CommandContext ctx = null)
             {
-                if (useConverter && Converter != null)
+                if (value is string text)
                 {
-                    var task = (dynamic)Converter.GetType().GetMethod("ConvertAsync").Invoke(Converter, new[] { value, ctx });
-                    var optional = await task;
-
-                    if (!optional.HasValue)
+                    if (text.Length > 1800)
                     {
-                        throw new Exception("Bad value type");
+                        throw new TooLongException();
                     }
 
-                    var convertToDatabaseFormat = Converter.GetType().GetMethod("ConvertToDatabaseFormat");
-                    value = convertToDatabaseFormat != null ? convertToDatabaseFormat.Invoke(Converter, new []{ optional.Value }) : optional.Value;
-                }
-
-                if (value is string)
-                {
-                    if (value.ToString() != "null")
+                    if (value.ToString() == "null" || value.ToString() == "unset" || value.ToString() == "none")
+                    {
+                        value = null;
+                    }
+                    else
                     {
                         var converter = TypeDescriptor.GetConverter(GetProperty(instance).PropertyType);
                         value = converter.ConvertFrom(value);
                     }
-                    else
-                    {
-                        value = null;
-                    }
                 }
 
                 GetProperty(instance).SetValue(instance, value);
+                return Task.FromResult(value);
             }
 
             public static List<Option> Options = new List<Option>
             {
                 new Option("prefix", "Bot's commands prefix") { Field = "Prefix"},
-                new Option("language", "Bot language", aliases: "lang") { Field = "Lang", Converter = new LangConverter() },
-                new Option("logchannel", "Channel where bot will log") { Field = "LogChannel", Converter = new FriendlyDiscordChannelConverter() },
-                new Option("greetingchannel", "Channel where bot will say greeting to new users") { Field = "GreetingChannel", Converter = new FriendlyDiscordChannelConverter() },
-                new Option("goodbyechannel", "Channel where bot will say goodbye to leaving users") { Field = "GoodbyeChannel", Converter = new FriendlyDiscordChannelConverter() },
+                new Option<string>("language", "Bot language", aliases: "lang") { Field = "Lang", Converter = new LangConverter() },
+                new Option<DiscordChannel, ulong?>("logchannel", "Channel where bot will log") { Field = "LogChannel", Converter = new FriendlyDiscordChannelConverter() },
+                new Option<DiscordChannel, ulong?>("greetingchannel", "Channel where bot will say greeting to new users") { Field = "GreetingChannel", Converter = new FriendlyDiscordChannelConverter() },
+                new Option<DiscordChannel, ulong?>("goodbyechannel", "Channel where bot will say goodbye to leaving users") { Field = "GoodbyeChannel", Converter = new FriendlyDiscordChannelConverter() },
                 new Option("greeting", "Greeting message") { Field = "GreetingMessage" },
                 new Option("goodbye", "Goodbye message") { Field = "GoodbyeMessage" },
-                new Option("autorole", "Role that will be given to new users") { Field = "AutoRole", Converter = new FriendlyDiscordRoleConverter() },
-                new Option("muterole", "Role that will be given to muted users") { Field = "MuteRole", Converter = new FriendlyDiscordRoleConverter() },
-                new Option("showlevelup", "Option that enable level up messages") { Field = "ShowLevelUp", Converter = new FriendlyBoolConverter() },
+                new Option<DiscordRole, ulong?>("autorole", "Role that will be given to new users") { Field = "AutoRole", Converter = new FriendlyDiscordRoleConverter() },
+                new Option<DiscordRole, ulong?>("muterole", "Role that will be given to muted users") { Field = "MuteRole", Converter = new FriendlyDiscordRoleConverter() },
+                new Option<bool>("showlevelup", "Option that enable level up messages") { Field = "ShowLevelUp", Converter = new FriendlyBoolConverter() },
             };
         }
 
@@ -106,7 +126,7 @@ namespace kuvuBot.Commands.Moderation
                 Title = "Config options",
                 Fields =
                 {
-                    ("Available options", string.Join("\n", Option.Options.Select(x=>$"**{x.Name}**: `{x.Description}` = `{x.GetValue(kuvuGuild) ?? "not set"}`"))),
+                    ("Available options", string.Join("\n", Option.Options.Select(x=>$"**{x.Name}**: `{x.Description}` = `{x.GetValue(kuvuGuild) ?? "not set"}`".Truncate(1000 / Option.Options.Count, "...`")))),
                     ("To set option: ", $"{kuvuGuild.Prefix}config (option name) (option value)", true),
                     ("To view option: ", $"{kuvuGuild.Prefix}config (option name)", true)
                 }
@@ -128,20 +148,47 @@ namespace kuvuBot.Commands.Moderation
 
             if (value == null)
             {
-                await ctx.RespondAsync($"Current {option.Name} is `{option.GetValue(kuvuGuild)}`");
+                await ctx.RespondAsync((await ctx.Lang("config.get"))
+                    .Replace("{name}", option.Name)
+                    .Replace("{value}", option.GetValue(kuvuGuild).ToString()));
             }
             else
             {
+                object newValue;
+
                 try
                 {
-                    await option.SetValue(kuvuGuild, value, true, ctx);
-                    botContext.Guilds.Update(kuvuGuild);
-                    await botContext.SaveChangesAsync();
-                    await ctx.RespondAsync($"👌, changed {option.Name} to `{option.GetValue(kuvuGuild)}`");
+                    newValue = await option.SetValue(kuvuGuild, value, true, ctx);
                 }
-                catch
+                catch (NotFoundException)
                 {
-                    await ctx.RespondAsync("Bad value type");
+                    await ctx.RespondAsync(await ctx.Lang("config.notFound"));
+                    return;
+                }
+                catch (TooLongException)
+                {
+                    await ctx.RespondAsync(await ctx.Lang("config.tooLong"));
+                    return;
+                }
+                catch (ArgumentException)
+                {
+                    await ctx.RespondAsync(await ctx.Lang("config.wrong"));
+                    return;
+                }
+
+                botContext.Guilds.Update(kuvuGuild);
+                await botContext.SaveChangesAsync();
+
+                if (newValue == null)
+                {
+                    await ctx.RespondAsync((await ctx.Lang("config.unset"))
+                        .Replace("{name}", option.Name));
+                }
+                else
+                {
+                    await ctx.RespondAsync((await ctx.Lang("config.set"))
+                        .Replace("{name}", option.Name)
+                        .Replace("{value}", newValue.ToString()));
                 }
             }
         }

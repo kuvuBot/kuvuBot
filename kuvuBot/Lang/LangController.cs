@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
-using DSharpPlus.CommandsNext.Converters;
+using kuvuBot.Core.Commands.Converters;
 using Newtonsoft.Json.Linq;
 using Console = Colorful.Console;
 
@@ -33,26 +33,24 @@ namespace kuvuBot.Lang
         }
     }
 
-    public class LangConverter : IArgumentConverter<string>
+    public class LangConverter : TwoWayConverter<string>
     {
-        public Task<Optional<string>> ConvertAsync(string value, CommandContext ctx)
+        public override Task<Optional<string>> ConvertAsync(string value, CommandContext ctx)
         {
             if (LangController.Languages.Keys.Contains(value))
             {
                 return Task.FromResult(new Optional<string>(value));
             }
-            else
+
+            foreach (var lang in LangController.Languages.Keys)
             {
-                foreach (var lang in LangController.Languages.Keys)
+                var aliases = LangController.Get("lang.aliases", lang).Split("|");
+                if (aliases.Contains(value))
                 {
-                    var aliases = LangController.Get("lang.aliases", lang).Split("|");
-                    if (aliases.Contains(value))
-                    {
-                        return Task.FromResult(new Optional<string>(lang));
-                    }
+                    return Task.FromResult(new Optional<string>(lang));
                 }
-                return Task.FromResult(new Optional<string>());
             }
+            return Task.FromResult(new Optional<string>());
         }
     }
 
