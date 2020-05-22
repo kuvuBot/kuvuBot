@@ -14,6 +14,14 @@
     "flag": "🇵🇱",
     "aliases": "polish|polski"
   },
+  "config": {
+    "get": "Current {name} is `{value}`",
+    "unset": "👌, unset {name}",
+    "set": "👌, set {name} to `{value}`",
+    "notFound": "🚫, channel/role/message not found!",
+    "tooLong": "🚫, parameter is too long! (max 1.8k)",
+    "wrong": "🚫, wrong parameter type!"
+  },
   "rps": {
     "description": "Zagraj w papier, kamień, nożyce z botem"
   },
