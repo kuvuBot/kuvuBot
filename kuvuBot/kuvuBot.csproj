@@ -25,11 +25,13 @@
     <None Remove="Lang\pl.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="big.flf" />
+    <EmbeddedResource Include="Assets\big.flf" />
+    <EmbeddedResource Include="Assets\heart.png" />
     <EmbeddedResource Include="Lang\de.json" />
     <EmbeddedResource Include="Lang\en.json" />
     <EmbeddedResource Include="Lang\fr.json" />
     <EmbeddedResource Include="Lang\pl.json" />
+    <None Remove="heart.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.10" />

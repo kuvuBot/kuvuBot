@@ -18,7 +18,7 @@ namespace kuvuBot.Commands.Fun
 
         public FigletCommand()
         {
-            FigletFont = FigletFont.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("kuvuBot.big.flf"));
+            FigletFont = FigletFont.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("kuvuBot.Assets.big.flf"));
         }
 
         [Command("figlet"), LocalizedDescription("figlet.description")]

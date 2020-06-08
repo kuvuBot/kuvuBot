@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using SkiaSharp;
 using DSharpPlus;
@@ -14,6 +15,8 @@ namespace kuvuBot.Commands.Fun
 {
     public class ShipCommand : BaseCommandModule
     {
+        private SKBitmap HeartEmoji { get; } = SKBitmap.Decode(Assembly.GetExecutingAssembly().GetManifestResourceStream("kuvuBot.Assets.heart.png"));
+
         [Aliases("paruj")]
         [Command("ship"), LocalizedDescription("ship.description")]
         [RequireBotPermissions(Permissions.SendMessages | Permissions.AttachFiles)]
@@ -23,11 +26,10 @@ namespace kuvuBot.Commands.Fun
 
             var randomMember = ctx.Guild.Members.Values.ToList()[new Random().Next(ctx.Guild.Members.Count)];
 
-            var httpClient = new HttpClient();
+            using var httpClient = new HttpClient();
 
-            var targetAvatar = SKBitmap.Decode(await httpClient.GetStreamAsync(target.AvatarUrl));
-            var randomAvatar = SKBitmap.Decode(await httpClient.GetByteArrayAsync(randomMember.AvatarUrl));
-            var emoji = SKBitmap.Decode(await httpClient.GetByteArrayAsync("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/180/heavy-black-heart_2764.png"));
+            using var targetAvatar = SKBitmap.Decode(await httpClient.GetStreamAsync(target.AvatarUrl));
+            using var randomAvatar = SKBitmap.Decode(await httpClient.GetStreamAsync(randomMember.AvatarUrl));
 
             var dimensions = new SKImageInfo(375, 135);
             using var surface = SKSurface.Create(dimensions);
@@ -49,7 +51,7 @@ namespace kuvuBot.Commands.Fun
             canvas.DrawBitmap(targetAvatar, SKRect.Create(37.5f, 0, 96, 96));
             canvas.DrawText($"{target.Name()}", 96f / 2f + 37.5f, 96 + 24, paint);
 
-            canvas.DrawBitmap(emoji, SKRect.Create(37.5f + 96f + 30f, 27F, 48f, 48f));
+            canvas.DrawBitmap(HeartEmoji, SKRect.Create(37.5f + 96f + 30f, 27F, 48f, 48f));
 
             canvas.DrawBitmap(randomAvatar, SKRect.Create(37.5f + 96f + 30 + 48 + 28.5f, 0, 96, 96));
             canvas.DrawText($"{randomMember.Name()}", 96f / 2f + 37.5f + 96f + 30 + 48 + 28.5f, 96 + 24, paint);
