@@ -14,6 +14,14 @@
     "flag": "🇩🇪",
     "aliases": "german|deutsch"
   },
+  "config": {
+    "get": "Current {name} is `{value}`",
+    "unset": "👌, unset {name}",
+    "set": "👌, set {name} to `{value}`",
+    "notFound": "🚫, channel/role/message not found!",
+    "tooLong": "🚫, parameter is too long! (max 1.8k)",
+    "wrong": "🚫, wrong parameter type!"
+  },
   "rps": {
     "description": "Play rock, paper and scissors with bot"
   },
