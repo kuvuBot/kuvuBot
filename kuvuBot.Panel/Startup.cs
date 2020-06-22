@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace kuvuBot.Panel
 {
@@ -22,6 +24,11 @@ namespace kuvuBot.Panel
         // This method gets called by the runtime. Use this method to ad-d services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -78,6 +85,7 @@ namespace kuvuBot.Panel
             app.UseStatusCodePages();
 
             app.UseStaticFiles();
+            app.UseWebSockets();
 
             app.UseRouting();
             app.UseCors();

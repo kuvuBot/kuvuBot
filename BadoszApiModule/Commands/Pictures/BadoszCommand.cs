@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -73,12 +74,28 @@ namespace BadoszApiModule.Commands.Pictures
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["text"] = text;
             var json = JObject.Parse(await BadoszApiModule.BadoszApi.GetJson(BadoszApi.BadoszEndpoint.Morse, query));
-            var morse = json.GetValue("formatted").ToString();
+            var morse = json.GetValue("formatted")?.ToString();
 
-            await new ModernEmbedBuilder
+            if (morse == null)
             {
-                Description = morse
-            }.AddGeneratedForFooter(ctx).Send(ctx.Channel);
+                throw new HttpRequestException();
+            }
+
+            if (morse.Length > 2048)
+            {
+                await new ModernEmbedBuilder
+                {
+                    Color = DiscordColor.Red,
+                    Description = "Given text is too long!"
+                }.AddGeneratedForFooter(ctx, false).Send(ctx.Channel);
+            }
+            else
+            {
+                await new ModernEmbedBuilder
+                {
+                    Description = morse
+                }.AddGeneratedForFooter(ctx).Send(ctx.Channel);
+            }
         }
     }
 

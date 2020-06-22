@@ -55,7 +55,7 @@ namespace kuvuBot.Features
             var last = botContext.Statistics.ToList().LastOrDefault();
             if (last != null && last.Date.Date == DateTime.Now.Date && last.Guilds == Guilds && last.Channels == Channels && last.Users == Users)
                 return;
-
+            
             var stat = botContext.Statistics.FirstOrDefault(s => s.Date.Equals(DateTime.Now));
             if (stat == null)
             {
@@ -66,18 +66,27 @@ namespace kuvuBot.Features
                     Channels = Channels,
                     Users = Users
                 };
-                botContext.Statistics.Add(stat);
+                
+                Program.Client.DebugLogger.LogMessage(LogLevel.Info, nameof(StatisticManager), $"Saving statistics ({stat.Guilds} guilds, {stat.Channels} channels, {stat.Users})", DateTime.Now);
+                await botContext.Statistics.AddAsync(stat);
+                await botContext.SaveChangesAsync();
 
                 if (DiscordBotListApi != null)
                 {
-                    var selfBot = await DiscordBotListApi.GetMeAsync();
-                    if (selfBot != null)
+                    try
                     {
-                        await selfBot.UpdateStatsAsync(stat.Guilds);
+                        var selfBot = await DiscordBotListApi.GetMeAsync();
+                        if (selfBot != null)
+                        {
+                            await selfBot.UpdateStatsAsync(stat.Guilds);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Program.Client.DebugLogger.LogMessage(LogLevel.Error, nameof(StatisticManager), $"Failed sending stats to top.gg!\n{e}", DateTime.Now);
                     }
                 }
             }
-            await botContext.SaveChangesAsync();
         }
 
 

@@ -13,6 +13,10 @@ using Steam.Models;
 
 namespace kuvuBot.Data
 {
+    public class BotKuvuUserException : Exception
+    {
+    }
+
     public static class BotContextExt
     {
         public static async Task<KuvuGuild> GetKuvuGuild(this DiscordGuild guild, BotContext botContext = null)
@@ -28,9 +32,10 @@ namespace kuvuBot.Data
                     Lang = "en",
                     Prefix = Program.Config.DefualtPrefix,
                 };
-                botContext.Guilds.Add(kuvuGuild);
+                await botContext.Guilds.AddAsync(kuvuGuild);
                 await botContext.SaveChangesAsync();
             }
+
             return kuvuGuild;
         }
 
@@ -49,18 +54,20 @@ namespace kuvuBot.Data
                     Reputation = 0,
                     GlobalRank = null
                 };
-                botContext.GlobalUsers.Add(globalUser);
+                await botContext.GlobalUsers.AddAsync(globalUser);
                 await botContext.SaveChangesAsync();
             }
+
             return globalUser;
         }
 
         public static async Task<KuvuUser> GetKuvuUser(this DiscordUser user, KuvuGuild guild, BotContext botContext = null)
         {
-            if (user.IsBot) throw new Exception("Can't get bot kuvuUser");
+            if (user.IsBot) throw new BotKuvuUserException();
             botContext ??= new BotContext();
 
-            var kuvuUser = await botContext.Users.FirstOrDefaultAsync(g => g.DiscordUser == user.Id && g.Guild == guild);
+            var kuvuUser =
+                await botContext.Users.FirstOrDefaultAsync(g => g.DiscordUser == user.Id && g.Guild == guild);
             if (kuvuUser == null)
             {
                 kuvuUser = new KuvuUser
@@ -69,9 +76,10 @@ namespace kuvuBot.Data
                     Exp = 0,
                     Guild = guild
                 };
-                botContext.Users.Add(kuvuUser);
+                await botContext.Users.AddAsync(kuvuUser);
                 await botContext.SaveChangesAsync();
             }
+
             return kuvuUser;
         }
     }
@@ -93,9 +101,12 @@ namespace kuvuBot.Data
         [NotMapped]
         public DiscordChannel GreetingChannel
         {
-            get => !GreetingChannelId.HasValue ? null : Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GreetingChannelId.Value);
+            get => !GreetingChannelId.HasValue
+                ? null
+                : Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GreetingChannelId.Value);
             set => GreetingChannelId = value?.Id;
         }
+
         public string GreetingMessage { get; set; }
 
         public ulong? GoodbyeChannelId { get; set; }
@@ -103,9 +114,12 @@ namespace kuvuBot.Data
         [NotMapped]
         public DiscordChannel GoodbyeChannel
         {
-            get => !GoodbyeChannelId.HasValue ? null : Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GoodbyeChannelId.Value);
+            get => !GoodbyeChannelId.HasValue
+                ? null
+                : Program.Client.GetGuildAsync(GuildId).GetAwaiter().GetResult().GetChannel(GoodbyeChannelId.Value);
             set => GoodbyeChannelId = value?.Id;
         }
+
         public string GoodbyeMessage { get; set; }
 
         public ulong? MuteRole { get; set; }
@@ -122,7 +136,14 @@ namespace kuvuBot.Data
         public int Users { get; set; }
     }
 
-    public enum KuvuGlobalRank { Helper, Moderator, Admin, Root }
+    public enum KuvuGlobalRank
+    {
+        Helper,
+        Moderator,
+        Admin,
+        Root
+    }
+
     public class GlobalUser
     {
         public int Id { get; set; }
@@ -146,15 +167,16 @@ namespace kuvuBot.Data
 
         // GameDevAlgorithms.com 
         public const float LevelModifier = 0.5f;
+
         public static int ConvertExpToLevel(int exp)
         {
-            return (int)(LevelModifier * MathF.Sqrt(exp));
+            return (int) (LevelModifier * MathF.Sqrt(exp));
         }
 
         public static int ConvertLevelToExp(int level)
         {
             // XP = (Level / 0.05) ^ 2
-            return (int)Math.Pow(level / LevelModifier, 2);
+            return (int) Math.Pow(level / LevelModifier, 2);
         }
 
         public int GetLevel()
@@ -170,7 +192,8 @@ namespace kuvuBot.Data
             if (nextLevel > currentLevel)
             {
                 if (channel != null && mention != null)
-                    await channel.SendMessageAsync((await channel.Guild.Lang("level.promotion")).Replace("{mention}", mention).Replace("{level}", nextLevel.ToString()));
+                    await channel.SendMessageAsync((await channel.Guild.Lang("level.promotion"))
+                        .Replace("{mention}", mention).Replace("{level}", nextLevel.ToString()));
             }
         }
 
@@ -201,11 +224,14 @@ namespace kuvuBot.Data
         public string Message { get; set; }
     }
 
-    public enum CacheType { Steam }
+    public enum CacheType
+    {
+        Steam
+    }
+
     public class CacheInfo
     {
-        [Key]
-        public CacheType Type { get; set; }
+        [Key] public CacheType Type { get; set; }
 
         public DateTime RefreshedTime { get; set; }
     }
@@ -227,7 +253,8 @@ namespace kuvuBot.Data
         {
             optionsBuilder.UseLazyLoadingProxies();
             var config = Program.LoadConfig().MySQL;
-            var connectionString = $"SERVER={config.Ip};DATABASE={config.Database};UID={config.User};PASSWORD={config.Password};PORT={config.Port}";
+            var connectionString =
+                $"SERVER={config.Ip};DATABASE={config.Database};UID={config.User};PASSWORD={config.Password};PORT={config.Port}";
 
             optionsBuilder.UseMySql(connectionString);
         }

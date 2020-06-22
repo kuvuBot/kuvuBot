@@ -55,6 +55,7 @@ namespace kuvuBot
             {
                 throw new Exception($"{ConfigFilename} not found. Copy from example and fill it");
             }
+
             return Config ??= JsonConvert.DeserializeObject<Config>(File.ReadAllText(ConfigFilename));
         }
 
@@ -102,7 +103,11 @@ namespace kuvuBot
                 TokenType = TokenType.Bot,
 
                 AutoReconnect = true,
+#if DEBUG
                 LogLevel = LogLevel.Debug,
+#else
+                LogLevel = LogLevel.Info,
+#endif
                 UseInternalLogHandler = true,
                 HttpTimeout = TimeSpan.FromSeconds(60)
             };
@@ -164,7 +169,7 @@ namespace kuvuBot
 
             try
             {
-                var endpoint = new ConnectionEndpoint { Hostname = Config.Lavalink.Ip, Port = Config.Lavalink.Port };
+                var endpoint = new ConnectionEndpoint {Hostname = Config.Lavalink.Ip, Port = Config.Lavalink.Port};
                 foreach (var extension in Lavalink.Values)
                 {
                     MusicCommand.Lavalink = await extension.ConnectAsync(new LavalinkConfiguration
@@ -193,20 +198,16 @@ namespace kuvuBot
                 await OnStop();
             };
 
-            AppDomain.CurrentDomain.ProcessExit += async (s, e) =>
-            {
-                await OnStop();
-            };
+            AppDomain.CurrentDomain.ProcessExit += async (s, e) => { await OnStop(); };
 
-            AssemblyLoadContext.Default.Unloading += async ctx =>
-            {
-                await OnStop();
-            };
+            AssemblyLoadContext.Default.Unloading += async ctx => { await OnStop(); };
 
             // prevent app from quit
             await Task.Run(() =>
             {
-                while (!Kill) { }
+                while (!Kill)
+                {
+                }
             });
         }
 
@@ -235,19 +236,35 @@ namespace kuvuBot
                 case ArgumentException _ when e.Exception.StackTrace.Trim().StartsWith("at DSharpPlus.CommandsNext.Command.ExecuteAsync"):
                 case ArgumentException _ when e.Exception.Message == "Required text can't be null!":
                 case InvalidOperationException _ when e.Exception.Message == "No matching subcommands were found, and this group is not executable.":
+                {
+                    var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
+                    var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
+                    await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
+                    return;
+                }
+                case HttpRequestException _:
+                    await new ModernEmbedBuilder
                     {
-                        var cmd = e.Context.CommandsNext.FindCommand("help", out var args);
-                        var fctx = e.Context.CommandsNext.CreateFakeContext(e.Context.User, e.Context.Channel, "help", e.Context.Prefix, cmd, e.Command.Name);
-                        await e.Context.CommandsNext.ExecuteCommandAsync(fctx).ConfigureAwait(false);
-                        return;
-                    }
+                        Title = "External web api error",
+                        Color = DiscordColor.Red,
+                        Description = "Please try again later."
+                    }.AddGeneratedForFooter(e.Context, false).Send(e.Context.Message.Channel);
+                    return;
+                case BotKuvuUserException _:
+                    await new ModernEmbedBuilder
+                    {
+                        Title = "Tried creating kuvuUser for bot account",
+                        Color = DiscordColor.Red,
+                        Description = "Sorry but this command doesn't support bot accounts."
+                    }.AddGeneratedForFooter(e.Context, false).Send(e.Context.Message.Channel);
+                    return;
                 case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireBotPermissionsAttribute):
-                    {
-                        var req = (RequireBotPermissionsAttribute)ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
-                        var dm = await e.Context.Member.CreateDmChannelAsync();
-                        await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
-                        return;
-                    }
+                {
+                    var req = (RequireBotPermissionsAttribute) ex.FailedChecks.First(x => x is RequireBotPermissionsAttribute);
+                    var dm = await e.Context.Member.CreateDmChannelAsync();
+                    await dm.SendMessageAsync($"I don't have `{req.Permissions.ToPermissionString()}` permissions, so I can't do it! Contact with guild administrator.");
+                    return;
+                }
                 case ChecksFailedException ex when ex.FailedChecks.Any(x => x is RequireUserPermissionsAttribute || x is RequireGlobalRankAttribute):
                     await e.Context.RespondAsync(await e.Context.Lang("global.noPermissions"));
                     return;
@@ -261,12 +278,12 @@ namespace kuvuBot
                     {
                         await e.Context.Message.RespondWithFileAsync("crash.txt",
                             new MemoryStream(Encoding.ASCII.GetBytes(e.Exception.ToString())),
-                                embed: new ModernEmbedBuilder
-                                {
-                                    Title = "Command failed",
-                                    ColorRGB = (231, 76, 60),
-                                    Description = $"```{e.Exception.ToString().Truncate(2048 - 6, "...")}```"
-                                });
+                            embed: new ModernEmbedBuilder
+                            {
+                                Title = "Command failed",
+                                ColorRGB = (231, 76, 60),
+                                Description = $"```{e.Exception.ToString().Truncate(2048 - 6, "...")}```"
+                            });
                     }
                     else
                     {
@@ -294,6 +311,7 @@ namespace kuvuBot
                                 }
                             }.AddGeneratedForFooter(e.Context, false));
                     }
+
                     break;
             }
         }
@@ -311,6 +329,7 @@ namespace kuvuBot
                 Client.UpdateStatusAsync(new DiscordActivity("Rebooting..."), UserStatus.Idle, Process.GetCurrentProcess().StartTime);
                 return;
             }
+
             Client.UpdateStatusAsync(GetDiscordActivity(), Config.Status.UserStatus);
         }
 

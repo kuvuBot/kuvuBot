@@ -20,14 +20,16 @@ namespace kuvuBot.Commands.Moderation
         {
             reason.RequireRemainingText();
             var kuvuGuild = await ctx.Guild.GetKuvuGuild();
-            if (kuvuGuild.MuteRole.HasValue)
+            DiscordRole role;
+            
+            if (kuvuGuild.MuteRole.HasValue && (role = ctx.Guild.GetRole(kuvuGuild.MuteRole.Value)) != null)
             {
-                await target.GrantRoleAsync(ctx.Guild.GetRole(kuvuGuild.MuteRole.Value), reason);
-                await ctx.RespondAsync($"Successfuly muted {target.Mention}{(reason == null ? "" : $"with reason `{reason}`")}");
+                await target.GrantRoleAsync(role, reason);
+                await ctx.RespondAsync($"Successfully muted {target.Mention}{(reason == null ? "" : $"with reason `{reason}`")}");
             }
             else
             {
-                await ctx.RespondAsync($"There are not mute role. Type `{kuvuGuild.Prefix}mute setup` to create it");
+                await ctx.RespondAsync($"Mute role is not configured. Type `{kuvuGuild.Prefix}mute setup` to create it");
             }
         }
 

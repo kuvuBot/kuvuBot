@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00703" />
-    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00703" />
-    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00703" />
-    <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00703" />
+    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00707" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00707" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00707" />
+    <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00707" />
     <PackageReference Include="Fastenshtein" Version="1.0.0.5" />
-    <PackageReference Include="Humanizer.Core.pl" Version="2.8.11" />
+    <PackageReference Include="Humanizer.Core.pl" Version="2.8.26" />
   </ItemGroup>
 </Project>

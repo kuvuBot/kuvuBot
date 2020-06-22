@@ -38,7 +38,7 @@ namespace kuvuBot.Commands.Pictures
             try
             {
                 var request = WebRequest.Create(url);
-                response = request.GetResponse();
+                response = await request.GetResponseAsync();
 
             }
             catch (WebException ex)

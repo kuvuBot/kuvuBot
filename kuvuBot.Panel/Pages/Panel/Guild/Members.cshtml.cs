@@ -45,7 +45,7 @@ namespace kuvuBot.Panel.Pages.Panel.Guild
                 return Unauthorized();
             }
 
-            var kuvuUser = BotContext.Users.Find(userId);
+            var kuvuUser = await BotContext.Users.FindAsync(userId);
             if (kuvuUser.Guild.GuildId != DiscordGuild.Id)
                 return Unauthorized();
             kuvuUser.Exp = 0;

@@ -1,11 +1,10 @@
 ﻿@page
 @model kuvuBot.Panel.Pages.StatisticsModel
-@using System.Diagnostics
 @using MoreLinq;
 @{
     ViewData["Title"] = "Statistics";
     var botContext = new BotContext();
-    var stats = botContext.Statistics.DistinctBy(x => x.Date.Date).OrderBy(x => x.Date);
+    var stats = botContext.Statistics.DistinctBy(x => x.Date.Date).OrderBy(x => x.Date).ToList();
     var statsStrings = stats.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
 }
 <section id="statistics">
@@ -14,8 +13,8 @@
         <div class="row pb-5">
             <div class="col-md-4">
                 <div class="stats-box">
-                    <div class="stats-body">
-                        @((DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"hh\:mm\:ss"))
+                    <div class="stats-body" id="uptime">
+                        @(StatisticsModel.Statistics.Uptime)
                     </div>
                     <div class="stats-footer">
                         <p>Uptime</p>
@@ -24,8 +23,8 @@
             </div>
             <div class="col-md-4">
                 <div class="stats-box">
-                    <div class="stats-body">
-                        @((Process.GetCurrentProcess().WorkingSet64 / 1000000d).ToString("F1")) MB
+                    <div class="stats-body" id="memory">
+                        @(StatisticsModel.Statistics.Memory)
                     </div>
                     <div class="stats-footer">
                         <p>Memory usage</p>
@@ -34,8 +33,8 @@
             </div>
             <div class="col-md-4">
                 <div class="stats-box">
-                    <div class="stats-body">
-                        @(Model.CpuUsage)%
+                    <div class="stats-body" id="cpu">
+                        @(StatisticsModel.Statistics.Cpu)
                     </div>
                     <div class="stats-footer">
                         <p>CPU usage</p>
@@ -54,23 +53,26 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha256-TQq84xX6vkwR0Qs1qH5ADkP+MvH0W+9E7TdHJsoIQiM=" crossorigin="anonymous"></script>
+<script src="https://www.chartjs.org/samples/latest/utils.js" crossorigin="anonymous"></script>
 <script>
-    var configChannelsUsers = {
+    const configChannelsUsers = {
         type: 'line',
         data: {
-            labels: @Html.Raw(@Json.Serialize(@statsStrings)),
+            labels: @Html.Raw(Json.Serialize(statsStrings)),
             datasets: [{
                 label: 'Channels',
                 fill: false,
                 backgroundColor: window.chartColors.blue,
                 borderColor: window.chartColors.blue,
-                data: @Html.Raw(@Json.Serialize(stats.Select(x=>x.Channels)))
+                data: @Html.Raw(Json.Serialize(stats.Select(x => x.Channels)))
             }, {
                 label: 'Users',
                 fill: false,
                 backgroundColor: window.chartColors.green,
                 borderColor: window.chartColors.green,
-                data: @Html.Raw(@Json.Serialize(stats.Select(x=>x.Users)))
+                data: @Html.Raw(Json.Serialize(stats.Select(x => x.Users)))
             }]
         },
         options: {
@@ -106,16 +108,16 @@
         }
     };
 
-        var configGuilds = {
+        const configGuilds = {
         type: 'line',
         data: {
-            labels: @Html.Raw(@Json.Serialize(@statsStrings)),
+            labels: @Html.Raw(Json.Serialize(statsStrings)),
             datasets: [{
                 label: 'Guilds',
                 fill: false,
                 backgroundColor: window.chartColors.red,
                 borderColor: window.chartColors.red,
-                data: @Html.Raw(@Json.Serialize(stats.Select(x=>x.Guilds)))
+                data: @Html.Raw(Json.Serialize(stats.Select(x => x.Guilds)))
             }]
         },
         options: {
@@ -150,11 +152,21 @@
             }
         }
     };
+        
+    let url = new URL(window.location.href);
+    url.protocol = url.protocol.replace("http", "ws");
+        
+    const ws = new WebSocket(url.toString());
+    
+    ws.addEventListener("message", ev => {
+       const data = JSON.parse(ev.data);
+       document.getElementById("cpu").innerText = data.cpu;
+       document.getElementById("memory").innerText = data.memory;
+       document.getElementById("uptime").innerText = data.uptime;
+    });
 
     window.onload = function () {
-        var ctx = document.getElementById('Guilds').getContext('2d');
-        window.myLine = new Chart(ctx, configGuilds);
-        var ctx = document.getElementById('ChannelsUsers').getContext('2d');
-        window.myLine = new Chart(ctx, configChannelsUsers);
+        new Chart(document.getElementById('Guilds').getContext('2d'), configGuilds);
+        new Chart(document.getElementById('ChannelsUsers').getContext('2d'), configChannelsUsers);
     };
 </script>

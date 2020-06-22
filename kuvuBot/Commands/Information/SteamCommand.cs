@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using HSNXT.DSharpPlus.ModernEmbedBuilder;
 using SteamWebAPI2.Interfaces;
 using System.Text.RegularExpressions;
+using AutoMapper;
+using AutoMapper.Configuration;
 using kuvuBot.Data;
 using DSharpPlus;
 using kuvuBot.Commands.Attributes;
@@ -31,7 +33,7 @@ namespace kuvuBot.Commands.Information
             await ctx.Channel.TriggerTypingAsync();
             var factory = new SteamWebInterfaceFactory(Program.Config.Apis.SteamWebApi);
             using var httpClient = new HttpClient();
-            var steamStore = new SteamStore();
+            var steamStore = factory.CreateSteamStoreInterface(httpClient);
             var steamApps = factory.CreateSteamWebInterface<SteamApps>(httpClient);
 
             var botContext = new BotContext();

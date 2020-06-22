@@ -29,7 +29,6 @@ namespace kuvuBot.Commands.Moderation
             var kuvuGuild = await ctx.Guild.GetKuvuGuild(botContext);
             var kuvuUser = await target.GetKuvuUser(kuvuGuild, botContext);
 
-
             var warn = new KuvuWarn
             {
                 Date = DateTime.Now,
@@ -38,7 +37,7 @@ namespace kuvuBot.Commands.Moderation
                 Weight = weight,
                 Reason = reason,
             };
-            botContext.Warns.Add(warn);
+            await botContext.Warns.AddAsync(warn);
 
             await botContext.SaveChangesAsync();
             await ctx.RespondAsync($"Warned {target.Mention} for `{warn.Reason}` (`{warn.Weight}`)");

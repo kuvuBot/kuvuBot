@@ -2,114 +2,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>kuvuBot</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js" integrity="sha256-MZo5XY1Ah7Z2Aui4/alkfeiq3CopMdV/bbkc/Sh41+s=" crossorigin="anonymous"></script>
-    <script src="https://www.chartjs.org/samples/latest/utils.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Roboto&display=swap">
     <link rel="stylesheet" href="https://cdn.riko.dev/fonts/font-awesome/pro.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/site.css"/>
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
-    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
-    @{ var bigHeader = ViewData["BigHeader"] is bool && (bool)ViewData["BigHeader"]; }
-    <header class="@(bigHeader ? "" : "sub")">
-        <div class="bg-darker @(bigHeader ? "" : "bg-darker")">
-            <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="navbar-main">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-page="/Index">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://discord.gg/KbUdeKe">Support server</a>
-                        </li>
+@{ var bigHeader = ViewData["BigHeader"] is bool && (bool) ViewData["BigHeader"]; }
+<header class="@(bigHeader ? "" : "sub")">
+    <div class="bg-darker @(bigHeader ? "" : "bg-darker")">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="navbar-main">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-page="/Index">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://discord.gg/KbUdeKe">Support server</a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://github.com/kuvuBot/kuvuBot">Github</a>
-                        </li>
-                        <li class="nav-item">
-                            @if (User?.Identity?.IsAuthenticated ?? false)
-                            {
-                                <a class="nav-link text-blurpe float-left" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                                <img src="@("https://cdn.discordapp.com/avatars/" + User.FindFirstValue(ClaimTypes.NameIdentifier) + "/" + User.FindFirstValue("avatar") + "?size=40")" class="rounded-circle" width="40" height="40" />
-                            }
-                            else
-                            {
-                                <a class="nav-link text-blurpe" asp-controller="Authentication" asp-action="Login">Login</a>
-                            }
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="container @(bigHeader ? "text-center" : "")">
-                <a href="/"><img src="~/img/logo.png" alt="" class="mb-5 logo"></a>
-                @if (bigHeader)
-                {
-                    <div class="buttons flex-row">
-                        <a class="btn btn-commands btn-lg" href="#commands">
-                            <i class="fal fa-line-columns"></i>
-                            Commands list
-                        </a>
-
-                        <a class="btn btn-discord btn-lg"
-                           href="https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8"
-                           target="_blank">
-                            <i class="fab fa-discord"></i> Add to your server
-                        </a>
-
-                        <a class="btn btn-commands btn-lg" asp-page="/Leaderboard">
-                            <i class="far fa-trophy-alt"></i>
-                            Leaderboard
-                        </a>
-                    </div>
-                }
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/kuvuBot/kuvuBot">Github</a>
+                    </li>
+                    <li class="nav-item">
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a class="nav-link text-blurpe float-left" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                            <img src="@("https://cdn.discordapp.com/avatars/" + User.FindFirstValue(ClaimTypes.NameIdentifier) + "/" + User.FindFirstValue("avatar") + "?size=40")" class="rounded-circle" width="40" height="40"/>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-blurpe" asp-controller="Authentication" asp-action="Login">Login</a>
+                        }
+                    </li>
+                </ul>
             </div>
-        </div>
-    </header>
+        </nav>
 
-    <div class="content">
-        <main role="main">
-            @RenderBody()
-        </main>
+        <div class="container @(bigHeader ? "text-center" : "")">
+            <a href="/">
+                <img src="~/img/logo.png" alt="" class="mb-5 logo">
+            </a>
+            @if (bigHeader)
+            {
+                <div class="buttons flex-row">
+                    <a class="btn btn-commands btn-lg" href="#commands">
+                        <i class="fal fa-line-columns"></i>
+                        Commands list
+                    </a>
+
+                    <a class="btn btn-discord btn-lg"
+                       href="https://discordapp.com/oauth2/authorize?&client_id=205965155282976768&scope=bot&permissions=8"
+                       target="_blank">
+                        <i class="fab fa-discord"></i> Add to your server
+                    </a>
+
+                    <a class="btn btn-commands btn-lg" asp-page="/Leaderboard">
+                        <i class="far fa-trophy-alt"></i>
+                        Leaderboard
+                    </a>
+                </div>
+            }
+        </div>
     </div>
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <p class="float-left">&copy; 2020 kuvuBot team</p>
-                </div>
-                <div class="col-6">
-                    <p class="float-right">Designed by kuvuś</p>
-                </div>
+</header>
+
+<div class="content">
+    <main role="main">
+        @RenderBody()
+    </main>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <p class="float-left">&copy; 2020 kuvuBot team</p>
+            </div>
+            <div class="col-6">
+                <p class="float-right">Designed by kuvuś</p>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    @*<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>*@
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>*@
-    @*<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>*@
-    <script src="~/js/iscrolljs.js"></script>
-    <environment include="Development">
-        <script src="~/js/site.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-    @RenderSection("Scripts", required: false)
+@*<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>*@
+@*<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>*@
+<script src="~/js/iscrolljs.js"></script>
+<environment include="Development">
+    <script src="~/js/site.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
