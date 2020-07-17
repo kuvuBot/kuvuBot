@@ -192,34 +192,7 @@ namespace kuvuBot
                 }
             }
 
-            Console.CancelKeyPress += async (s, e) =>
-            {
-                e.Cancel = true;
-                await OnStop();
-            };
-
-            AppDomain.CurrentDomain.ProcessExit += async (s, e) => { await OnStop(); };
-
-            AssemblyLoadContext.Default.Unloading += async ctx => { await OnStop(); };
-
-            // prevent app from quit
-            await Task.Run(() =>
-            {
-                while (!Kill)
-                {
-                }
-            });
-        }
-
-        public static async Task OnStop()
-        {
-            if (Kill)
-                return;
-
-            Kill = true;
-            Console.WriteLine("Stopping...");
-            Loaded = false;
-            await Client_GuildEvents(null);
+            await Task.Delay(-1);
         }
 
         private static Task Client_SocketErrored(SocketErrorEventArgs e)

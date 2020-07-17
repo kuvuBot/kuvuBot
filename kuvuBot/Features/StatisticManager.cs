@@ -14,7 +14,7 @@ namespace kuvuBot.Features
     {
         private AuthDiscordBotListApi DiscordBotListApi { get; set; }
 
-        public void Initialize(DiscordShardedClient client)
+        public StatisticManager(DiscordShardedClient client)
         {
             client.GuildDownloadCompleted += Client_GuildDownloadCompleted;
 
@@ -75,11 +75,7 @@ namespace kuvuBot.Features
                 {
                     try
                     {
-                        var selfBot = await DiscordBotListApi.GetMeAsync();
-                        if (selfBot != null)
-                        {
-                            await selfBot.UpdateStatsAsync(stat.Guilds);
-                        }
+                        await DiscordBotListApi.UpdateStats(stat.Guilds);
                     }
                     catch (Exception e)
                     {
