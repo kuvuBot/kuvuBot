@@ -15,12 +15,12 @@
     "aliases": "polish|polski"
   },
   "config": {
-    "get": "Current {name} is `{value}`",
-    "unset": "👌, unset {name}",
-    "set": "👌, set {name} to `{value}`",
-    "notFound": "🚫, channel/role/message not found!",
-    "tooLong": "🚫, parameter is too long! (max 1.8k)",
-    "wrong": "🚫, wrong parameter type!"
+    "get": "Obecnie {name} to `{value}`",
+    "unset": "👌, ustawiono {name} na wartość domyślną",
+    "set": "👌, ustawiono {name} na `{value}`",
+    "notFound": "🚫, kanał/rola/wiadomość nie została znaleziona!",
+    "tooLong": "🚫, parametr jest zbyt długi! (max 1.8k)",
+    "wrong": "🚫, zły typ parametru!"
   },
   "rps": {
     "description": "Zagraj w papier, kamień, nożyce z botem"
